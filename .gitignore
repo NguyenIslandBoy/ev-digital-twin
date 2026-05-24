@@ -4,4 +4,4 @@ __pycache__/
 data/ev_twin.duckdb
 data/raw/
 *.csv
-*.pdf
+reference/papers/
