@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+data/ev_twin.duckdb
+data/raw/
+*.csv
+*.pdf

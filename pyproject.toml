@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ev-digital-twin"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "duckdb>=0.10",
+    "requests>=2.31",
+    "pandas>=2.0",
+    "mesa>=2.3",
+    "stable-baselines3>=2.3",
+    "gymnasium>=0.29",
+    "scipy>=1.13",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "jupyter>=1.0",
+]
