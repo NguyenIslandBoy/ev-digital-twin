@@ -1,0 +1,14 @@
+Data for dissertation
+- Building data: bad structure
+- Charging data: good structure
+- Rading docement: EV Charging
+
+
+Supervisor
+- Meeting physically at Engineering School on 20th of April
+
+https://www.sciencedirect.com/science/article/pii/S2210670724003068
+
+https://ieeexplore.ieee.org/document/11040586
+
+https://arxiv.org/html/2504.01423
