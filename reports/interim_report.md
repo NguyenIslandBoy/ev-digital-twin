@@ -143,10 +143,6 @@ A comprehensive EDA was conducted on 29,775 charging sessions in `notebooks/01_e
 
 *Grant chart is being created*
 
-## 4.3 Gantt Chart
-
-## 4.3 Gantt Chart
-
 | Task | Jun | | Jul | | | Aug | |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | | W1-2 | W3-4 | W1 | W2 | W3-4 | W1-2 | W3 |
