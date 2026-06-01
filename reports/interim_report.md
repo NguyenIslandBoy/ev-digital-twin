@@ -171,8 +171,6 @@ A comprehensive EDA was conducted on 29,775 charging sessions in `notebooks/01_e
 | Oral presentation preparation | | | | | | active | active |
 | **Milestone: Oral presentation (13 Aug)** | | | | | | | M6 |
 
-> **[FLAG FOR SUPERVISOR]** Confirm whether the RL extension (Phase 4) is expected as a core deliverable or optional high-distinction component, as this affects timeline allocation for Phases 3 and 5.
-
 ### 4.4 Risks
 
 | Risk | Likelihood | Impact | Mitigation |
