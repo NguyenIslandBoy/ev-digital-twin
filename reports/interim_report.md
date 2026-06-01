@@ -59,8 +59,6 @@ A targeted review of five papers has been conducted to ground the project method
 | Smart City DT for Building Energy [4] | Smart meter analytics and temporally-segmented benchmarking | Informs data pipeline design and metering data investigation |
 | Edge-AI RL + AHP Framework [5] | RL with multi-criteria decision making; 23.5% wait time reduction reported | Motivates RL extension; AHP approach for multi-objective KPI weighting |
 
-> **[FLAG FOR SUPERVISOR]** Five papers have been reviewed. Confirm whether this is sufficient for the interim report or whether additional sources are expected, particularly on RL for energy optimisation.
-
 ### 3.2 Data Engineering Pipeline
 
 A complete, modular data engineering pipeline has been implemented in Python across four files: `ingestion/config.py`, `ingestion/storage.py`, `ingestion/scraper.py`, and `ingestion/run_scraper.py`. The pipeline extracts 30-minute interval energy data from Newcastle University's metering portal using authenticated POST requests, with parallel execution via `ThreadPoolExecutor` and a DuckDB-backed checkpoint table enabling fault-tolerant, resumable scraping.
