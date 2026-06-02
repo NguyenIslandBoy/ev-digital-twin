@@ -220,8 +220,6 @@ This project does not involve human participants, surveys, interviews, or the co
 
 Ethical approval has been sought via the Newcastle University ethics portal as required by CSC8639. The project is classified as low-risk: no personal data, no human participants, no data collected outside the UK or EEA, and no commercially sensitive information.
 
-> **[FLAG FOR SUPERVISOR]** Ethics form to be submitted before 29 May 2026. Confirm low-risk classification before submission.
-
 ### 5.5 Reproducibility and Sharing
 
 The project is designed for full reproducibility from raw data to final outputs:
