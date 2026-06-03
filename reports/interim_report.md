@@ -139,37 +139,44 @@ A comprehensive EDA was conducted on 29,775 charging sessions in `notebooks/01_e
 
 ### 4.3 Gantt Chart
 
-*Grant chart is being created*
+```mermaid
+gantt
+    title EV Digital Twin — Project Timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat  %d %b
 
-| Task | Jun | | Jul | | | Aug | |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| | W1-2 | W3-4 | W1 | W2 | W3-4 | W1-2 | W3 |
-| **Phase 1: Data Engineering** | | | | | | | |
-| Data pipeline and DuckDB storage | done | | | | | | |
-| Metering data investigation | done | | | | | | |
-| Exploratory data analysis | done | | | | | | |
-| **Phase 2: Mesa Simulation** | | | | | | | |
-| Mesa agent and charger design | active | active | | | | | |
-| Simulation calibration and validation | | active | active | | | | |
-| **Milestone: Calibrated simulation** | | | M2 | | | | |
-| **Phase 3: Scenario Engine** | | | | | | | |
-| ToU pricing scenario | | | | active | | | |
-| EV adoption growth scenario | | | | active | | | |
-| Carbon-aware incentives scenario | | | | active | | | |
-| KPI evaluation and comparison | | | | | active | | |
-| **Milestone: Scenario engine complete** | | | | | M3 | | |
-| **Phase 4: RL Extension** | | | | | | | |
-| Gym environment wrapper | | | | | active | | |
-| PPO training on Colab | | | | | active | | |
-| Policy comparison and evaluation | | | | | active | | |
-| **Phase 5: Writing** | | | | | | | |
-| Dissertation writing | | active | active | active | active | active | |
-| Source code cleanup and docs | | | | | active | active | |
-| Poster design | | | | | active | | |
-| **Milestone: Poster due (29 Jul)** | | | | | M4 | | |
-| **Milestone: Dissertation due (10 Aug)** | | | | | | M5 | |
-| Oral presentation preparation | | | | | | active | active |
-| **Milestone: Oral presentation (13 Aug)** | | | | | | | M6 |
+    section Phase 1 Data Engineering
+    Data pipeline and DuckDB storage     :done,    p1a, 2026-04-01, 2026-05-10
+    Metering data investigation          :done,    p1b, 2026-05-01, 2026-05-20
+    Exploratory data analysis            :done,    p1c, 2026-05-10, 2026-05-30
+
+    section Phase 2 Simulation
+    Interim report submission            :milestone, m1, 2026-06-05, 0d
+    Mesa agent and charger design        :active,  p2a, 2026-06-01, 2026-06-20
+    Simulation calibration and validation:          p2b, 2026-06-15, 2026-06-30
+    Calibrated simulation milestone      :milestone, m2, 2026-06-30, 0d
+
+    section Phase 3 Scenario Engine
+    ToU pricing scenario                 :          p3a, 2026-07-01, 2026-07-10
+    EV adoption growth scenario          :          p3b, 2026-07-05, 2026-07-15
+    Carbon-aware incentives scenario     :          p3c, 2026-07-10, 2026-07-20
+    KPI evaluation and comparison        :          p3d, 2026-07-15, 2026-07-20
+    Scenario engine milestone            :milestone, m3, 2026-07-20, 0d
+
+    section Phase 4 RL Extension
+    Gym environment wrapper              :          p4a, 2026-07-18, 2026-07-24
+    PPO training on Colab                :          p4b, 2026-07-22, 2026-07-28
+    Policy comparison and evaluation     :          p4c, 2026-07-26, 2026-07-29
+
+    section Phase 5 Writing
+    Poster design and submission         :          p5a, 2026-07-22, 2026-07-29
+    Poster submission deadline           :milestone, m4, 2026-07-29, 0d
+    Dissertation writing                 :          p5b, 2026-06-15, 2026-08-08
+    Source code cleanup and docs         :          p5c, 2026-07-28, 2026-08-09
+    Dissertation and code deadline       :milestone, m5, 2026-08-10, 0d
+    Oral presentation preparation        :          p5d, 2026-08-08, 2026-08-13
+    Oral presentation deadline           :milestone, m6, 2026-08-13, 0d
+```
 
 ### 4.4 Risks
 
