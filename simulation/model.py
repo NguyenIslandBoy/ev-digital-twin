@@ -75,21 +75,9 @@ class ChargingNetworkModel(Model):
 
     # ── ARRIVAL LOGIC ─────────────────────────────────────────────────────────
     def _get_arrival_rate(self) -> float:
-        """
-        Return Poisson arrival rate for the current step,
-        adjusted for day type and adoption multiplier.
-        """
         hour = (self.current_step * 30) // 60
         base_rate = ARRIVAL_RATES.get(hour, 0.0)
-
-        # Weekday/weekend adjustment
-        # Weekend arrivals are ~31% of total; weekday ~69%
-        if self.is_weekday:
-            day_factor = 1.0 / WEEKDAY_RATIO
-        else:
-            day_factor = 1.0 / (1.0 - WEEKDAY_RATIO)
-
-        return base_rate * day_factor * self.adoption_multiplier
+        return base_rate * self.adoption_multiplier
 
     def _spawn_arrivals(self) -> None:
         """Poisson-sample new EV arrivals and add to scheduler."""
