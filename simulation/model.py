@@ -15,6 +15,8 @@ from simulation.config import (
     PRICE_PER_KWH,
     CARBON_PENALTY,
     ADOPTION_MULTIPLIER,
+    NB_R,
+    NB_P,
 )
 
 
@@ -72,6 +74,11 @@ class ChargingNetworkModel(Model):
             charger = ChargerAgent(charger_id, self)
             self.charger_agents.append(charger)
             self.schedule.add(charger)
+            
+        self.daily_session_target: int = int(
+        self.rng.negative_binomial(n=NB_R, p=NB_P)
+        )
+        self._arrivals_remaining: int = self.daily_session_target    
 
     # ── ARRIVAL LOGIC ─────────────────────────────────────────────────────────
     def _get_arrival_rate(self) -> float:
@@ -80,9 +87,24 @@ class ChargingNetworkModel(Model):
         return base_rate * self.adoption_multiplier
 
     def _spawn_arrivals(self) -> None:
-        """Poisson-sample new EV arrivals and add to scheduler."""
+        """
+        Distribute daily session target across steps proportionally
+        to the empirical hourly arrival rates.
+        """
+        if self._arrivals_remaining <= 0:
+            return
+
         rate     = self._get_arrival_rate()
-        n_arrive = self.rng.poisson(lam=rate)
+        total    = sum(ARRIVAL_RATES.values())
+        fraction = rate / total if total > 0 else 0.0
+
+        # Expected arrivals this step from daily target
+        expected  = fraction * self.daily_session_target
+        n_arrive  = min(
+            self._arrivals_remaining,
+            int(self.rng.poisson(lam=max(expected, 0)))
+        )
+        self._arrivals_remaining -= n_arrive
 
         for _ in range(n_arrive):
             self.ev_agent_counter += 1
@@ -154,6 +176,11 @@ class ChargingNetworkModel(Model):
         self.completed_sessions = 0
         self.ev_agent_counter   = 0
 
+        self.daily_session_target = int(
+        self.rng.negative_binomial(n=NB_R, p=NB_P)
+        )
+        self._arrivals_remaining = self.daily_session_target
+        
         # Clear charger state
         for charger in self.charger_agents:
             charger.is_occupied       = False

@@ -3,13 +3,12 @@ import numpy as np
 
 # Run 100 episodes and check session count distribution
 session_counts = []
-for i in range(100):
+for i in range(500):
     model = ChargingNetworkModel(seed=i, is_weekday=True)
     kpis  = model.run_episode()
     session_counts.append(kpis["sessions_completed"])
 
-print(f"Mean sessions/day : {np.mean(session_counts):.2f}")
-print(f"Std               : {np.std(session_counts):.2f}")
-print(f"Min               : {np.min(session_counts)}")
-print(f"Max               : {np.max(session_counts)}")
-print(f"Real mean         : 24.81")
+print(f"Mean : {np.mean(session_counts):.2f}  (real: 25.11)")
+print(f"Std  : {np.std(session_counts):.2f}  (real: 10.38)")
+print(f"Min  : {np.min(session_counts)}  (real: 3)")
+print(f"Max  : {np.max(session_counts)}  (real: 59)")
