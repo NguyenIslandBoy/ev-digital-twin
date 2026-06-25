@@ -1,3 +1,7 @@
 duckdb>=0.10
 requests>=2.31
 pandas>=2.0
+scipy>=1.13
+numpy>=1.26
+mesa==2.3.4
+networkx>=3.0
