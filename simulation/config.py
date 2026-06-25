@@ -68,6 +68,11 @@ MIN_ENERGY_KWH   = 5.0    # minimum observed session energy
 # ── DAY TYPE ─────────────────────────────────────────────────────────────────
 WEEKDAY_RATIO: float = _params["weekday_ratio"]
 
+# Negative Binomial parameters for daily session count
+# Fitted from real data: mean=25.11, var=107.69
+NB_R: float = 7.6315    # dispersion parameter
+NB_P: float = 0.2331    # probability parameter
+
 # ── SCENARIO DEFAULTS (overridden by scenario engine later) ───────────────────
 PRICE_PER_KWH:       float = 0.30    # £/kWh baseline ToU price
 CARBON_PENALTY:      float = 0.0     # £/gCO2 carbon incentive (off by default)
