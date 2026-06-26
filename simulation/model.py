@@ -76,7 +76,7 @@ class ChargingNetworkModel(Model):
             self.schedule.add(charger)
             
         self.daily_session_target: int = int(
-        self.rng.negative_binomial(n=NB_R, p=NB_P)
+            self.rng.negative_binomial(n=NB_R, p=NB_P) * self.adoption_multiplier
         )
         self._arrivals_remaining: int = self.daily_session_target    
 
@@ -177,7 +177,7 @@ class ChargingNetworkModel(Model):
         self.ev_agent_counter   = 0
 
         self.daily_session_target = int(
-        self.rng.negative_binomial(n=NB_R, p=NB_P)
+            self.rng.negative_binomial(n=NB_R, p=NB_P) * self.adoption_multiplier
         )
         self._arrivals_remaining = self.daily_session_target
         
