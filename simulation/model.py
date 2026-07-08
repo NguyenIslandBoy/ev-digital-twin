@@ -47,6 +47,8 @@ class ChargingNetworkModel(Model):
         carbon_penalty:      float = CARBON_PENALTY,
         adoption_multiplier: float = ADOPTION_MULTIPLIER,
         carbon_intensity:    float = 60.0,    # gCO2/kWh (mean from EDA)
+        price_elasticity:    float = 0.0,     # Phase 6: 0.0 = legacy behaviour
+        hourly_carbon:       bool  = False,   # Phase 6: vary CO2 by hour
     ):
         super().__init__()
         self.rng = np.random.default_rng(seed)
@@ -57,6 +59,10 @@ class ChargingNetworkModel(Model):
         self.carbon_penalty      = carbon_penalty
         self.adoption_multiplier = adoption_multiplier
         self.carbon_intensity_g_per_kwh = carbon_intensity
+
+        # Phase 6 (RL) flags — both default to OFF so Phase 1-5 reproduce exactly
+        self.price_elasticity    = price_elasticity   # abandonment strength
+        self.hourly_carbon       = hourly_carbon       # hourly CO2 accounting
 
         # Scheduler — chargers step before EV agents
         self.schedule = RandomActivation(self)
@@ -117,6 +123,13 @@ class ChargingNetworkModel(Model):
     # ── STEP ─────────────────────────────────────────────────────────────────
     def step(self) -> None:
         """Advance simulation by one 30-minute step."""
+        # Phase 6: if hourly carbon accounting is on, refresh the grid
+        # intensity for the current hour BEFORE charging happens this step.
+        if self.hourly_carbon:
+            from simulation.scenario_engine import CARBON_SCHEDULE
+            hour = (self.current_step * 30) // 60
+            self.carbon_intensity_g_per_kwh = CARBON_SCHEDULE.get(hour, 60.0)
+
         self._spawn_arrivals()
         self.schedule.step()
         self.current_step += 1
