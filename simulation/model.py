@@ -26,7 +26,8 @@ class ChargingNetworkModel(Model):
 
     One episode = one simulated day (48 steps of 30 minutes each).
     At each step:
-      1. New EV agents arrive (Poisson-sampled from calibrated arrival rates)
+      1. New EV agents arrive (Negative-Binomial daily target, distributed
+         across steps by empirical hourly rates via a per-step Poisson draw)
       2. EVDriverAgents attempt to find a charger
       3. ChargerAgents process charging and update queues
 
@@ -64,7 +65,8 @@ class ChargingNetworkModel(Model):
         self.price_elasticity    = price_elasticity   # abandonment strength
         self.hourly_carbon       = hourly_carbon       # hourly CO2 accounting
 
-        # Scheduler — chargers step before EV agents
+        # Scheduler — random activation order each step (mesa RandomActivation).
+        # Order does not affect calibrated KPIs (runs verified reproducible).
         self.schedule = RandomActivation(self)
 
         # Time tracking
@@ -179,8 +181,11 @@ class ChargingNetworkModel(Model):
     # ── RESET ─────────────────────────────────────────────────────────────────
     def reset(self, seed: int | None = None) -> None:
         """
-        Reset model for a new episode without reinitialising chargers.
-        Used by the Gym environment wrapper in Phase 4.
+        Reset the model to a fresh episode in place, preserving charger objects.
+
+        Utility method: the Gym wrapper (Phase 6) and the scenario engine both
+        construct a new model per episode rather than calling this, so it is
+        retained for interactive use / future reuse rather than the main path.
         """
         if seed is not None:
             self.rng = np.random.default_rng(seed)
