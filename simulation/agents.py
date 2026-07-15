@@ -29,7 +29,7 @@ def _sample_energy(connector: str, rng: np.random.Generator) -> float:
     return max(MIN_ENERGY_KWH, float(energy))
 
 
-# ── HELPER: sample session duration (Gamma) ───────────────────────────────────
+# ── HELPER: sample session duration (Lognormal per connector) ─────────────────
 def _sample_duration(connector: str, rng: np.random.Generator) -> float:
     from scipy.stats import lognorm
     p = CONNECTOR_DURATION[connector]
@@ -186,23 +186,17 @@ class EVDriverAgent(Agent):
 
     def _find_charger(self) -> None:
         """
-        Select charger using a utility function balancing queue length and price.
-        In Phase 4 this method is replaced by the RL policy action.
+        Assign the driver to a charger via greedy shortest-effective-queue,
+        after applying price/carbon deferral or (Phase 6) abandonment.
+
+        Note: the Phase 6 RL agent does NOT replace this method. It controls the
+        network price (model.price_per_kwh) each step via the Gym wrapper;
+        charger selection here stays greedy shortest-queue in all phases.
         """
         chargers = self.model.charger_agents
 
         # Current price signal from model
         current_price = self.model.price_per_kwh
-
-        # Carbon cost per session
-        carbon_cost = (
-            self.energy_demand_kwh
-            * self.model.carbon_intensity_g_per_kwh
-            * self.model.carbon_penalty
-        )
-
-        # Total cost per session at current price
-        session_cost = self.energy_demand_kwh * current_price + carbon_cost
 
         # Price sensitivity.
         # BASELINE_PRICE is the reference tariff above which drivers react.
