@@ -96,9 +96,9 @@ A comprehensive EDA was conducted on 29,775 charging sessions in `notebooks/01_e
 | Charger utilisation | 6 chargers; 5000198 and 5000199 handle ~48% of sessions | Per-charger capacity modelled explicitly |
 | Seasonal pattern | Spring highest, Summer lowest (term-time effect) | Season-aware arrival scaling in scenario engine |
 
-![arrival_distribution](../notebooks/outputs/arrival_patterns.png)
-![energy_duration_distributions](../notebooks/outputs/energy_duration_distributions.png)
-![charger_utilisation](../notebooks/outputs/charger_utilisation.png)
+![arrival_distribution](../results/figures/arrival_patterns.png)
+![energy_duration_distributions](../results/figures/energy_duration_distributions.png)
+![charger_utilisation](../results/figures/charger_utilisation.png)
 
 ### 3.5 Key Design Decisions
 
