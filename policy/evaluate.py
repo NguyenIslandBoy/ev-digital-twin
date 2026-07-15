@@ -22,6 +22,13 @@ from scipy.stats import wilcoxon
 from stable_baselines3 import PPO
 from policy.environment import ChargingPricingEnv, PRICE_LEVELS
 
+from pathlib import Path
+
+# All generated CSVs go to <repo_root>/results/ (created if missing)
+RESULTS_DIR = Path(__file__).resolve().parent.parent / "results"
+RESULTS_DIR.mkdir(exist_ok=True)
+
+
 # ── evaluation config (must match training regime) ────────────────────────────
 N_EPISODES       = 500
 BASE_SEED        = 20000
@@ -164,13 +171,13 @@ def main(model_path="policy/logs/best_model.zip"):
     # PPO price-by-hour profile (interpretability figure: is £0.15 in dead hours?)
     hp = pd.DataFrame(hour_profiles["PPO"], columns=["hour", "price"])
     prof = hp.groupby("hour")["price"].mean()
-    prof.to_csv("policy/ppo_price_by_hour.csv")
-    print("\nSaved policy/ppo_price_by_hour.csv (mean PPO price per hour)")
+    prof.to_csv(RESULTS_DIR / "ppo_price_by_hour.csv")
+    print(f"\nSaved {RESULTS_DIR/'ppo_price_by_hour.csv'} (mean PPO price per hour)")
 
     # persist for the writeup
-    df.to_csv("policy/eval_results.csv", index=False)
-    summary.to_csv("policy/eval_summary.csv")
-    print("\nSaved policy/eval_results.csv and policy/eval_summary.csv")
+    df.to_csv(RESULTS_DIR / "eval_results.csv", index=False)
+    summary.to_csv(RESULTS_DIR / "eval_summary.csv")
+    print(f"\nSaved eval_results.csv and eval_summary.csv to {RESULTS_DIR}")
     return df, summary
 
 
