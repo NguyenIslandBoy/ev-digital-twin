@@ -1,7 +1,23 @@
-.venv/
+# ── Python ────────────────────────────────────────────────
 __pycache__/
 *.pyc
-data/ev_twin.duckdb
-data/raw/
-*.csv
-reference/papers/
+.venv/
+venv/
+
+# ── Secrets — NEVER commit the metering-portal cookie ─────
+.env
+
+# ── Rebuildable database ──────────────────────────────────
+# Regenerated from the committed session CSV via
+#   python -m ingestion.run_scraper --load-sessions
+# then notebook 01 writes simulation_params. The full DB also
+# contains 28.7M scraped metering rows and exceeds GitHub limits.
+*.duckdb
+
+# ── Training artifacts (regenerable; results CSVs are kept) ─
+policy/logs/
+models/sweep/
+
+# ── Notebook / OS cruft ───────────────────────────────────
+.ipynb_checkpoints/
+.DS_Store
