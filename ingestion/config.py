@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from pathlib import Path
+import os
 
 # ── PATHS ─────────────────────────────────────────────────────────────────────
 ROOT_DIR      = Path(__file__).resolve().parent.parent
@@ -12,7 +13,7 @@ METER_IDS_PATH = RAW_DIR / "meter_ids.txt"
 
 # ── SCRAPER ───────────────────────────────────────────────────────────────────
 BASE_URL      = "https://metering.ncl.ac.uk/profiles/dailyprofile.aspx/GetProfile"
-SESSION_COOKIE = "ASP.NET_SessionId=u42rorz2s4g5jv524xyugz2w"  # refresh when expired
+SESSION_COOKIE = os.environ.get("NCL_METERING_COOKIE", "")  # refresh when expired (in .env)
 
 HEADERS = {
     "Content-Type": "application/json; charset=UTF-8",
