@@ -1,0 +1,21 @@
+/// One row per charger id (spec §4, optional per-charger slicing).
+table DimCharger
+	lineageTag: dfaaf66a-c7dd-43d5-a193-c88381e246e4
+
+	column ChargerId
+		dataType: string
+		lineageTag: 42db600f-9e38-4de2-b177-d6e8081d03e9
+		summarizeBy: none
+		sourceColumn: ChargerId
+
+	partition DimCharger = m
+		mode: import
+		source =
+				let
+				  Source = Raw_SessionsClean,
+				  Distinct = Table.Distinct(Table.SelectColumns(Source, {"charger_id"})),
+				  Sorted = Table.Sort(Distinct, {{"charger_id", Order.Ascending}}),
+				  Renamed = Table.RenameColumns(Sorted, {{"charger_id", "ChargerId"}})
+				in
+				  Renamed
+

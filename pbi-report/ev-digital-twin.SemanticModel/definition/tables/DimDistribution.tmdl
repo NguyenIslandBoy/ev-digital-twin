@@ -1,0 +1,35 @@
+/// Calibration targets; IsParametricFit distinguishes genuine fits from the tautological energy resampling (spec §4).
+table DimDistribution
+	lineageTag: cd34f9a2-aad3-4d75-bb4c-d349f4d9c25e
+
+	column DistributionName
+		dataType: string
+		lineageTag: 735c3792-d37d-4d0d-a35c-58c47e5190f0
+		summarizeBy: none
+		sourceColumn: DistributionName
+		sortByColumn: SortOrder
+
+	column IsParametricFit
+		dataType: boolean
+		lineageTag: 29537996-740f-4bf2-bd4c-cf9bc1baefc8
+		summarizeBy: none
+		sourceColumn: IsParametricFit
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		lineageTag: 43abbb44-c78a-4a8a-b6ab-dfaad356f8a8
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	partition DimDistribution = m
+		mode: import
+		source =
+				let
+				  Source = #table(type table [DistributionName = text, IsParametricFit = logical, SortOrder = Int64.Type], {
+				    {"Sessions per day", true, 1},
+				    {"Energy per session", false, 2},
+				    {"Session duration", true, 3}})
+				in
+				  Source
+

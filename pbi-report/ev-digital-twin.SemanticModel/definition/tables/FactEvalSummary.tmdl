@@ -1,0 +1,106 @@
+/// Aggregated headline comparison, grain: policy. Codepage 1252; policy normalised to first token.
+table FactEvalSummary
+	lineageTag: 61b857c2-96c8-4ed1-9321-eeb8fe38ac88
+
+	column policy
+		dataType: string
+		isHidden
+		lineageTag: 42c09ec6-d747-4fb4-be20-b291722f7c53
+		summarizeBy: none
+		sourceColumn: policy
+
+	column revenue_gbp_mean
+		dataType: double
+		lineageTag: c04b56e7-000a-4825-ac13-36921dd7b586
+		summarizeBy: none
+		sourceColumn: revenue_gbp_mean
+
+	column revenue_gbp_std
+		dataType: double
+		lineageTag: c7bbb28d-44dd-485a-9c14-bc21fb1f762f
+		summarizeBy: none
+		sourceColumn: revenue_gbp_std
+
+	column avg_wait_hrs_mean
+		dataType: double
+		lineageTag: 0fc820f1-88e6-4e98-9573-9e7a59193ae7
+		summarizeBy: none
+		sourceColumn: avg_wait_hrs_mean
+
+	column avg_wait_hrs_std
+		dataType: double
+		lineageTag: 2fb72d47-0425-4289-acd5-8661b19500d4
+		summarizeBy: none
+		sourceColumn: avg_wait_hrs_std
+
+	column sessions_completed_mean
+		dataType: double
+		lineageTag: c130d951-2a99-4e5b-8423-fb53c766ceec
+		summarizeBy: none
+		sourceColumn: sessions_completed_mean
+
+	column sessions_completed_std
+		dataType: double
+		lineageTag: ba264c6e-35a3-41b1-9b5c-6873a63c1941
+		summarizeBy: none
+		sourceColumn: sessions_completed_std
+
+	column energy_kwh_mean
+		dataType: double
+		lineageTag: 30965ecb-c5ad-43f7-9549-1eb93bcc0436
+		summarizeBy: none
+		sourceColumn: energy_kwh_mean
+
+	column energy_kwh_std
+		dataType: double
+		lineageTag: f118392a-0aaf-46d2-a2b2-561eeddc6b30
+		summarizeBy: none
+		sourceColumn: energy_kwh_std
+
+	column co2_g_mean
+		dataType: double
+		lineageTag: a8c6814f-b3c0-4264-ad89-932de6415a6d
+		summarizeBy: none
+		sourceColumn: co2_g_mean
+
+	column co2_g_std
+		dataType: double
+		lineageTag: 71b24b28-6213-403d-a33f-531a752206d4
+		summarizeBy: none
+		sourceColumn: co2_g_std
+
+	column avg_utilisation_mean
+		dataType: double
+		lineageTag: 141f73a1-9fea-44ba-878d-73db809f4bbf
+		summarizeBy: none
+		sourceColumn: avg_utilisation_mean
+
+	column avg_utilisation_std
+		dataType: double
+		lineageTag: b2442c74-2fda-4a57-aa0e-c97153aa619f
+		summarizeBy: none
+		sourceColumn: avg_utilisation_std
+
+	column score_mean
+		dataType: double
+		lineageTag: 70227733-8b22-49a6-98c0-8e0cce5786a4
+		summarizeBy: none
+		sourceColumn: score_mean
+
+	column score_std
+		dataType: double
+		lineageTag: c0c07f82-3faa-4f4f-9b12-1e43bd4add45
+		summarizeBy: none
+		sourceColumn: score_std
+
+	partition FactEvalSummary = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents(ResultsFolder & "eval_summary.csv"), [Delimiter = ",", Encoding = 1252, QuoteStyle = QuoteStyle.Csv]),
+				  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  PolicyNorm = Table.TransformColumns(Promoted, {{"policy", each Text.Split(_, " "){0}, type text}}),
+				  Typed = Table.TransformColumnTypes(PolicyNorm, {{"revenue_gbp_mean", type number}, {"revenue_gbp_std", type number}, {"avg_wait_hrs_mean", type number}, {"avg_wait_hrs_std", type number}, {"sessions_completed_mean", type number}, {"sessions_completed_std", type number}, {"energy_kwh_mean", type number}, {"energy_kwh_std", type number}, {"co2_g_mean", type number}, {"co2_g_std", type number}, {"avg_utilisation_mean", type number}, {"avg_utilisation_std", type number}, {"score_mean", type number}, {"score_std", type number}})
+				in
+				  Typed
+

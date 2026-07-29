@@ -1,0 +1,18 @@
+/// The five training seeds (spec §4).
+table DimSeed
+	lineageTag: eedd3853-d086-463a-ae43-94521ef70e86
+
+	column Seed
+		dataType: int64
+		lineageTag: 39198b10-138d-457b-a54e-8f99354888a5
+		summarizeBy: none
+		sourceColumn: Seed
+
+	partition DimSeed = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromList({0..4}, Splitter.SplitByNothing(), type table [Seed = Int64.Type])
+				in
+				  Source
+

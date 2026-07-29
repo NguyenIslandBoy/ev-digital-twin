@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "ev-digital-twin"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7fc1e6a2-7bb4-48f9-8eb9-2433ca3d8b0b"
+  }
+}

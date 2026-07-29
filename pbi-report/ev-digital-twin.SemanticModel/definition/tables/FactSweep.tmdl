@@ -1,0 +1,74 @@
+/// Robustness fact, grain: elasticity × seed × policy — unpivoted from the wide sweep per spec §3; margin columns dropped (measures recompute them).
+table FactSweep
+	lineageTag: 4ca70062-188e-4f53-bc88-d113d40d8afa
+
+	column elasticity
+		dataType: double
+		isHidden
+		lineageTag: a17d94a6-4d6e-4e23-a9b7-3c48a8d5f5c9
+		summarizeBy: none
+		sourceColumn: elasticity
+
+	column seed
+		dataType: int64
+		isHidden
+		lineageTag: f00b8f34-374c-4e5b-b95d-016b82b465da
+		summarizeBy: none
+		sourceColumn: seed
+
+	column policy
+		dataType: string
+		isHidden
+		lineageTag: 561b7756-8c7a-4669-8099-67f20c20bdec
+		summarizeBy: none
+		sourceColumn: policy
+
+	column revenue
+		dataType: double
+		lineageTag: 2cd32183-a420-49e6-a710-d08c752aa8e3
+		summarizeBy: none
+		sourceColumn: revenue
+
+	column wait_steps
+		dataType: double
+		isHidden
+		lineageTag: 12bef76f-da31-46d0-a3ba-fbaef8cc4031
+		summarizeBy: none
+		sourceColumn: wait_steps
+
+	column sessions
+		dataType: double
+		lineageTag: 36041a96-0e64-40c0-b744-50755411edc5
+		summarizeBy: none
+		sourceColumn: sessions
+
+	column co2
+		dataType: double
+		lineageTag: 32869688-646d-47cd-9c16-5e6f53fb6c1b
+		summarizeBy: none
+		sourceColumn: co2
+
+	column score
+		dataType: double
+		lineageTag: ee6c919a-f258-4731-b630-01c79ad292fb
+		summarizeBy: none
+		sourceColumn: score
+
+	partition FactSweep = m
+		mode: import
+		source =
+				let
+				  Source = Raw_SweepWide,
+				  Policies = {"PPO", "ToU", "ToU3", "Flat", "Congestion"},
+				  PerPolicy = List.Transform(Policies, (p) =>
+				    let
+				      Selected = Table.SelectColumns(Source, {"elasticity", "seed", p & "_revenue", p & "_wait_steps", p & "_sessions", p & "_co2", p & "_score"}),
+				      Renamed = Table.RenameColumns(Selected, {{p & "_revenue", "revenue"}, {p & "_wait_steps", "wait_steps"}, {p & "_sessions", "sessions"}, {p & "_co2", "co2"}, {p & "_score", "score"}}),
+				      WithPolicy = Table.AddColumn(Renamed, "policy", each p, type text)
+				    in
+				      WithPolicy),
+				  Combined = Table.Combine(PerPolicy),
+				  Typed = Table.TransformColumnTypes(Combined, {{"elasticity", type number}, {"seed", Int64.Type}, {"revenue", type number}, {"wait_steps", type number}, {"sessions", type number}, {"co2", type number}, {"score", type number}})
+				in
+				  Typed
+

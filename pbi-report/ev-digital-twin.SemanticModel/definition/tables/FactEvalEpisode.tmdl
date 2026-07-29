@@ -1,0 +1,89 @@
+/// Per-episode policy outcomes at the headline config (elasticity 0.8). Codepage 1252 for the £ in the Flat policy name; policy normalised to its first token.
+table FactEvalEpisode
+	lineageTag: 4d79c7f9-5d0d-4655-ad78-b7c7e54f16e3
+
+	column policy
+		dataType: string
+		isHidden
+		lineageTag: 4ab27d90-5474-4e2c-95f1-c671f4e19ef6
+		summarizeBy: none
+		sourceColumn: policy
+
+	column episode
+		dataType: int64
+		lineageTag: f6568e79-a844-4801-94da-6f1e2e55ff21
+		summarizeBy: none
+		sourceColumn: episode
+
+	column sessions_completed
+		dataType: int64
+		lineageTag: a379c756-16a0-428a-be80-12c14ed566fb
+		summarizeBy: none
+		sourceColumn: sessions_completed
+
+	column energy_kwh
+		dataType: double
+		lineageTag: 5c981962-d0e4-4f9b-a2bd-ddbfdf4a7e1c
+		summarizeBy: none
+		sourceColumn: energy_kwh
+
+	column revenue_gbp
+		dataType: double
+		lineageTag: 60e688ea-66eb-48d1-b4b0-094a8b9bbf5b
+		summarizeBy: none
+		sourceColumn: revenue_gbp
+
+	column co2_g
+		dataType: double
+		lineageTag: 3bb70de5-2d64-494b-b933-4f5b17a999ae
+		summarizeBy: none
+		sourceColumn: co2_g
+
+	column avg_wait_hrs
+		dataType: double
+		lineageTag: fff5727c-4223-42ac-b0a7-91b2c8684134
+		summarizeBy: none
+		sourceColumn: avg_wait_hrs
+
+	column avg_utilisation
+		dataType: double
+		lineageTag: e2c280ab-bdd9-4a7a-af23-1e5ca072f05f
+		summarizeBy: none
+		sourceColumn: avg_utilisation
+
+	column sessions_queued_end
+		dataType: int64
+		lineageTag: d3eea229-3165-4984-9f25-9b13592e04d7
+		summarizeBy: none
+		sourceColumn: sessions_queued_end
+
+	column ev_agents_spawned
+		dataType: int64
+		lineageTag: 38ba238d-d822-433a-b491-e4e9ace7aba5
+		summarizeBy: none
+		sourceColumn: ev_agents_spawned
+
+	column wait_steps
+		dataType: int64
+		isHidden
+		lineageTag: 6f92f7d8-1537-4add-9f5b-40712f98dfb5
+		summarizeBy: none
+		sourceColumn: wait_steps
+
+	column score
+		dataType: double
+		lineageTag: e2fd857c-3d83-4972-acc5-d7950afa1e20
+		summarizeBy: none
+		sourceColumn: score
+
+	partition FactEvalEpisode = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents(ResultsFolder & "eval_results.csv"), [Delimiter = ",", Encoding = 1252, QuoteStyle = QuoteStyle.Csv]),
+				  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  PolicyNorm = Table.TransformColumns(Promoted, {{"policy", each Text.Split(_, " "){0}, type text}}),
+				  Typed = Table.TransformColumnTypes(PolicyNorm, {{"sessions_completed", Int64.Type}, {"energy_kwh", type number}, {"revenue_gbp", type number}, {"co2_g", type number}, {"avg_wait_hrs", type number}, {"avg_utilisation", type number}, {"sessions_queued_end", Int64.Type}, {"ev_agents_spawned", Int64.Type}, {"episode", Int64.Type}, {"wait_steps", Int64.Type}, {"score", type number}})
+				in
+				  Typed
+

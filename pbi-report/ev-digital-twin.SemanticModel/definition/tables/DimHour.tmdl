@@ -1,0 +1,32 @@
+/// Hour dimension 0–23 with the ToU peak flag (07:00–19:00). Shared by FactSession and FactPriceByHour (spec §4).
+table DimHour
+	lineageTag: 54b05c9d-70f9-47ba-b386-4f46d364d9be
+
+	column Hour
+		dataType: int64
+		lineageTag: dc253802-1ff1-4583-a8d3-a9ea7a99f041
+		summarizeBy: none
+		sourceColumn: Hour
+
+	column HourLabel
+		dataType: string
+		lineageTag: 664512e7-9360-40ed-ab02-3872766e2694
+		summarizeBy: none
+		sourceColumn: HourLabel
+		sortByColumn: Hour
+
+	column IsToUPeak
+		dataType: boolean
+		lineageTag: 97564ec4-f957-4952-b3cb-6211e594d48c
+		summarizeBy: none
+		sourceColumn: IsToUPeak
+
+	partition DimHour = m
+		mode: import
+		source =
+				let
+				  Hours = List.Transform({0..23}, each [Hour = _, HourLabel = Text.PadStart(Text.From(_), 2, "0") & ":00", IsToUPeak = _ >= 7 and _ <= 18]),
+				  Source = Table.FromRecords(Hours, type table [Hour = Int64.Type, HourLabel = text, IsToUPeak = logical])
+				in
+				  Source
+

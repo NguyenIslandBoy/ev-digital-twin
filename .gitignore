@@ -21,3 +21,4 @@ models/sweep/
 # ── Notebook / OS cruft ───────────────────────────────────
 .ipynb_checkpoints/
 .DS_Store
+pbi-report/docs/.Rhistory

@@ -1,0 +1,58 @@
+/// Scenario fact, grain: scenario. wilcoxon_p is the revenue p-value; the per-KPI grid is FactScenarioSignificance (spec §2a).
+table FactScenario
+	lineageTag: 09d7af10-5b57-43de-a2e3-54bcd7e06131
+
+	column scenario
+		dataType: string
+		isHidden
+		lineageTag: 47241a99-398c-45e2-ba76-82a8feaa010c
+		summarizeBy: none
+		sourceColumn: scenario
+
+	column sessions_completed
+		dataType: double
+		lineageTag: 473a4157-1798-48d8-8ba3-e8ece8e40dae
+		summarizeBy: none
+		sourceColumn: sessions_completed
+
+	column revenue_gbp
+		dataType: double
+		lineageTag: 3e120790-8bf5-4235-a194-c2db0be38883
+		summarizeBy: none
+		sourceColumn: revenue_gbp
+
+	column co2_g
+		dataType: double
+		lineageTag: 1892275d-6ffc-4261-b2aa-4ba152497824
+		summarizeBy: none
+		sourceColumn: co2_g
+
+	column avg_wait_hrs
+		dataType: double
+		lineageTag: 49cbb968-c64e-4962-92f4-93169ef8ae74
+		summarizeBy: none
+		sourceColumn: avg_wait_hrs
+
+	column avg_utilisation
+		dataType: double
+		formatString: 0.0%
+		lineageTag: de873421-6bd4-4dba-b3e2-3b37cdbf66c9
+		summarizeBy: none
+		sourceColumn: avg_utilisation
+
+	column wilcoxon_p_vs_baseline
+		dataType: double
+		lineageTag: 2d0adbd6-a44c-4e0d-b333-a3c14e3b9288
+		summarizeBy: none
+		sourceColumn: wilcoxon_p_vs_baseline
+
+	partition FactScenario = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents(ResultsFolder & "scenario_summary.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  Typed = Table.TransformColumnTypes(Promoted, {{"scenario", type text}, {"sessions_completed", type number}, {"revenue_gbp", type number}, {"co2_g", type number}, {"avg_wait_hrs", type number}, {"avg_utilisation", type number}, {"wilcoxon_p_vs_baseline", type number}})
+				in
+				  Typed
+
