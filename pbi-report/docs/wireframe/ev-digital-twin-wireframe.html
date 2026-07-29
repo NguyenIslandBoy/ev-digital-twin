@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<title>EV Digital Twin — Dashboard Wireframe</title>
+<style>/* Wireframe house-style design system.
+   Extracted from the reference wireframe (Support_Service_Wireframe.html <style> block).
+   Data-free — safe to share. /spec-from-requirements reuses these tokens + component classes.
+*/
+  :root {
+    --navy: #0B1A2E;
+    --navy-2: #14253D;
+    --navy-3: #1E3556;
+    --ink: #1A2332;
+    --muted: #6B7785;
+    --muted-2: #98A2B3;
+    --line: #E5E8EC;
+    --line-2: #EEF1F4;
+    --bg: #F4F6F9;
+    --card: #FFFFFF;
+    --accent: #2F6FB5;
+    --accent-2: #5A9FD4;
+    --accent-3: #B4D4F0;
+    --accent-4: #E1ECF7;
+    --pos: #2E8B57;
+    --pos-2: #C4E4D2;
+    --neg: #C0392B;
+    --neg-2: #F1C9C5;
+    --warn: #B8860B;
+    --warn-2: #F4E2B2;
+    --tile-bg: #F8FAFC;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: #1A1D23;
+    font-family: "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  body { display: flex; flex-direction: column; }
+
+  /* ============== STAGE ============== */
+  .stage {
+    flex: 1;
+    overflow: hidden;
+    background: #1A1D23;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stage-inner {
+    width: 1920px;
+    height: 1080px;
+    transform-origin: center center;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  .hint {
+    position: absolute;
+    bottom: 14px;
+    right: 24px;
+    color: #6B7785;
+    font-size: 12px;
+    font-family: "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+    letter-spacing: 0.04em;
+    z-index: 50;
+    user-select: none;
+  }
+  .hint kbd {
+    display: inline-block;
+    background: #2A2F38;
+    border: 1px solid #3A414C;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-family: inherit;
+    color: #B7C3D6;
+    margin: 0 2px;
+  }
+
+  /* ============== PAGE BASE ============== */
+  .page {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    background: var(--bg);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  }
+  .page.active { display: flex; }
+
+  /* ============== HEAD WITH INTEGRATED NAV ============== */
+  .head {
+    background: var(--navy);
+    color: #fff;
+    flex: 0 0 auto;
+  }
+  .nav-strip {
+    display: flex;
+    align-items: stretch;
+    gap: 36px;
+    padding: 0 44px;
+    border-bottom: 1px solid #2A3E5A;
+    height: 42px;
+  }
+  .nav-strip .ns-item {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #8FA5C4;
+    cursor: pointer;
+    padding: 0 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    display: flex;
+    align-items: center;
+    transition: color 0.12s, border-color 0.12s;
+    white-space: nowrap;
+  }
+  .nav-strip .ns-item:hover {
+    color: #fff;
+  }
+  .nav-strip .ns-item.active {
+    color: #fff;
+    border-bottom-color: var(--accent-2);
+  }
+  .head-main {
+    padding: 22px 44px 22px 44px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .head-main .left { min-width: 0; }
+  .head-main .left .req-id {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #8FA5C4;
+    margin-bottom: 8px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .head-main h1 {
+    font-size: 30px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .head-main .sub {
+    font-size: 14px;
+    color: #B7C3D6;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  .head-main .right {
+    text-align: right;
+    color: #B7C3D6;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+  .head-main .right .ts {
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .head-main .right .tag {
+    display: inline-block;
+    padding: 3px 9px;
+    background: var(--navy-3);
+    border-radius: 3px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #B7C3D6;
+    margin-left: 4px;
+  }
+
+  /* ============== BODY ============== */
+  .body {
+    padding: 20px 44px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ============== SLICERS ============== */
+  .slicers { display: flex; gap: 10px; flex: 0 0 auto; }
+  .slicer {
+    flex: 1 1 0;
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow: hidden;
+  }
+  .slicer .lbl {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .slicer .val {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .slicer .val .lbl-inner {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .slicer .val .chev {
+    color: var(--muted-2);
+    font-size: 12px;
+    margin-left: 6px;
+    flex-shrink: 0;
+  }
+
+  /* ============== KPIS ============== */
+  .kpis { display: flex; gap: 10px; flex: 0 0 auto; }
+  .kpi {
+    flex: 1 1 0;
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px 18px;
+    height: 116px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .kpi .name {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .kpi .value {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .kpi .value.md { font-size: 24px; }
+  .kpi .value.sm { font-size: 18px; }
+  .kpi .delta {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+  .kpi .delta.pos { color: var(--pos); font-weight: 600; }
+  .kpi .delta.neg { color: var(--neg); font-weight: 600; }
+  .kpi .delta.warn { color: var(--warn); font-weight: 600; }
+
+  /* ============== ROWS / COLS ============== */
+  .row { display: flex; gap: 12px; min-height: 0; }
+  .row.grow { flex: 1; }
+  .col-1 { flex: 1 1 0; min-width: 0; display: flex; }
+  .col-2 { flex: 2 1 0; min-width: 0; display: flex; }
+  .col-3 { flex: 3 1 0; min-width: 0; display: flex; }
+
+  /* ============== CARD ============== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .card .ct {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card .cs {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card .cbody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .card svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ============== TABLE ============== */
+  table.t {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    table-layout: auto;
+  }
+  table.t th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 10.5px;
+    padding: 9px 8px;
+    border-bottom: 1px solid var(--line);
+    background: var(--tile-bg);
+    white-space: nowrap;
+  }
+  table.t td {
+    padding: 8px 8px;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  table.t td.num, table.t th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.t td.bold { font-weight: 600; }
+  table.t tbody tr:last-child td { border-bottom: none; }
+  table.t tbody tr.tot td { font-weight: 700; background: var(--tile-bg); border-top: 1px solid var(--line); }
+
+  /* ============== PILL ============== */
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 9px;
+    background: var(--tile-bg);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .pill.pos { background: var(--pos-2); border-color: var(--pos-2); color: #1e5a36; }
+  .pill.neg { background: var(--neg-2); border-color: var(--neg-2); color: #7a1f15; }
+  .pill.warn { background: var(--warn-2); border-color: var(--warn-2); color: #6b4e07; }
+  .pos { color: var(--pos); }
+  .neg { color: var(--neg); }
+  .warn { color: var(--warn); }
+
+  /* ============== FOOTER ============== */
+  .foot {
+    padding: 9px 44px;
+    border-top: 1px solid var(--line);
+    font-size: 11.5px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card);
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+  .foot .center {
+    color: var(--muted-2);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ============== NAV (LANDING) PAGE ============== */
+  .nav-head {
+    background: var(--navy);
+    color: #fff;
+    flex: 0 0 auto;
+  }
+  .nav-hero {
+    padding: 52px 72px 40px 72px;
+  }
+  .nav-hero .req-id {
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #8FA5C4;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .nav-hero h1 {
+    font-size: 50px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    line-height: 1.05;
+  }
+  .nav-hero .nav-sub {
+    font-size: 17px;
+    color: #B7C3D6;
+  }
+  .nav-body {
+    padding: 32px 72px 24px 72px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    min-height: 0;
+  }
+  .intro {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 22px;
+    max-width: 1400px;
+  }
+  .meta-row { display: flex; gap: 14px; margin-bottom: 28px; }
+  .meta {
+    flex: 1 1 0;
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 18px;
+    overflow: hidden;
+  }
+  .meta .mk {
+    font-size: 10.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .meta .mv {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tiles { display: flex; gap: 16px; margin-bottom: 20px; }
+  .tile {
+    flex: 1 1 0;
+    min-width: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 20px 22px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    overflow: hidden;
+  }
+  .tile:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(47,111,181,0.2);
+    transform: translateY(-2px);
+  }
+  .tile .tn {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .tile .tt {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tile .td {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+    flex: 1;
+    overflow: hidden;
+  }
+  .tile .tq {
+    font-size: 10.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-top: 1px solid var(--line-2);
+    padding-top: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-note {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent-2);
+    border-radius: 4px;
+    padding: 13px 20px;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: auto;
+  }
+  .nav-note em { font-style: normal; color: var(--ink); font-weight: 700; }
+
+  /* ============== SVG HELPERS ============== */
+  .grid line { stroke: var(--line-2); stroke-width: 1; }
+  .grid text { fill: var(--muted); font-size: 11px; }
+  .ax { fill: var(--muted); font-size: 11px; }
+  .bar-plan { fill: var(--accent-3); }
+  .bar-ist  { fill: var(--accent); }
+  .bar-pos  { fill: var(--pos); }
+  .bar-neg  { fill: var(--neg); }
+  .bar-warn { fill: var(--warn); }
+  .bar-mut  { fill: var(--muted-2); }
+  .vlab { fill: var(--ink); font-size: 11px; font-weight: 600; text-anchor: middle; }
+  .vlab-l { fill: var(--ink); font-size: 12px; font-weight: 600; text-anchor: start; }
+  .vlab-r { fill: var(--ink); font-size: 12px; font-weight: 700; text-anchor: end; }
+  .line-path { fill: none; stroke: var(--accent); stroke-width: 2; }
+  .line-dot { fill: var(--accent); }
+  .line-dot-2 { fill: var(--neg); }
+  .line-area { fill: var(--accent-3); opacity: 0.35; }
+  .legend { font-size: 11px; fill: var(--muted); }
+  .legend-strong { font-size: 12px; fill: var(--ink); font-weight: 600; }
+
+  /* Comment card */
+  .comment-list { font-size: 12.5px; line-height: 1.55; }
+  .comment-list .ci { margin-bottom: 10px; }
+  .comment-list .ci .ch { margin-bottom: 4px; }
+  .comment-list .ci .ct2 { color: var(--ink); }
+  .comment-list .footer-note {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line-2);
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .comment-list em { color: var(--pos); font-style: normal; font-weight: 700; }
+  .comment-list strong { color: var(--neg); font-weight: 700; }
+
+/* ---- project palette overrides (requirements §12) ---- */
+:root {
+  --navy: #123B5C; --navy-2: #1A4A70; --navy-3: #235880;
+  --accent: #1B9AAA; --accent-2: #4FB8C5; --accent-3: #BFE4E9; --accent-4: #E4F3F5;
+  --warn: #B47610; --warn-2: #F5E3C0;
+}
+</style></head>
+<body>
+<div class="stage"><div class="stage-inner">
+<div class="page active" data-page="0">
+<div class="nav-head"><div class="nav-hero">
+  <div class="req-id">MSc Dissertation · Newcastle University · Simulated results · Observed data Mar 2021 – Jul 2024</div>
+  <h1>An AI-Enabled Digital Twin for EV Charging</h1>
+  <div class="nav-sub">From 29,775 real charging sessions to a calibrated twin, to a learned pricing policy that outperforms the clock — and where it stops working.</div>
+</div></div>
+<div class="nav-body">
+  <div class="tiles" style="margin-bottom:16px; height: 150px;">
+    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#1B9AAA">Twin is credible</div><div class="td">All three calibration distributions match the real network: worst KS statistic 0.061.</div><div class="tq" style="color:#1B9AAA">KS ≤ 0.061 — calibrated</div></div>
+    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#123B5C">Adoption dominates</div><div class="td">Doubling EV adoption raises mean waiting time by ~6,981%. Pricing levers move revenue only.</div><div class="tq" style="color:#123B5C">+6,981% waiting at 2× adoption</div></div>
+    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#E4A02A">Learned pricing beats the clock</div><div class="td">The PPO policy outperforms the ToU 2-band schedule on the weighted objective — and on revenue by +23.8%.</div><div class="tq" style="color:#E4A02A">+20.2% objective vs ToU</div></div>
+    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#7B8C99">…within a boundary</div><div class="td">Below price elasticity ≈ 0.65 no revenue-service trade-off exists; pricing collapses to the maximum tariff.</div><div class="tq" style="color:#7B8C99">No trade-off below ≈ 0.65</div></div>
+  </div>
+  <div class="tiles" style="height:190px;">
+    <div class="tile" data-nav="1" style="height:190px"><div class="tn">1</div><div class="tt">The Real Network</div><div class="td">What 29,775 observed sessions look like — and why the twin is built the way it is.</div><div class="tq">EDA · Observed</div></div>
+    <div class="tile" data-nav="2" style="height:190px"><div class="tn">2</div><div class="tt">Twin Credibility</div><div class="td">The simulation reproduces the real distributions it was calibrated on.</div><div class="tq">Calibration</div></div>
+    <div class="tile" data-nav="3" style="height:190px"><div class="tn">3</div><div class="tt">Which Levers Move It</div><div class="td">Adoption growth moves everything; pricing moves revenue only.</div><div class="tq">Scenarios</div></div>
+    <div class="tile" data-nav="4" style="height:190px"><div class="tn">4</div><div class="tt">Beating the Clock</div><div class="td">The learned policy vs handcrafted schedules at the headline configuration.</div><div class="tq">Policy comparison</div></div>
+    <div class="tile" data-nav="5" style="height:190px"><div class="tn">5</div><div class="tt">Robustness &amp; Boundary</div><div class="td">Five seeds, four elasticities, one degenerate regime — not a lucky run.</div><div class="tq">Sweep</div></div>
+    <div class="tile" data-nav="6" style="height:190px"><div class="tn">6</div><div class="tt">How the Policy Prices</div><div class="td">A three-phase daily structure no clock schedule can produce.</div><div class="tq">Behaviour</div></div>
+  </div>
+  <div class="nav-note"><em>Reading order matters:</em> real data (1) → the twin reproducing it (2) → experiments on the twin (3–6). The learned policy outperforms the tested baselines on the weighted objective; it is <em>not</em> claimed optimal, and its higher waiting time and CO₂ vs ToU are shown on page 4.</div>
+</div>
+<div class="foot"><span>Source: results/ (all figures traceable to pipeline outputs)</span><span class="center">Colour code: teal = observed · amber = learned policy / price · navy = static policies · grey = uncertainty / excluded</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div><div class="page" data-page="1">
+<div class="head">
+  <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
+  <div class="head-main">
+    <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 1</div>
+      <h1>The Real Network — Observed</h1><div class="sub">What does the real data look like, and why is the twin built this way?</div></div>
+    <div class="right"><span class="tag">OBSERVED</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
+  </div></div>
+<div class="body">
+  <div class="row">
+    <div class="slicers" style="flex:1"><div class="slicer"><div class="lbl">Day type</div><div class="val"><span class="lbl-inner">All · Weekday · Weekend</span><span class="chev">▾</span></div></div><div class="slicer"><div class="lbl">Connector</div><div class="val"><span class="lbl-inner">All · CCS Combo · CHAdeMO · Type 2</span><span class="chev">▾</span></div></div></div>
+    <div class="kpi"><div class="name">Sessions (observed)</div><div class="value ">29,775</div><div class="delta ">= dissertation count · measure, not typed</div></div>
+    <div class="kpi"><div class="name">Chargers</div><div class="value ">6</div><div class="delta ">3 connector types</div></div>
+    <div class="kpi"><div class="name">Period</div><div class="value md">Mar 21 – Jul 24</div><div class="delta ">~40 months</div></div>
+    <div class="kpi"><div class="name">Median energy</div><div class="value ">27.4 kWh</div><div class="delta ">mean 30.4 kWh</div></div>
+    <div class="kpi"><div class="name">Median duration</div><div class="value ">0.64 h</div><div class="delta ">mean 0.74 h · capped at 4.0 h</div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-2"><div class="card" style=""><div class="ct">Observed arrivals by hour — bimodal, and almost entirely inside the ToU window</div><div class="cs">80.3% of sessions arrive 07:00–19:00 → a clock tariff cannot tell a busy hour from a quiet one</div><div class="cbody"><svg viewBox="0 0 900 340"><rect x="286.0" y="10" width="408.5" height="306" fill="#E4A02A" opacity="0.13"/><text class="ax" x="490.3" y="24" text-anchor="middle" fill="#E4A02A" font-weight="700">ToU peak window 07:00–19:00</text>
+<rect x="46.0" y="286.2" width="31.3" height="29.8" fill="#1B9AAA"/>
+<rect x="80.3" y="298.0" width="31.3" height="18.0" fill="#1B9AAA"/>
+<rect x="114.6" y="301.4" width="31.3" height="14.6" fill="#1B9AAA"/>
+<rect x="148.9" y="299.8" width="31.3" height="16.2" fill="#1B9AAA"/>
+<rect x="183.2" y="297.5" width="31.3" height="18.5" fill="#1B9AAA"/>
+<rect x="217.5" y="279.1" width="31.3" height="36.9" fill="#1B9AAA"/>
+<rect x="251.8" y="237.5" width="31.3" height="78.5" fill="#1B9AAA"/>
+<rect x="286.0" y="173.0" width="31.3" height="143.0" fill="#1B9AAA"/>
+<rect x="320.3" y="105.6" width="31.3" height="210.4" fill="#1B9AAA"/>
+<rect x="354.6" y="58.4" width="31.3" height="257.6" fill="#1B9AAA"/>
+<rect x="388.9" y="53.0" width="31.3" height="263.0" fill="#1B9AAA"/>
+<rect x="423.2" y="38.2" width="31.3" height="277.8" fill="#1B9AAA"/>
+<rect x="457.5" y="46.3" width="31.3" height="269.7" fill="#1B9AAA"/>
+<rect x="491.8" y="61.3" width="31.3" height="254.7" fill="#1B9AAA"/>
+<rect x="526.1" y="72.6" width="31.3" height="243.4" fill="#1B9AAA"/>
+<rect x="560.4" y="62.7" width="31.3" height="253.3" fill="#1B9AAA"/>
+<rect x="594.7" y="81.6" width="31.3" height="234.4" fill="#1B9AAA"/>
+<rect x="629.0" y="86.3" width="31.3" height="229.7" fill="#1B9AAA"/>
+<rect x="663.3" y="123.8" width="31.3" height="192.2" fill="#1B9AAA"/>
+<rect x="697.5" y="155.4" width="31.3" height="160.6" fill="#1B9AAA"/>
+<rect x="731.8" y="190.6" width="31.3" height="125.4" fill="#1B9AAA"/>
+<rect x="766.1" y="226.7" width="31.3" height="89.3" fill="#1B9AAA"/>
+<rect x="800.4" y="253.8" width="31.3" height="62.2" fill="#1B9AAA"/>
+<rect x="834.7" y="269.7" width="31.3" height="46.3" fill="#1B9AAA"/>
+<text class="ax" x="61.6" y="332" text-anchor="middle">00</text>
+<text class="ax" x="130.2" y="332" text-anchor="middle">02</text>
+<text class="ax" x="198.8" y="332" text-anchor="middle">04</text>
+<text class="ax" x="267.4" y="332" text-anchor="middle">06</text>
+<text class="ax" x="336.0" y="332" text-anchor="middle">08</text>
+<text class="ax" x="404.6" y="332" text-anchor="middle">10</text>
+<text class="ax" x="473.1" y="332" text-anchor="middle">12</text>
+<text class="ax" x="541.7" y="332" text-anchor="middle">14</text>
+<text class="ax" x="610.3" y="332" text-anchor="middle">16</text>
+<text class="ax" x="678.9" y="332" text-anchor="middle">18</text>
+<text class="ax" x="747.5" y="332" text-anchor="middle">20</text>
+<text class="ax" x="816.1" y="332" text-anchor="middle">22</text>
+<line x1="46" y1="316" x2="866" y2="316" stroke="#C9D1D9" stroke-width="1"/><text class="ax" x="6" y="26">2,346</text><text class="ax" x="6" y="316">0</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Observed connector mix — don't pool</div><div class="cs">82 / 14 / 4 split with very different profiles → twin samples per connector</div><div class="cbody"><svg viewBox="0 0 560 200"><text class="vlab-l" x="10" y="48.0">CCS Combo</text>
+<rect x="120" y="22" width="311.1" height="40" fill="#1B9AAA" rx="2"/>
+<text class="vlab-l" x="439.1" y="48.0" font-weight="700">82.1%</text>
+<text class="vlab-l" x="10" y="104.0">CHAdeMO</text>
+<rect x="120" y="78" width="54.2" height="40" fill="#1B9AAA" rx="2"/>
+<text class="vlab-l" x="182.2" y="104.0" font-weight="700">14.3%</text>
+<text class="vlab-l" x="10" y="160.0">Type 2 AC</text>
+<rect x="120" y="134" width="13.6" height="40" fill="#1B9AAA" rx="2"/>
+<text class="vlab-l" x="141.6" y="160.0" font-weight="700">3.6%</text></svg><table class="t"><thead><tr><th>Connector</th><th class="num">Mean kWh</th><th class="num">Mean hrs</th></tr></thead>
+      <tbody><tr><td>CCS Combo</td><td class="num">34.0</td><td class="num">0.71</td></tr>
+      <tr><td>CHAdeMO</td><td class="num">13.7</td><td class="num">0.62</td></tr>
+      <tr><td>Type 2 AC</td><td class="num">15.5</td><td class="num">1.83</td></tr></tbody></table></div></div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-1"><div class="card" style=""><div class="ct">Observed energy — plateau + heavy tail, no parametric fit adequate</div><div class="cs">Flat 5–20 kWh plateau and a long tail → twin resamples empirically instead of fitting a curve</div><div class="cbody"><svg viewBox="0 0 900 340">
+<rect x="46.0" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
+<rect x="60.9" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
+<rect x="75.9" y="171.6" width="13.9" height="134.4" fill="#1B9AAA"/>
+<rect x="90.8" y="66.0" width="13.9" height="240.0" fill="#1B9AAA"/>
+<rect x="105.7" y="53.4" width="13.9" height="252.6" fill="#1B9AAA"/>
+<rect x="120.6" y="37.5" width="13.9" height="268.5" fill="#1B9AAA"/>
+<rect x="135.6" y="66.5" width="13.9" height="239.5" fill="#1B9AAA"/>
+<rect x="150.5" y="101.0" width="13.9" height="205.0" fill="#1B9AAA"/>
+<rect x="165.4" y="106.3" width="13.9" height="199.7" fill="#1B9AAA"/>
+<rect x="180.3" y="104.6" width="13.9" height="201.4" fill="#1B9AAA"/>
+<rect x="195.3" y="106.3" width="13.9" height="199.7" fill="#1B9AAA"/>
+<rect x="210.2" y="116.9" width="13.9" height="189.1" fill="#1B9AAA"/>
+<rect x="225.1" y="101.0" width="13.9" height="205.0" fill="#1B9AAA"/>
+<rect x="240.1" y="116.4" width="13.9" height="189.6" fill="#1B9AAA"/>
+<rect x="255.0" y="122.5" width="13.9" height="183.5" fill="#1B9AAA"/>
+<rect x="269.9" y="137.8" width="13.9" height="168.2" fill="#1B9AAA"/>
+<rect x="284.8" y="134.6" width="13.9" height="171.4" fill="#1B9AAA"/>
+<rect x="299.8" y="145.4" width="13.9" height="160.6" fill="#1B9AAA"/>
+<rect x="314.7" y="157.3" width="13.9" height="148.7" fill="#1B9AAA"/>
+<rect x="329.6" y="165.1" width="13.9" height="140.9" fill="#1B9AAA"/>
+<rect x="344.5" y="158.8" width="13.9" height="147.2" fill="#1B9AAA"/>
+<rect x="359.5" y="171.6" width="13.9" height="134.4" fill="#1B9AAA"/>
+<rect x="374.4" y="186.3" width="13.9" height="119.7" fill="#1B9AAA"/>
+<rect x="389.3" y="187.8" width="13.9" height="118.2" fill="#1B9AAA"/>
+<rect x="404.3" y="201.9" width="13.9" height="104.1" fill="#1B9AAA"/>
+<rect x="419.2" y="205.9" width="13.9" height="100.1" fill="#1B9AAA"/>
+<rect x="434.1" y="212.4" width="13.9" height="93.6" fill="#1B9AAA"/>
+<rect x="449.0" y="219.6" width="13.9" height="86.4" fill="#1B9AAA"/>
+<rect x="464.0" y="228.1" width="13.9" height="77.9" fill="#1B9AAA"/>
+<rect x="478.9" y="231.7" width="13.9" height="74.3" fill="#1B9AAA"/>
+<rect x="493.8" y="243.3" width="13.9" height="62.7" fill="#1B9AAA"/>
+<rect x="508.7" y="247.7" width="13.9" height="58.3" fill="#1B9AAA"/>
+<rect x="523.7" y="255.3" width="13.9" height="50.7" fill="#1B9AAA"/>
+<rect x="538.6" y="264.9" width="13.9" height="41.1" fill="#1B9AAA"/>
+<rect x="553.5" y="267.2" width="13.9" height="38.8" fill="#1B9AAA"/>
+<rect x="568.5" y="273.3" width="13.9" height="32.7" fill="#1B9AAA"/>
+<rect x="583.4" y="283.3" width="13.9" height="22.7" fill="#1B9AAA"/>
+<rect x="598.3" y="285.1" width="13.9" height="20.9" fill="#1B9AAA"/>
+<rect x="613.2" y="291.6" width="13.9" height="14.4" fill="#1B9AAA"/>
+<rect x="628.2" y="293.9" width="13.9" height="12.1" fill="#1B9AAA"/>
+<rect x="643.1" y="296.2" width="13.9" height="9.8" fill="#1B9AAA"/>
+<rect x="658.0" y="301.5" width="13.9" height="4.5" fill="#1B9AAA"/>
+<rect x="672.9" y="301.4" width="13.9" height="4.6" fill="#1B9AAA"/>
+<rect x="687.9" y="303.2" width="13.9" height="2.8" fill="#1B9AAA"/>
+<rect x="702.8" y="304.2" width="13.9" height="1.8" fill="#1B9AAA"/>
+<rect x="717.7" y="304.8" width="13.9" height="1.2" fill="#1B9AAA"/>
+<rect x="732.7" y="305.2" width="13.9" height="0.8" fill="#1B9AAA"/>
+<rect x="747.6" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
+<rect x="762.5" y="305.5" width="13.9" height="0.5" fill="#1B9AAA"/>
+<rect x="777.4" y="305.5" width="13.9" height="0.5" fill="#1B9AAA"/>
+<rect x="792.4" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
+<rect x="807.3" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
+<rect x="822.2" y="305.8" width="13.9" height="0.2" fill="#1B9AAA"/>
+<rect x="837.1" y="305.8" width="13.9" height="0.2" fill="#1B9AAA"/>
+<rect x="852.1" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
+<text class="ax" x="53.0" y="322" text-anchor="middle">0</text>
+<text class="ax" x="67.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="82.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="97.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="112.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="127.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="142.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="157.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="172.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="187.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="202.2" y="322" text-anchor="middle">20</text>
+<text class="ax" x="217.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="232.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="247.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="261.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="276.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="291.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="306.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="321.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="336.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="351.5" y="322" text-anchor="middle">40</text>
+<text class="ax" x="366.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="381.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="396.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="411.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="426.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="441.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="456.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="470.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="485.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="500.8" y="322" text-anchor="middle">60</text>
+<text class="ax" x="515.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="530.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="545.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="560.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="575.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="590.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="605.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="620.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="635.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="650.1" y="322" text-anchor="middle">80</text>
+<text class="ax" x="665.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="679.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="694.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="709.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="724.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="739.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="754.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="769.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="784.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="799.3" y="322" text-anchor="middle">100</text>
+<text class="ax" x="814.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="829.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="844.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="859.0" y="322" text-anchor="middle"></text>
+<line x1="46" y1="306" x2="866" y2="306" stroke="#C9D1D9" stroke-width="1"/><text class="ax" x="6" y="26">1,620</text><text class="ax" x="6" y="306">0</text><text class="ax" x="450" y="334" text-anchor="middle">Energy per session (kWh, 2 kWh bins)</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Observed duration — clean lognormal shape</div><div class="cs">Well-behaved single mode → parametric lognormal fit, validated on the next page</div><div class="cbody"><svg viewBox="0 0 900 340"><text class="ax" x="858" y="80" text-anchor="end" fill="#7B8C99" font-weight="700">capped at 4.0 h</text>
+<rect x="46.0" y="294.4" width="19.0" height="11.6" fill="#1B9AAA"/>
+<rect x="66.0" y="194.1" width="19.0" height="111.9" fill="#1B9AAA"/>
+<rect x="86.0" y="120.4" width="19.0" height="185.6" fill="#1B9AAA"/>
+<rect x="106.1" y="63.8" width="19.0" height="242.2" fill="#1B9AAA"/>
+<rect x="126.1" y="37.5" width="19.0" height="268.5" fill="#1B9AAA"/>
+<rect x="146.1" y="38.4" width="19.0" height="267.6" fill="#1B9AAA"/>
+<rect x="166.1" y="66.2" width="19.0" height="239.8" fill="#1B9AAA"/>
+<rect x="186.2" y="94.4" width="19.0" height="211.6" fill="#1B9AAA"/>
+<rect x="206.2" y="129.2" width="19.0" height="176.8" fill="#1B9AAA"/>
+<rect x="226.2" y="156.4" width="19.0" height="149.6" fill="#1B9AAA"/>
+<rect x="246.2" y="182.9" width="19.0" height="123.1" fill="#1B9AAA"/>
+<rect x="266.3" y="214.3" width="19.0" height="91.7" fill="#1B9AAA"/>
+<rect x="286.3" y="242.7" width="19.0" height="63.3" fill="#1B9AAA"/>
+<rect x="306.3" y="256.3" width="19.0" height="49.7" fill="#1B9AAA"/>
+<rect x="326.3" y="264.8" width="19.0" height="41.2" fill="#1B9AAA"/>
+<rect x="346.4" y="273.5" width="19.0" height="32.5" fill="#1B9AAA"/>
+<rect x="366.4" y="277.7" width="19.0" height="28.3" fill="#1B9AAA"/>
+<rect x="386.4" y="283.4" width="19.0" height="22.6" fill="#1B9AAA"/>
+<rect x="406.4" y="290.7" width="19.0" height="15.3" fill="#1B9AAA"/>
+<rect x="426.5" y="294.5" width="19.0" height="11.5" fill="#1B9AAA"/>
+<rect x="446.5" y="298.2" width="19.0" height="7.8" fill="#1B9AAA"/>
+<rect x="466.5" y="299.3" width="19.0" height="6.7" fill="#1B9AAA"/>
+<rect x="486.5" y="300.0" width="19.0" height="6.0" fill="#1B9AAA"/>
+<rect x="506.6" y="300.9" width="19.0" height="5.1" fill="#1B9AAA"/>
+<rect x="526.6" y="301.4" width="19.0" height="4.6" fill="#1B9AAA"/>
+<rect x="546.6" y="303.7" width="19.0" height="2.3" fill="#1B9AAA"/>
+<rect x="566.6" y="303.9" width="19.0" height="2.1" fill="#1B9AAA"/>
+<rect x="586.7" y="305.3" width="19.0" height="0.7" fill="#1B9AAA"/>
+<rect x="606.7" y="304.7" width="19.0" height="1.3" fill="#1B9AAA"/>
+<rect x="626.7" y="305.4" width="19.0" height="0.6" fill="#1B9AAA"/>
+<rect x="646.7" y="305.1" width="19.0" height="0.9" fill="#1B9AAA"/>
+<rect x="666.8" y="305.4" width="19.0" height="0.6" fill="#1B9AAA"/>
+<rect x="686.8" y="305.2" width="19.0" height="0.8" fill="#1B9AAA"/>
+<rect x="706.8" y="305.2" width="19.0" height="0.8" fill="#1B9AAA"/>
+<rect x="726.8" y="305.3" width="19.0" height="0.7" fill="#1B9AAA"/>
+<rect x="746.9" y="305.1" width="19.0" height="0.9" fill="#1B9AAA"/>
+<rect x="766.9" y="305.7" width="19.0" height="0.3" fill="#1B9AAA"/>
+<rect x="786.9" y="305.6" width="19.0" height="0.4" fill="#1B9AAA"/>
+<rect x="806.9" y="305.5" width="19.0" height="0.5" fill="#1B9AAA"/>
+<rect x="827.0" y="305.6" width="19.0" height="0.4" fill="#1B9AAA"/>
+<rect x="847.0" y="303.4" width="19.0" height="2.6" fill="#1B9AAA"/>
+<text class="ax" x="55.5" y="322" text-anchor="middle">0</text>
+<text class="ax" x="75.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="95.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="115.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="135.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="155.6" y="322" text-anchor="middle"></text>
+<text class="ax" x="175.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="195.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="215.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="235.7" y="322" text-anchor="middle"></text>
+<text class="ax" x="255.8" y="322" text-anchor="middle">1</text>
+<text class="ax" x="275.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="295.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="315.8" y="322" text-anchor="middle"></text>
+<text class="ax" x="335.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="355.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="375.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="395.9" y="322" text-anchor="middle"></text>
+<text class="ax" x="416.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="436.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="456.0" y="322" text-anchor="middle">2</text>
+<text class="ax" x="476.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="496.0" y="322" text-anchor="middle"></text>
+<text class="ax" x="516.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="536.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="556.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="576.1" y="322" text-anchor="middle"></text>
+<text class="ax" x="596.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="616.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="636.2" y="322" text-anchor="middle"></text>
+<text class="ax" x="656.2" y="322" text-anchor="middle">3</text>
+<text class="ax" x="676.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="696.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="716.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="736.3" y="322" text-anchor="middle"></text>
+<text class="ax" x="756.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="776.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="796.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="816.4" y="322" text-anchor="middle"></text>
+<text class="ax" x="836.5" y="322" text-anchor="middle"></text>
+<text class="ax" x="856.5" y="322" text-anchor="middle">4</text>
+<line x1="46" y1="306" x2="866" y2="306" stroke="#C9D1D9" stroke-width="1"/><text class="ax" x="6" y="26">3,345</text><text class="ax" x="6" y="306">0</text><text class="ax" x="450" y="334" text-anchor="middle">Session duration (hours, 0.1 h bins)</text></svg></div></div></div>
+  </div>
+</div>
+<div class="foot"><span>Source: results/sessions_clean.csv (export of ev_twin.duckdb · charging_sessions)</span><span class="center">This page describes the data — validation of the twin is page 2 · Building-meter readings excluded (collection failure)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div><div class="page" data-page="2">
+<div class="head">
+  <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
+  <div class="head-main">
+    <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 2</div>
+      <h1>Twin Credibility — Calibration</h1><div class="sub">Does the simulation reproduce the distributions the viewer just saw?</div></div>
+    <div class="right"><span class="tag">SIMULATED vs OBSERVED</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
+  </div></div>
+<div class="body">
+  <div class="row">
+    <div class="kpi"><div class="name">Overall status</div><div class="value ">CALIBRATED</div><div class="delta pos">all KS ≤ 0.061</div></div>
+    <div class="kpi"><div class="name">Sessions / day</div><div class="value ">KS 0.061</div><div class="delta ">Negative Binomial fit · sim 25.4 vs real 25.1</div></div>
+    <div class="kpi"><div class="name">Session duration</div><div class="value ">KS 0.037</div><div class="delta ">Lognormal fit · sim 0.76 h vs real 0.74 h</div></div>
+    <div class="kpi"><div class="name">Energy / session</div><div class="value ">KS 0.009</div><div class="delta warn">Empirical resampling — agreement by construction</div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-2"><div class="card" style=""><div class="ct">Calibration quality — KS statistic per distribution (lower is better)</div><div class="cs">Grey = empirical resampling, a tautological check, flagged honestly — the two parametric fits carry the evidence</div><div class="cbody"><svg viewBox="0 0 860 250"><text class="vlab-l" x="10" y="65.0">Sessions / day (Neg. Binomial)</text>
+<rect x="310" y="36" width="371.7" height="46" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="689.7" y="65.0" font-weight="700">0.061</text>
+<text class="vlab-l" x="10" y="127.0">Session duration (lognormal)</text>
+<rect x="310" y="98" width="229.4" height="46" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="547.4" y="127.0" font-weight="700">0.037</text>
+<text class="vlab-l" x="10" y="189.0">Energy / session (empirical*)</text>
+<rect x="310" y="160" width="53.4" height="46" fill="#7B8C99" rx="2"/>
+<text class="vlab-l" x="371.4" y="189.0" font-weight="700">0.009*</text>
+    <text class="ax" x="10" y="16" font-weight="700">Lower is better · all three ≤ 0.061</text>
+    <text class="ax" x="10" y="240">* empirical resampling — agreement expected by construction, not an independent fit test</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Simulated vs observed means</div><div class="cs">Moment agreement backs the KS statistics</div><div class="cbody"><table class="t"><thead><tr><th>Distribution</th><th class="num">Simulated</th><th class="num">Observed</th><th>Fit</th></tr></thead><tbody>
+      <tr><td>Sessions per day</td><td class="num">25.42</td><td class="num">25.11</td><td><span class="pill pos">Parametric</span></td></tr>
+      <tr><td>Energy per session (kWh)</td><td class="num">30.43</td><td class="num">30.44</td><td><span class="pill warn">By construction</span></td></tr>
+      <tr><td>Session duration (hrs)</td><td class="num">0.763</td><td class="num">0.741</td><td><span class="pill pos">Parametric</span></td></tr></tbody></table>
+      <div class="comment-list" style="margin-top:14px"><div class="footer-note">With ~30,000 observations the KS <b>p-value</b> rejects on negligible deviations, so assessment uses the KS <b>statistic</b> (effect size) with matched means — a low p-value is not calibration failure.</div></div></div></div></div>
+  </div>
+</div>
+<div class="foot"><span>Source: results/calibration_summary.csv (notebook 02 output)</span><span class="center">This page is the bridge: the twin reproducing page 1 → experiments on pages 3–6 are credible</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div><div class="page" data-page="3">
+<div class="head">
+  <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
+  <div class="head-main">
+    <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 3</div>
+      <h1>Which Levers Move the Network — Scenarios</h1><div class="sub">Adoption growth moves everything; pricing moves revenue only</div></div>
+    <div class="right"><span class="tag">SIMULATED</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
+  </div></div>
+<div class="body">
+  <div class="row">
+    <div class="kpi"><div class="name">2× adoption → waiting</div><div class="value ">+6,981%</div><div class="delta neg">mean wait 0.005 → 0.354 h · everything moves</div></div>
+    <div class="kpi"><div class="name">ToU pricing → revenue</div><div class="value ">+37.9%</div><div class="delta pos">£201.5 → £277.9 · demand unmoved</div></div>
+    <div class="kpi"><div class="name">Carbon incentive</div><div class="value ">−0.7%</div><div class="delta ">revenue effect not significant (p = 0.19)</div></div>
+    <div class="kpi"><div class="name">Combined policy</div><div class="value ">+38.0%</div><div class="delta pos">≈ ToU alone — pricing does the work</div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-1"><div class="card" style=""><div class="ct">Revenue — pricing levers move it</div><div class="cs">% change vs baseline, 500 episodes per scenario</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
+<rect x="138" y="34" width="149.9" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="295.9" y="54.0" font-weight="700">+47.8%</text>
+<text class="vlab-l" x="8" y="98.0">Adoption ×2</text>
+<rect x="138" y="78" width="312.4" height="28" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="458.4" y="98.0" font-weight="700">+99.6%</text>
+<text class="vlab-l" x="8" y="142.0">ToU pricing</text>
+<rect x="138" y="122" width="118.9" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="264.9" y="142.0" font-weight="700">+37.9%</text>
+<text class="vlab-l" x="8" y="186.0">Carbon incentive</text>
+<rect x="138" y="166" width="2.2" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.2" y="186.0" font-weight="700">-0.7%</text>
+<text class="vlab-l" x="8" y="230.0">Combined</text>
+<rect x="138" y="210" width="119.2" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="265.2" y="230.0" font-weight="700">+38.0%</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Sessions completed — only adoption moves it</div><div class="cs">% change vs baseline</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
+<rect x="138" y="34" width="154.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="300.0" y="54.0" font-weight="700">+49.1%</text>
+<text class="vlab-l" x="8" y="98.0">Adoption ×2</text>
+<rect x="138" y="78" width="313.6" height="28" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="459.6" y="98.0" font-weight="700">+100.0%</text>
+<text class="vlab-l" x="8" y="142.0">ToU pricing</text>
+<rect x="138" y="122" width="2.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.0" y="142.0" font-weight="700">+0.0%</text>
+<text class="vlab-l" x="8" y="186.0">Carbon incentive</text>
+<rect x="138" y="166" width="2.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.0" y="186.0" font-weight="700">+0.0%</text>
+<text class="vlab-l" x="8" y="230.0">Combined</text>
+<rect x="138" y="210" width="2.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.0" y="230.0" font-weight="700">+0.0%</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Waiting time — explodes under adoption growth</div><div class="cs">% change vs baseline (note the scale)</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
+<rect x="138" y="34" width="82.8" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="228.8" y="54.0" font-weight="700">+1,799%</text>
+<text class="vlab-l" x="8" y="98.0">Adoption ×2</text>
+<rect x="138" y="78" width="321.1" height="28" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="467.1" y="98.0" font-weight="700">+6,981%</text>
+<text class="vlab-l" x="8" y="142.0">ToU pricing</text>
+<rect x="138" y="122" width="2.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.0" y="142.0" font-weight="700">+3.0%</text>
+<text class="vlab-l" x="8" y="186.0">Carbon incentive</text>
+<rect x="138" y="166" width="2.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.0" y="186.0" font-weight="700">+21.9%</text>
+<text class="vlab-l" x="8" y="230.0">Combined</text>
+<rect x="138" y="210" width="2.0" height="28" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="148.0" y="230.0" font-weight="700">+34.5%</text></svg></div></div></div>
+  </div>
+  <div class="row" style="flex: 0 0 200px">
+    <div class="col-2"><div class="card" style=""><div class="ct">Statistical significance vs baseline (Wilcoxon signed-rank)</div><div class="cs">The undefined case is shown, not hidden</div><div class="cbody"><table class="t"><thead><tr><th>Scenario</th><th>Revenue</th><th>Sessions</th><th>Waiting</th><th>CO₂</th></tr></thead><tbody>
+      <tr><td>Adoption ×1.5 / ×2</td><td><span class="pill pos">significant</span></td><td><span class="pill pos">significant</span></td><td><span class="pill pos">significant</span></td><td><span class="pill pos">significant</span></td></tr>
+      <tr><td>ToU pricing</td><td><span class="pill pos">significant</span></td><td><span class="pill warn">undefined — all paired diffs zero</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr>
+      <tr><td>Carbon incentive</td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr>
+      <tr><td>Combined</td><td><span class="pill pos">significant</span></td><td><span class="pill warn">undefined — all paired diffs zero</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr></tbody></table></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Reading</div><div class="cs"></div><div class="cbody"><div class="comment-list"><div class="ci">Demand is <b>inelastic to the tested price signals</b>: ToU pricing lifts revenue +37.9% while session counts do not move at all (every paired difference is zero → the Wilcoxon test is undefined, shown as such).</div>
+      <div class="ci">Capacity, not price, is the binding constraint — which motivates asking whether a <b>smarter price signal</b> can do better: pages 4–6.</div></div></div></div></div>
+  </div>
+</div>
+<div class="foot"><span>Source: results/scenario_summary.csv + results/scenario_significance.csv (notebook 03 output)</span><span class="center">500 episodes per scenario · % change vs baseline scenario (R8)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div><div class="page" data-page="4">
+<div class="head">
+  <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
+  <div class="head-main">
+    <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 4</div>
+      <h1>Learned Pricing Beats the Clock</h1><div class="sub">PPO vs handcrafted schedules at the headline configuration — a superior weighted trade-off, not dominance</div></div>
+    <div class="right"><span class="tag">SIMULATED · ELASTICITY 0.8</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
+  </div></div>
+<div class="body">
+  <div class="row">
+    <div class="kpi"><div class="name">PPO objective score</div><div class="value ">383.1</div><div class="delta ">revenue − λ·wait · λ = 0.934</div></div>
+    <div class="kpi"><div class="name">Advantage vs ToU 2-band</div><div class="value ">+20.2%</div><div class="delta pos">objective score · +64.3 points</div></div>
+    <div class="kpi"><div class="name">Revenue advantage</div><div class="value ">+23.8%</div><div class="delta pos">£400.9 vs £323.9 per episode</div></div>
+    <div class="kpi"><div class="name">The honest cost</div><div class="value ">9.4 min</div><div class="delta warn">mean wait vs ToU's 2.9 min · CO₂ also higher</div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-1"><div class="card" style=""><div class="ct">Objective score — PPO leads; ToU 2-band trails even Flat</div><div class="cs">revenue − λ·waiting (R1) · 500 episodes · sorted</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">PPO (learned)</text>
+<rect x="160" y="26" width="485.2" height="46" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="653.2" y="55.0" font-weight="700">383.1</text>
+<text class="vlab-l" x="10" y="117.0">Flat £0.30</text>
+<rect x="160" y="88" width="432.9" height="46" fill="#3E6285" rx="2"/>
+<text class="vlab-l" x="600.9" y="117.0" font-weight="700">341.7</text>
+<text class="vlab-l" x="10" y="179.0">ToU 2-band</text>
+<rect x="160" y="150" width="403.8" height="46" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="571.8" y="179.0" font-weight="700">318.8</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Revenue per episode</div><div class="cs">PPO prices demand, the clock can't</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">PPO (learned)</text>
+<rect x="160" y="26" width="486.2" height="46" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="654.2" y="55.0" font-weight="700">£400.9</text>
+<text class="vlab-l" x="10" y="117.0">Flat £0.30</text>
+<rect x="160" y="88" width="469.2" height="46" fill="#3E6285" rx="2"/>
+<text class="vlab-l" x="637.2" y="117.0" font-weight="700">£386.9</text>
+<text class="vlab-l" x="10" y="179.0">ToU 2-band</text>
+<rect x="160" y="150" width="392.8" height="46" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="560.8" y="179.0" font-weight="700">£323.9</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Cross-check: all five policies (sweep run)</div><div class="cs">Separate 30-episode sweep at elasticity 0.8 — different run, not 1:1 with headline · PPO also beats the 3-band clock</div><div class="cbody"><svg viewBox="0 0 820 300"><text class="vlab-l" x="10" y="50.0">PPO (learned)</text>
+<rect x="180" y="26" width="472.5" height="36" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="660.5" y="50.0" font-weight="700">395.2</text>
+<text class="vlab-l" x="10" y="102.0">Congestion (oracle)</text>
+<rect x="180" y="78" width="452.3" height="36" fill="#7B8C99" rx="2"/>
+<text class="vlab-l" x="640.3" y="102.0" font-weight="700">378.3</text>
+<text class="vlab-l" x="10" y="154.0">ToU 3-band</text>
+<rect x="180" y="130" width="408.4" height="36" fill="#3E6285" rx="2"/>
+<text class="vlab-l" x="596.4" y="154.0" font-weight="700">341.6</text>
+<text class="vlab-l" x="10" y="206.0">Flat</text>
+<rect x="180" y="182" width="404.5" height="36" fill="#3E6285" rx="2"/>
+<text class="vlab-l" x="592.5" y="206.0" font-weight="700">338.3</text>
+<text class="vlab-l" x="10" y="258.0">ToU 2-band</text>
+<rect x="180" y="234" width="380.3" height="36" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="568.3" y="258.0" font-weight="700">318.1</text></svg></div></div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-1"><div class="card" style=""><div class="ct">Mean waiting time — PPO is not the gentlest</div><div class="cs">minutes (R5) · ToU keeps queues shortest</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">Flat £0.30</text>
+<rect x="160" y="26" width="469.9" height="46" fill="#3E6285" rx="2"/>
+<text class="vlab-l" x="637.9" y="55.0" font-weight="700">19.8 min</text>
+<text class="vlab-l" x="10" y="117.0">PPO (learned)</text>
+<rect x="160" y="88" width="224.2" height="46" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="392.2" y="117.0" font-weight="700">9.4 min</text>
+<text class="vlab-l" x="10" y="179.0">ToU 2-band</text>
+<rect x="160" y="150" width="68.3" height="46" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="236.3" y="179.0" font-weight="700">2.9 min</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">CO₂ per episode — more sessions, more carbon</div><div class="cs">kg CO₂ · follows session volume</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">Flat £0.30</text>
+<rect x="160" y="26" width="490.1" height="46" fill="#3E6285" rx="2"/>
+<text class="vlab-l" x="658.1" y="55.0" font-weight="700">77.4 kg</text>
+<text class="vlab-l" x="10" y="117.0">PPO (learned)</text>
+<rect x="160" y="88" width="406.5" height="46" fill="#E4A02A" rx="2"/>
+<text class="vlab-l" x="574.5" y="117.0" font-weight="700">64.2 kg</text>
+<text class="vlab-l" x="10" y="179.0">ToU 2-band</text>
+<rect x="160" y="150" width="341.6" height="46" fill="#123B5C" rx="2"/>
+<text class="vlab-l" x="509.6" y="179.0" font-weight="700">53.9 kg</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">How to read this page</div><div class="cs"></div><div class="cbody"><div class="comment-list">
+      <div class="ci"><em>PPO wins the weighted objective</em> — the trade-off the operator actually optimises.</div>
+      <div class="ci"><strong>It does not dominate:</strong> ToU has lower waiting (2.9 vs 9.4 min) and lower CO₂ (53.9 vs 64.2 kg).</div>
+      <div class="ci">ToU 2-band scores <b>below Flat</b> (318.8 vs 341.7) — a mis-timed clock is worse than no clock.</div>
+      <div class="ci" style="color:var(--muted)">Headline bars: 500-episode evaluation (PPO, ToU 2-band, Flat). The five-policy cross-check comes from the separate sweep run — ranking holds, values are not comparable across the two charts.</div></div></div></div></div>
+  </div>
+</div>
+<div class="foot"><span>Source: results/eval_summary.csv + results/eval_results.csv</span><span class="center">Score = revenue − λ·wait_steps with λ = 0.934 at elasticity 0.8 (R1–R3) · waiting shown in minutes (R5)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div><div class="page" data-page="5">
+<div class="head">
+  <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
+  <div class="head-main">
+    <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 5</div>
+      <h1>Robustness and the Boundary</h1><div class="sub">PPO holds its advantage as demand grows more elastic — until the trade-off itself disappears</div></div>
+    <div class="right"><span class="tag">SIMULATED · 5 SEEDS × 4 ELASTICITIES</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
+  </div></div>
+<div class="body">
+  <div class="row">
+    <div class="slicers" style="flex:1.2"><div class="slicer"><div class="lbl">Elasticity</div><div class="val"><span class="lbl-inner">0.8 (headline)</span><span class="chev">▾</span></div></div></div>
+    <div class="kpi"><div class="name">Regime at selection</div><div class="value ">Trade-off</div><div class="delta pos">λ = 0.934 · trained agent exists</div></div>
+    <div class="kpi"><div class="name">Seed spread (PPO, 0.8)</div><div class="value ">± 2.6</div><div class="delta ">std across 5 seeds — not a lucky run</div></div>
+    <div class="kpi"><div class="name">Margin vs ToU 2-band</div><div class="value ">+77.1</div><div class="delta pos">score points at 0.8 · positive at every elasticity</div></div>
+    <div class="kpi"><div class="name">Margin vs ToU 3-band</div><div class="value ">+53.6</div><div class="delta pos">finer clock ≠ closing the gap → state-conditioning wins</div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-2"><div class="card" style=""><div class="ct">PPO holds its advantage across the trained range — and the regime boundary is shown, not hidden</div><div class="cs">Mean score across 5 seeds, amber band = ±1 std (R6) · grey zone: no trade-off exists, no agent was trained (R9)</div><div class="cbody"><svg viewBox="0 0 940 400">
+<rect x="70" y="20" width="239.3" height="330" fill="#7B8C99" opacity="0.15"/>
+<text class="ax" x="189.6" y="50" text-anchor="middle" fill="#7B8C99" font-weight="700">Degenerate —</text>
+<text class="ax" x="189.6" y="66" text-anchor="middle" fill="#7B8C99" font-weight="700">pricing collapses</text>
+<text class="ax" x="189.6" y="82" text-anchor="middle" fill="#7B8C99" font-weight="700">to max tariff</text>
+<polygon points="379.6,44.2 520.4,106.1 661.1,152.3 801.9,172.5 801.9,179.3 661.1,161.4 520.4,114.8 379.6,54.2" fill="#E4A02A" opacity="0.25"/>
+<polyline points="379.6,49.2 520.4,110.5 661.1,156.9 801.9,175.9" fill="none" stroke="#E4A02A" stroke-width="3"/><polyline points="379.6,108.7 520.4,138.3 661.1,163.8 801.9,183.1" fill="none" stroke="#7B8C99" stroke-width="2" stroke-dasharray="6 4"/><polyline points="379.6,145.0 520.4,198.9 661.1,249.4 801.9,296.2" fill="none" stroke="#3E6285" stroke-width="2"/><polyline points="379.6,146.4 520.4,204.3 661.1,258.6 801.9,309.0" fill="none" stroke="#3E6285" stroke-width="2" stroke-dasharray="2 3"/><polyline points="379.6,198.8 520.4,237.6 661.1,272.9 801.9,307.5" fill="none" stroke="#123B5C" stroke-width="2"/>
+<text x="838" y="53.2" font-size="12" font-weight="700" fill="#E4A02A">PPO</text><text x="838" y="187.1" font-size="12" font-weight="700" fill="#7B8C99">Congestion (oracle)</text><text x="838" y="300.0" font-size="12" font-weight="700" fill="#123B5C">ToU 2-band</text><text x="838" y="287.0" font-size="12" font-weight="700" fill="#3E6285">ToU 3-band / Flat</text>
+<text class="ax" x="98.1" y="368" text-anchor="middle">0.5</text><text class="ax" x="238.9" y="368" text-anchor="middle">0.6</text><text class="ax" x="379.6" y="368" text-anchor="middle">0.7</text><text class="ax" x="520.4" y="368" text-anchor="middle">0.8</text><text class="ax" x="661.1" y="368" text-anchor="middle">0.9</text><text class="ax" x="801.9" y="368" text-anchor="middle">1.0</text>
+<text class="ax" x="62" y="354.0" text-anchor="end">250</text><text class="ax" x="62" y="271.5" text-anchor="end">300</text><text class="ax" x="62" y="189.0" text-anchor="end">350</text><text class="ax" x="62" y="106.5" text-anchor="end">400</text><text class="ax" x="62" y="24.0" text-anchor="end">450</text>
+<line x1="70" y1="350" x2="830" y2="350" stroke="#C9D1D9"/>
+<text class="ax" x="450.0" y="388" text-anchor="middle">Price elasticity of demand</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">PPO margin over clock schedules by elasticity</div><div class="cs">Positive everywhere · 3-band clock does not close it</div><div class="cbody"><svg viewBox="0 0 520 330"><rect x="60" y="48.3" width="34" height="235.7" fill="#E4A02A"/><text class="vlab" x="77.0" y="42.3">91</text><rect x="100" y="133.0" width="34" height="151.0" fill="#3E6285"/><text class="vlab" x="117.0" y="127.0">58</text><text class="ax" x="97" y="302" text-anchor="middle">0.7</text><rect x="165" y="83.6" width="34" height="200.4" fill="#E4A02A"/><text class="vlab" x="182.0" y="77.6">77</text><rect x="205" y="144.6" width="34" height="139.4" fill="#3E6285"/><text class="vlab" x="222.0" y="138.6">54</text><text class="ax" x="202" y="302" text-anchor="middle">0.8</text><rect x="270" y="101.1" width="34" height="182.9" fill="#E4A02A"/><text class="vlab" x="287.0" y="95.1">70</text><rect x="310" y="138.1" width="34" height="145.9" fill="#3E6285"/><text class="vlab" x="327.0" y="132.1">56</text><text class="ax" x="307" y="302" text-anchor="middle">0.9</text><rect x="375" y="76.5" width="34" height="207.5" fill="#E4A02A"/><text class="vlab" x="392.0" y="70.5">80</text><rect x="415" y="94.4" width="34" height="189.6" fill="#3E6285"/><text class="vlab" x="432.0" y="88.4">73</text><text class="ax" x="412" y="302" text-anchor="middle">1.0</text>
+<line x1="50" y1="284" x2="490" y2="284" stroke="#C9D1D9"/>
+<rect x="60" y="308" width="12" height="12" fill="#E4A02A"/><text class="legend" x="78" y="318">vs ToU 2-band</text>
+<rect x="190" y="308" width="12" height="12" fill="#3E6285"/><text class="legend" x="208" y="318">vs ToU 3-band</text>
+<text class="ax" x="275" y="322" text-anchor="middle">Price elasticity</text></svg></div></div></div>
+  </div>
+</div>
+<div class="foot"><span>Source: results/sweep_summary.csv + results/sweep_results.csv + results/elasticity_boundary.csv</span><span class="center">Every point = mean of 5 seeds with std shown (R6/H3) · λ is per-elasticity (R2) · Congestion baseline is an oracle heuristic</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div><div class="page" data-page="6">
+<div class="head">
+  <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
+  <div class="head-main">
+    <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 6</div>
+      <h1>How the Policy Prices</h1><div class="sub">A three-phase day no clock schedule can produce</div></div>
+    <div class="right"><span class="tag">SIMULATED · ELASTICITY 0.8</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
+  </div></div>
+<div class="body">
+  <div class="row">
+    <div class="kpi"><div class="name">Overnight</div><div class="value ">£0.30–0.31</div><div class="delta ">moderate hold — 00:00–07:00</div></div>
+    <div class="kpi"><div class="name">Peak ramp</div><div class="value ">→ £0.435</div><div class="delta warn">09:00–13:00, tracks the demand peak</div></div>
+    <div class="kpi"><div class="name">Afternoon release</div><div class="value ">£0.150</div><div class="delta pos">floor from 15:00 — fills the network late</div></div>
+    <div class="kpi"><div class="name">The tell</div><div class="value ">£0.353 at 08:00</div><div class="delta ">an intermediate mean only state-dependent switching can produce</div></div>
+  </div>
+  <div class="row grow">
+    <div class="col-3"><div class="card" style=""><div class="ct">Learned mean price by hour vs the ToU clock — shaded where the clock overcharges</div><div class="cs">PPO undercuts the £0.45 peak rate all day and monetises hours the clock gives away</div><div class="cbody"><svg viewBox="0 0 940 410">
+<rect x="297.5" y="63.0" width="32.5" height="77.3" fill="#123B5C" opacity="0.10"/><rect x="330.0" y="63.0" width="32.5" height="64.0" fill="#123B5C" opacity="0.10"/><rect x="362.5" y="63.0" width="32.5" height="29.2" fill="#123B5C" opacity="0.10"/><rect x="395.0" y="63.0" width="32.5" height="15.6" fill="#123B5C" opacity="0.10"/><rect x="427.5" y="63.0" width="32.5" height="19.8" fill="#123B5C" opacity="0.10"/><rect x="460.0" y="63.0" width="32.5" height="15.4" fill="#123B5C" opacity="0.10"/><rect x="492.5" y="63.0" width="32.5" height="9.6" fill="#123B5C" opacity="0.10"/><rect x="525.0" y="63.0" width="32.5" height="95.2" fill="#123B5C" opacity="0.10"/><rect x="557.5" y="63.0" width="32.5" height="190.9" fill="#123B5C" opacity="0.10"/><rect x="590.0" y="63.0" width="32.5" height="195.1" fill="#123B5C" opacity="0.10"/><rect x="622.5" y="63.0" width="32.5" height="197.1" fill="#123B5C" opacity="0.10"/><rect x="655.0" y="63.0" width="32.5" height="197.6" fill="#123B5C" opacity="0.10"/>
+<polyline points="70.0,261.0 102.5,261.0 102.5,261.0 135.0,261.0 135.0,261.0 167.5,261.0 167.5,261.0 200.0,261.0 200.0,261.0 232.5,261.0 232.5,261.0 265.0,261.0 265.0,261.0 297.5,261.0 297.5,63.0 330.0,63.0 330.0,63.0 362.5,63.0 362.5,63.0 395.0,63.0 395.0,63.0 427.5,63.0 427.5,63.0 460.0,63.0 460.0,63.0 492.5,63.0 492.5,63.0 525.0,63.0 525.0,63.0 557.5,63.0 557.5,63.0 590.0,63.0 590.0,63.0 622.5,63.0 622.5,63.0 655.0,63.0 655.0,63.0 687.5,63.0 687.5,261.0 720.0,261.0 720.0,261.0 752.5,261.0 752.5,261.0 785.0,261.0 785.0,261.0 817.5,261.0 817.5,261.0 850.0,261.0" fill="none" stroke="#123B5C" stroke-width="2" stroke-dasharray="7 4"/>
+<polyline points="86.2,160.4 118.8,156.1 151.2,155.6 183.8,156.1 216.2,153.7 248.8,151.2 281.2,140.6 313.8,140.3 346.2,127.0 378.8,92.2 411.2,78.6 443.8,82.8 476.3,78.4 508.8,72.6 541.2,158.2 573.8,253.9 606.2,258.1 638.8,260.1 671.2,260.6 703.8,260.8 736.2,261.0 768.8,261.0 801.2,261.0 833.8,261.0" fill="none" stroke="#E4A02A" stroke-width="3"/>
+<circle cx="86.2" cy="160.4" r="3.5" fill="#E4A02A"/><circle cx="118.8" cy="156.1" r="3.5" fill="#E4A02A"/><circle cx="151.2" cy="155.6" r="3.5" fill="#E4A02A"/><circle cx="183.8" cy="156.1" r="3.5" fill="#E4A02A"/><circle cx="216.2" cy="153.7" r="3.5" fill="#E4A02A"/><circle cx="248.8" cy="151.2" r="3.5" fill="#E4A02A"/><circle cx="281.2" cy="140.6" r="3.5" fill="#E4A02A"/><circle cx="313.8" cy="140.3" r="3.5" fill="#E4A02A"/><circle cx="346.2" cy="127.0" r="3.5" fill="#E4A02A"/><circle cx="378.8" cy="92.2" r="3.5" fill="#E4A02A"/><circle cx="411.2" cy="78.6" r="3.5" fill="#E4A02A"/><circle cx="443.8" cy="82.8" r="3.5" fill="#E4A02A"/><circle cx="476.3" cy="78.4" r="3.5" fill="#E4A02A"/><circle cx="508.8" cy="72.6" r="3.5" fill="#E4A02A"/><circle cx="541.2" cy="158.2" r="3.5" fill="#E4A02A"/><circle cx="573.8" cy="253.9" r="3.5" fill="#E4A02A"/><circle cx="606.2" cy="258.1" r="3.5" fill="#E4A02A"/><circle cx="638.8" cy="260.1" r="3.5" fill="#E4A02A"/><circle cx="671.2" cy="260.6" r="3.5" fill="#E4A02A"/><circle cx="703.8" cy="260.8" r="3.5" fill="#E4A02A"/><circle cx="736.2" cy="261.0" r="3.5" fill="#E4A02A"/><circle cx="768.8" cy="261.0" r="3.5" fill="#E4A02A"/><circle cx="801.2" cy="261.0" r="3.5" fill="#E4A02A"/><circle cx="833.8" cy="261.0" r="3.5" fill="#E4A02A"/>
+<circle cx="346.2" cy="127.0" r="8" fill="none" stroke="#1B9AAA" stroke-width="2"/>
+<text x="334.2" y="113.0" font-size="12" font-weight="700" fill="#1B9AAA" text-anchor="end">0.353 at 08:00 — only possible by state-dependent switching</text>
+<text x="443.8" y="49.8" font-size="12" font-weight="700" fill="#123B5C">ToU reference (0.45 peak / 0.15 off-peak)</text>
+<text x="703.8" y="234.6" font-size="12" font-weight="700" fill="#E4A02A">PPO learned mean price</text>
+<text class="ax" x="86.2" y="378" text-anchor="middle">00</text><text class="ax" x="151.2" y="378" text-anchor="middle">02</text><text class="ax" x="216.2" y="378" text-anchor="middle">04</text><text class="ax" x="281.2" y="378" text-anchor="middle">06</text><text class="ax" x="346.2" y="378" text-anchor="middle">08</text><text class="ax" x="411.2" y="378" text-anchor="middle">10</text><text class="ax" x="476.3" y="378" text-anchor="middle">12</text><text class="ax" x="541.2" y="378" text-anchor="middle">14</text><text class="ax" x="606.2" y="378" text-anchor="middle">16</text><text class="ax" x="671.2" y="378" text-anchor="middle">18</text><text class="ax" x="736.2" y="378" text-anchor="middle">20</text><text class="ax" x="801.2" y="378" text-anchor="middle">22</text>
+<text class="ax" x="62" y="364.0" text-anchor="end">£0.00</text><text class="ax" x="62" y="298.0" text-anchor="end">£0.10</text><text class="ax" x="62" y="232.0" text-anchor="end">£0.20</text><text class="ax" x="62" y="166.0" text-anchor="end">£0.30</text><text class="ax" x="62" y="100.0" text-anchor="end">£0.40</text><text class="ax" x="62" y="34.0" text-anchor="end">£0.50</text>
+<line x1="70" y1="360" x2="850" y2="360" stroke="#C9D1D9"/>
+<text class="ax" x="460.0" y="400" text-anchor="middle">Hour of day</text></svg></div></div></div>
+    <div class="col-1"><div class="card" style=""><div class="ct">Why this beats a clock</div><div class="cs"></div><div class="cbody"><div class="comment-list">
+      <div class="ci">The ToU schedule commits to <b>one price per window</b>, whatever the queue looks like.</div>
+      <div class="ci">PPO's hourly <b>means</b> sit between the tariff levels (e.g. £0.353 at 08:00): on some days it charges high, on others low, <em>conditioned on state</em> — a behaviour no fixed schedule can express.</div>
+      <div class="ci">Compare the arrivals profile on page 1: the price ramp tracks the observed demand ramp, then releases capacity after the afternoon peak.</div>
+      <div class="ci" style="color:var(--muted)">Mean across evaluation episodes; per-episode prices vary around these means.</div></div></div></div></div>
+  </div>
+</div>
+<div class="foot"><span>Source: results/ppo_price_by_hour.csv</span><span class="center">ToU reference: £0.45 in 07:00–19:00, £0.15 otherwise · learned policy outperforms tested baselines — not claimed optimal (H5)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+</div>
+</div></div>
+<div class="hint"><kbd>←</kbd><kbd>→</kbd> switch page · click the nav strip</div>
+<script>
+const pages=[...document.querySelectorAll('.page')];let cur=0;
+function go(i){cur=(i+pages.length)%pages.length;pages.forEach((p,j)=>p.classList.toggle('active',j===cur));
+document.querySelectorAll('.ns-item').forEach(n=>n.classList.toggle('active',+n.dataset.nav===cur));}
+document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click',()=>go(+el.dataset.nav)));
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1);});
+function fit(){const st=document.querySelector('.stage-inner');
+const s=Math.max(0.05,Math.min(innerWidth/1920,innerHeight/1080)||1);st.style.transform=`scale(${s})`;}
+addEventListener('resize',fit);fit();go(0);
+</script></body></html>

@@ -1,0 +1,37 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["usb_merged_final_data","eval_results","eval_summary","sweep_results","sweep_summary","elasticity_boundary","ppo_price_by_hour"]
+
+annotation PBI_ProTooling = ["DevMode","MCP-PBIModeling"]
+
+ref table DimPolicy
+ref table DimElasticity
+ref table DimScenario
+ref table DimHour
+ref table DimSeed
+ref table DimDistribution
+ref table DimConnector
+ref table DimCharger
+ref table DimDayType
+ref table FactSession
+ref table FactCalibration
+ref table FactScenario
+ref table FactScenarioSignificance
+ref table FactEvalEpisode
+ref table FactEvalSummary
+ref table FactSweep
+ref table FactPriceByHour
+ref table #Measures
+
+ref cultureInfo en-US
+

@@ -1,0 +1,56 @@
+/// Policy dimension — drives the single consistent policy order and colour on every visual (spec §4).
+table DimPolicy
+	lineageTag: e9839ac3-77d8-4a13-a872-b8fbfeca1110
+
+	column PolicyKey
+		dataType: string
+		isHidden
+		lineageTag: bb83db03-4e91-405a-bff0-1b6323600184
+		summarizeBy: none
+		sourceColumn: PolicyKey
+
+	column PolicyName
+		dataType: string
+		lineageTag: 544516f0-ca5a-4f2c-b14f-45c05ff354bd
+		summarizeBy: none
+		sourceColumn: PolicyName
+		sortByColumn: SortOrder
+
+	column PolicyType
+		dataType: string
+		lineageTag: f41cad99-573f-4813-af09-df026758d3a5
+		summarizeBy: none
+		sourceColumn: PolicyType
+
+	column IsLearned
+		dataType: boolean
+		lineageTag: 03bac608-5c09-4b71-845f-30fe06d9b802
+		summarizeBy: none
+		sourceColumn: IsLearned
+
+	column IsBaseline
+		dataType: boolean
+		lineageTag: 39e0a4f8-ee2e-40e6-9d73-232410aef49b
+		summarizeBy: none
+		sourceColumn: IsBaseline
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		lineageTag: 5e824ea8-26e6-429e-b72f-8ec9530bbfcd
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	partition DimPolicy = m
+		mode: import
+		source =
+				let
+				  Source = #table(type table [PolicyKey = text, PolicyName = text, PolicyType = text, IsLearned = logical, IsBaseline = logical, SortOrder = Int64.Type], {
+				    {"PPO", "PPO", "Learned", true, false, 1},
+				    {"Congestion", "Congestion", "Heuristic", false, true, 2},
+				    {"ToU3", "ToU 3-band", "Static schedule", false, true, 3},
+				    {"Flat", "Flat", "Static flat", false, true, 4},
+				    {"ToU", "ToU 2-band", "Static schedule", false, true, 5}})
+				in
+				  Source
+

@@ -1,0 +1,52 @@
+relationship rel_session_connector
+	fromColumn: FactSession.connector_type
+	toColumn: DimConnector.ConnectorKey
+
+relationship rel_session_charger
+	fromColumn: FactSession.charger_id
+	toColumn: DimCharger.ChargerId
+
+relationship rel_session_hour
+	fromColumn: FactSession.hour
+	toColumn: DimHour.Hour
+
+relationship rel_session_daytype
+	fromColumn: FactSession.day_type
+	toColumn: DimDayType.DayType
+
+relationship rel_calibration_distribution
+	fromColumn: FactCalibration.distribution
+	toColumn: DimDistribution.DistributionName
+
+relationship rel_scenario
+	fromColumn: FactScenario.scenario
+	toColumn: DimScenario.ScenarioKey
+
+relationship rel_significance_scenario
+	fromColumn: FactScenarioSignificance.scenario
+	toColumn: DimScenario.ScenarioKey
+
+relationship rel_evalepisode_policy
+	fromColumn: FactEvalEpisode.policy
+	toColumn: DimPolicy.PolicyKey
+
+relationship rel_evalsummary_policy
+	fromColumn: FactEvalSummary.policy
+	toColumn: DimPolicy.PolicyKey
+
+relationship rel_sweep_policy
+	fromColumn: FactSweep.policy
+	toColumn: DimPolicy.PolicyKey
+
+relationship rel_sweep_elasticity
+	fromColumn: FactSweep.elasticity
+	toColumn: DimElasticity.Elasticity
+
+relationship rel_sweep_seed
+	fromColumn: FactSweep.seed
+	toColumn: DimSeed.Seed
+
+relationship rel_pricebyhour_hour
+	fromColumn: FactPriceByHour.hour
+	toColumn: DimHour.Hour
+

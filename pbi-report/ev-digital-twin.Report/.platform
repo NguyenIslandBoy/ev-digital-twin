@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "ev-digital-twin"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4356235b-3ac0-4fc8-8091-aa9c8067c09f"
+  }
+}

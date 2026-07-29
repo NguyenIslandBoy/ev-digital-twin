@@ -1,0 +1,75 @@
+/// Session fact (EDA layer, isolated — no relationship to results facts). Cleaning per spec §5: null guard, duration capped at 4.0 h, derived hour and day_type.
+table FactSession
+	lineageTag: 4ed61f1f-88cc-4cbe-94b4-49d6aadd579f
+
+	column session_id
+		dataType: string
+		isHidden
+		lineageTag: c949ba0f-1d3c-4a64-969f-20890bef7698
+		summarizeBy: none
+		sourceColumn: session_id
+
+	column session_start
+		dataType: dateTime
+		lineageTag: 0f3efb94-95f6-4774-8757-df34c5dd1a9a
+		summarizeBy: none
+		sourceColumn: session_start
+
+	column energy_kwh
+		dataType: double
+		lineageTag: 1b419c0c-d8e9-41f5-ad20-5fe7c67bebbe
+		summarizeBy: none
+		sourceColumn: energy_kwh
+
+	column duration_hrs
+		dataType: double
+		lineageTag: 40435cd0-300d-4007-a066-6afc6914b085
+		summarizeBy: none
+		sourceColumn: duration_hrs
+
+	column connector_type
+		dataType: string
+		isHidden
+		lineageTag: 553ab64e-c1a8-4239-a995-3c78fbed60a2
+		summarizeBy: none
+		sourceColumn: connector_type
+
+	column charger_id
+		dataType: string
+		isHidden
+		lineageTag: 57ad4a59-59c6-4139-bdf4-d508ea22b230
+		summarizeBy: none
+		sourceColumn: charger_id
+
+	column carbon_intensity_gco2_kwh
+		dataType: double
+		lineageTag: 99aaefc6-82ea-4ddb-a681-3c5583939705
+		summarizeBy: none
+		sourceColumn: carbon_intensity_gco2_kwh
+
+	column hour
+		dataType: int64
+		isHidden
+		lineageTag: 0b4a1fa9-edb5-432f-8492-756c71fcc630
+		summarizeBy: none
+		sourceColumn: hour
+
+	column day_type
+		dataType: string
+		isHidden
+		lineageTag: e8d55b2e-3415-4788-a500-72b502aba1b4
+		summarizeBy: none
+		sourceColumn: day_type
+
+	partition FactSession = m
+		mode: import
+		source =
+				let
+				  Source = Raw_SessionsClean,
+				  NullGuard = Table.SelectRows(Source, each [session_start] <> null and [energy_kwh] <> null and [duration_hrs] <> null),
+				  Capped = Table.TransformColumns(NullGuard, {{"duration_hrs", each if _ > 4.0 then 4.0 else _, type number}}),
+				  WithHour = Table.AddColumn(Capped, "hour", each Time.Hour(DateTime.Time([session_start])), Int64.Type),
+				  WithDayType = Table.AddColumn(WithHour, "day_type", each if Date.DayOfWeek(DateTime.Date([session_start]), Day.Monday) < 5 then "Weekday" else "Weekend", type text)
+				in
+				  WithDayType
+

@@ -1,0 +1,39 @@
+/// Wilcoxon significance per scenario × KPI, incl. the undefined cases stored as null p (spec §2a, §8).
+table FactScenarioSignificance
+	lineageTag: 7e36306d-1d92-4818-974f-07202eb87556
+
+	column scenario
+		dataType: string
+		isHidden
+		lineageTag: 5b026d09-d886-4b15-ae45-411064758106
+		summarizeBy: none
+		sourceColumn: scenario
+
+	column kpi
+		dataType: string
+		lineageTag: 863429ec-8eba-4efa-a3a1-898dbb799098
+		summarizeBy: none
+		sourceColumn: kpi
+
+	column wilcoxon_p_vs_baseline
+		dataType: double
+		lineageTag: cde337b7-6d44-48a3-b62b-96ddd9c29c10
+		summarizeBy: none
+		sourceColumn: wilcoxon_p_vs_baseline
+
+	column significant
+		dataType: boolean
+		lineageTag: 50fb3521-eec2-4eea-8e8e-643d155207f6
+		summarizeBy: none
+		sourceColumn: significant
+
+	partition FactScenarioSignificance = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents(ResultsFolder & "scenario_significance.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  Typed = Table.TransformColumnTypes(Promoted, {{"scenario", type text}, {"kpi", type text}, {"wilcoxon_p_vs_baseline", type number}, {"significant", type logical}})
+				in
+				  Typed
+

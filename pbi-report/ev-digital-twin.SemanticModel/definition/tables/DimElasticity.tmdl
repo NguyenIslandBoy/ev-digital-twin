@@ -1,0 +1,45 @@
+/// Elasticity dimension with per-elasticity lambda (R2) and regime flag (R9). Source: elasticity_boundary.csv.
+table DimElasticity
+	lineageTag: dfc7d6bd-423d-4e47-8303-56909d52e402
+
+	column Elasticity
+		dataType: double
+		formatString: 0.0
+		lineageTag: fd22a3e5-99fa-4c1b-9787-4278bcc55ef1
+		summarizeBy: none
+		sourceColumn: Elasticity
+
+	column LambdaWeight
+		dataType: double
+		formatString: 0.000
+		lineageTag: 0855529d-18c5-401c-80c1-6cf388ad42c8
+		summarizeBy: none
+		sourceColumn: LambdaWeight
+
+	column TradeoffExists
+		dataType: boolean
+		lineageTag: 23034d30-ae45-48b1-be52-8a6e3e594d48
+		summarizeBy: none
+		sourceColumn: TradeoffExists
+
+	column RegimeLabel
+		dataType: string
+		lineageTag: 6f789dd8-f840-4059-84db-47e036bc6f7a
+		summarizeBy: none
+		sourceColumn: RegimeLabel
+
+	partition DimElasticity = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents(ResultsFolder & "elasticity_boundary.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  Selected = Table.SelectColumns(Promoted, {"elasticity", "lambda", "status"}),
+				  Typed = Table.TransformColumnTypes(Selected, {{"elasticity", type number}, {"lambda", type number}, {"status", type text}}),
+				  WithTradeoff = Table.AddColumn(Typed, "TradeoffExists", each [status] = "ok", type logical),
+				  WithRegime = Table.AddColumn(WithTradeoff, "RegimeLabel", each if [status] = "ok" then "Trade-off" else "Degenerate — pricing collapses to maximum tariff", type text),
+				  Renamed = Table.RenameColumns(WithRegime, {{"elasticity", "Elasticity"}, {"lambda", "LambdaWeight"}}),
+				  Final = Table.RemoveColumns(Renamed, {"status"})
+				in
+				  Final
+

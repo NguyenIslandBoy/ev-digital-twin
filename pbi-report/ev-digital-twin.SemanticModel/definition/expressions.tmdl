@@ -1,0 +1,23 @@
+/// Folder holding the finished results CSVs — the only place the dashboard reads from (spec §2).
+expression ResultsFolder = "C:\Users\nguye\Downloads\DS_projects\ev_digital_twin\results\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: c4b4e8b3-ee6d-4818-80f0-a07a01e2a0da
+
+/// Staging (not loaded): typed session export. Feeds FactSession, DimConnector, DimCharger.
+expression Raw_SessionsClean =
+		let
+		  Source = Csv.Document(File.Contents(ResultsFolder & "sessions_clean.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+		  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+		  Typed = Table.TransformColumnTypes(Promoted, {{"session_id", type text}, {"session_start", type datetime}, {"energy_kwh", type number}, {"duration_hrs", type number}, {"connector_type", type text}, {"charger_id", type text}, {"carbon_intensity_gco2_kwh", type number}})
+		in
+		  Typed
+	lineageTag: 7f9e974a-3042-4952-a7e7-2f7df0c14b9a
+
+/// Staging (not loaded): wide sweep results, one column block per policy. Feeds the FactSweep unpivot.
+expression Raw_SweepWide =
+		let
+		  Source = Csv.Document(File.Contents(ResultsFolder & "sweep_results.csv"), [Delimiter = ",", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+		  Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars = true])
+		in
+		  Promoted
+	lineageTag: 400d963f-ab6d-47fe-8670-fbf63391a560
+

@@ -1,0 +1,311 @@
+/// Measure container — hosts every global measure (house convention; measures have no natural home on a fact).
+table #Measures
+	lineageTag: 929e972d-f495-4351-b4bd-46a3bec10f9f
+
+	/// Observed charging sessions after cleaning (spec C4: counted, never typed; expect 29,775).
+	measure 'Total Sessions' = COUNTROWS(FactSession)
+		formatString: #,0
+		displayFolder: 01 EDA
+		lineageTag: 3b7aefb5-0d31-4161-98e4-87e47eb05642
+
+	/// Distinct charger ids in the observed data (expect 6).
+	measure 'Distinct Chargers' = DISTINCTCOUNT(FactSession[charger_id])
+		formatString: #,0
+		displayFolder: 01 EDA
+		lineageTag: 75e3d81b-4403-45c9-acb9-0634b6b25a92
+
+	/// Start of the observed period.
+	measure 'First Session Date' = MIN(FactSession[session_start])
+		formatString: dd mmm yyyy
+		displayFolder: 01 EDA
+		lineageTag: 54f6593c-1b8d-4cd5-8c06-c3d2e90886d2
+
+	/// End of the observed period.
+	measure 'Last Session Date' = MAX(FactSession[session_start])
+		formatString: dd mmm yyyy
+		displayFolder: 01 EDA
+		lineageTag: e0933b3d-440f-4917-b671-a7c96568bad1
+
+	/// Months covered by the observed data.
+	measure 'Data Span (Months)' = DATEDIFF(MIN(FactSession[session_start]), MAX(FactSession[session_start]), MONTH)
+		formatString: #,0
+		displayFolder: 01 EDA
+		lineageTag: d9cb20d6-863a-4547-a871-d33f25080161
+
+	/// Mean energy per observed session.
+	measure 'Mean Energy (kWh)' = AVERAGE(FactSession[energy_kwh])
+		formatString: #,0.0
+		displayFolder: 01 EDA
+		lineageTag: 35d05acd-7c47-4746-bc8c-d2857f0a4155
+
+	/// Median energy per observed session (expect ~27.4).
+	measure 'Median Energy (kWh)' = MEDIAN(FactSession[energy_kwh])
+		formatString: #,0.0
+		displayFolder: 01 EDA
+		lineageTag: 4ccb5945-f113-4a5e-b17e-76f4f888ff8c
+
+	/// Mean session duration, capped at 4.0 h (spec §5).
+	measure 'Mean Duration (h)' = AVERAGE(FactSession[duration_hrs])
+		formatString: #,0.00
+		displayFolder: 01 EDA
+		lineageTag: e4438b97-06d0-4b1c-8283-9edcf359a07d
+
+	/// Median session duration (expect ~0.64).
+	measure 'Median Duration (h)' = MEDIAN(FactSession[duration_hrs])
+		formatString: #,0.00
+		displayFolder: 01 EDA
+		lineageTag: ee231f18-7dcc-4a06-9889-ec7427296549
+
+	/// Mean grid carbon intensity at session start.
+	measure 'Mean Carbon Intensity (gCO2/kWh)' = AVERAGE(FactSession[carbon_intensity_gco2_kwh])
+		formatString: #,0.0
+		displayFolder: 01 EDA
+		lineageTag: e2087576-7a77-4308-ab56-a4dd17d164fd
+
+	/// Share of all observed sessions in the current slice (share-of-filtered-total pattern, REMOVEFILTERS over the session dims).
+	measure 'Session Share (%)' = DIVIDE([Total Sessions], CALCULATE([Total Sessions], REMOVEFILTERS(DimConnector), REMOVEFILTERS(DimDayType), REMOVEFILTERS(DimHour), REMOVEFILTERS(DimCharger)))
+		formatString: 0.0%
+		displayFolder: 01 EDA
+		lineageTag: 56361e24-531f-4351-868c-70ddbb3b480a
+
+	/// Fraction of sessions arriving 07:00–19:00 — quantifies why a clock tariff cannot discriminate (expect ~80%).
+	measure 'Peak-Window Share (%)' = DIVIDE(CALCULATE([Total Sessions], DimHour[IsToUPeak] = TRUE), [Total Sessions])
+		formatString: 0.0%
+		displayFolder: 01 EDA
+		lineageTag: 350a2f25-7c64-40a9-b40c-8aff3dacb15e
+
+	/// KS statistic for the distribution in context; at the total it reads as the worst (max) KS. Judged on the statistic, not the p-value (R7).
+	measure 'KS Statistic' = MAX(FactCalibration[ks_statistic])
+		formatString: 0.000
+		displayFolder: 02 Calibration
+		lineageTag: 4003ddca-7d3f-434f-b962-740cefcca6f2
+
+	/// Worst KS across all three distributions (headline card: ≤0.061 = calibrated).
+	measure 'Max KS Statistic' = CALCULATE(MAX(FactCalibration[ks_statistic]), REMOVEFILTERS(DimDistribution))
+		formatString: 0.000
+		displayFolder: 02 Calibration
+		lineageTag: 49e12478-60a5-4f5f-987c-769c850f2ed3
+
+	/// Simulated distribution mean for the distribution in context.
+	measure 'Simulated Mean' = MAX(FactCalibration[sim_mean])
+		formatString: #,0.00
+		displayFolder: 02 Calibration
+		lineageTag: 15882b32-f6ff-4dbd-a4e8-fe6b9c2e9379
+
+	/// Observed (real) distribution mean for the distribution in context.
+	measure 'Observed Mean' = MAX(FactCalibration[real_mean])
+		formatString: #,0.00
+		displayFolder: 02 Calibration
+		lineageTag: 5d39cafc-3ecf-4ef5-8c03-5502eb0f865c
+
+	/// Simulated minus observed mean; guarded so a missing side returns blank, not a phantom value.
+	measure 'Sim vs Obs Difference' = VAR s = [Simulated Mean] VAR o = [Observed Mean] RETURN IF(NOT ISBLANK(s) && NOT ISBLANK(o), s - o)
+		formatString: +#,0.00;-#,0.00;0.00
+		displayFolder: 02 Calibration
+		lineageTag: 1d81891f-2fd5-431c-b8ba-ec4024697745
+
+	/// Mean sessions completed per episode for the scenario in context (500 episodes).
+	measure 'Scenario Sessions' = MAX(FactScenario[sessions_completed])
+		formatString: #,0.0
+		displayFolder: 03 Scenario
+		lineageTag: f3cd2113-a402-4ac3-a9b8-457fa0f96a11
+
+	/// Mean revenue per episode for the scenario in context.
+	measure 'Scenario Revenue (£)' = MAX(FactScenario[revenue_gbp])
+		formatString: £#,0.00
+		displayFolder: 03 Scenario
+		lineageTag: a2b74866-2e25-44fd-b45c-6aec13d7d6c7
+
+	/// Mean CO2 per episode, displayed in kg.
+	measure 'Scenario CO2 (kg)' = DIVIDE(MAX(FactScenario[co2_g]), 1000)
+		formatString: #,0.0
+		displayFolder: 03 Scenario
+		lineageTag: 65ea4c0f-474a-4f5a-ada2-5e0df2047a71
+
+	/// Mean waiting time, displayed in minutes (R5).
+	measure 'Scenario Wait (min)' = MAX(FactScenario[avg_wait_hrs]) * 60
+		formatString: #,0.0
+		displayFolder: 03 Scenario
+		lineageTag: 658f1909-4e0f-4f4f-a43c-e0b599fad739
+
+	/// Mean utilisation, 0–1 fraction displayed as % (R8).
+	measure 'Scenario Utilisation (%)' = MAX(FactScenario[avg_utilisation])
+		formatString: 0.0%
+		displayFolder: 03 Scenario
+		lineageTag: f9d2e3b8-b050-4c8c-8449-438867e5d2b4
+
+	/// Sessions % change vs the baseline scenario (R8), guarded.
+	measure 'Sessions Change vs Baseline (%)' = VAR cur = [Scenario Sessions] VAR base = CALCULATE([Scenario Sessions], REMOVEFILTERS(DimScenario), DimScenario[ScenarioKey] = "Baseline") RETURN IF(NOT ISBLANK(cur) && NOT ISBLANK(base), DIVIDE(cur - base, base))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 03 Scenario
+		lineageTag: 441fb0a9-8dee-4a72-a57b-399405663aa4
+
+	/// Revenue % change vs baseline (R8), guarded (expect ToU +37.9%).
+	measure 'Revenue Change vs Baseline (%)' = VAR cur = [Scenario Revenue (£)] VAR base = CALCULATE([Scenario Revenue (£)], REMOVEFILTERS(DimScenario), DimScenario[ScenarioKey] = "Baseline") RETURN IF(NOT ISBLANK(cur) && NOT ISBLANK(base), DIVIDE(cur - base, base))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 03 Scenario
+		lineageTag: 9895db7c-2e71-4b54-9133-26b4346d72eb
+
+	/// CO2 % change vs baseline (R8), guarded.
+	measure 'CO2 Change vs Baseline (%)' = VAR cur = [Scenario CO2 (kg)] VAR base = CALCULATE([Scenario CO2 (kg)], REMOVEFILTERS(DimScenario), DimScenario[ScenarioKey] = "Baseline") RETURN IF(NOT ISBLANK(cur) && NOT ISBLANK(base), DIVIDE(cur - base, base))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 03 Scenario
+		lineageTag: b44ab816-0501-4529-b4c9-42171a97f3bf
+
+	/// Waiting-time % change vs baseline (R8), guarded (expect +6,981% at 2× adoption).
+	measure 'Wait Change vs Baseline (%)' = VAR cur = [Scenario Wait (min)] VAR base = CALCULATE([Scenario Wait (min)], REMOVEFILTERS(DimScenario), DimScenario[ScenarioKey] = "Baseline") RETURN IF(NOT ISBLANK(cur) && NOT ISBLANK(base), DIVIDE(cur - base, base))
+		formatString: +#,0%;-#,0%;0%
+		displayFolder: 03 Scenario
+		lineageTag: 71f0aed6-c28e-402d-9e24-93c5bb2a6882
+
+	/// Utilisation % change vs baseline (R8), guarded.
+	measure 'Utilisation Change vs Baseline (%)' = VAR cur = [Scenario Utilisation (%)] VAR base = CALCULATE([Scenario Utilisation (%)], REMOVEFILTERS(DimScenario), DimScenario[ScenarioKey] = "Baseline") RETURN IF(NOT ISBLANK(cur) && NOT ISBLANK(base), DIVIDE(cur - base, base))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 03 Scenario
+		lineageTag: c3db4f48-aa80-41af-ae92-cfaffb3b05f9
+
+	/// Three-state Wilcoxon indicator per scenario × KPI (spec §8/H7): significant / not significant / undefined. blank-vs-zero-guard pattern — a null p with a row present is ‘undefined’, not blank.
+	measure 'Significance Indicator' = VAR hasRow = COUNTROWS(FactScenarioSignificance) > 0 VAR p = MAX(FactScenarioSignificance[wilcoxon_p_vs_baseline]) RETURN IF(hasRow, IF(ISBLANK(p), "undefined — all paired differences zero", IF(p < 0.05, "significant", "not significant")))
+		displayFolder: 03 Scenario
+		lineageTag: 712b8580-cc69-42ef-9a9f-864cea97a2a2
+
+	/// Mean objective score (revenue − λ·wait_steps, R1) over the 500 headline episodes, per policy in context. Uses the pre-computed score column (R1: prefer stored score).
+	measure 'Mean Score' = AVERAGE(FactEvalEpisode[score])
+		formatString: #,0.0
+		displayFolder: 04 Evaluation
+		lineageTag: fe782122-e986-4ba6-bdb9-07bf63388930
+
+	/// Mean revenue per episode at the headline config.
+	measure 'Mean Revenue (£)' = AVERAGE(FactEvalEpisode[revenue_gbp])
+		formatString: £#,0.00
+		displayFolder: 04 Evaluation
+		lineageTag: 774a59ce-a4e7-4372-b785-86a908623d29
+
+	/// Mean waiting time in minutes (R5 — hours ×60, wait_steps never shown).
+	measure 'Mean Wait (min)' = AVERAGE(FactEvalEpisode[avg_wait_hrs]) * 60
+		formatString: #,0.0
+		displayFolder: 04 Evaluation
+		lineageTag: aec81970-8858-4d84-bf96-5b4cd38de9f1
+
+	/// Mean sessions completed per episode.
+	measure 'Mean Sessions' = AVERAGE(FactEvalEpisode[sessions_completed])
+		formatString: #,0.0
+		displayFolder: 04 Evaluation
+		lineageTag: 910fcce0-0071-4803-a605-596e34627a52
+
+	/// Mean CO2 per episode, displayed in kg.
+	measure 'Mean CO2 (kg)' = DIVIDE(AVERAGE(FactEvalEpisode[co2_g]), 1000)
+		formatString: #,0.0
+		displayFolder: 04 Evaluation
+		lineageTag: 2dfc087a-27ec-4c80-bac4-aca048eee4d9
+
+	/// Mean utilisation per episode (R8).
+	measure 'Mean Utilisation (%)' = AVERAGE(FactEvalEpisode[avg_utilisation])
+		formatString: 0.0%
+		displayFolder: 04 Evaluation
+		lineageTag: 5e709508-4686-4bca-883a-808a1189b31b
+
+	/// PPO score minus ToU 2-band score at matched config (R4), guarded. Expect +64.3.
+	measure 'PPO Advantage vs ToU' = VAR ppo = CALCULATE([Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR tou = CALCULATE([Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(tou), ppo - tou)
+		formatString: +#,0.0;-#,0.0;0.0
+		displayFolder: 04 Evaluation
+		lineageTag: b3e7a031-7048-425d-ac3c-9d4c583a454b
+
+	/// PPO score advantage as % of the ToU 2-band score (R4). Expect +20.2%.
+	measure 'PPO Advantage vs ToU (%)' = VAR tou = CALCULATE([Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU") RETURN DIVIDE([PPO Advantage vs ToU], tou)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 04 Evaluation
+		lineageTag: b7a5f174-f2fd-4da5-b74a-ea4ddef0a1e9
+
+	/// PPO revenue advantage as % of ToU revenue (R4), guarded. Expect +23.8%.
+	measure 'PPO Revenue Advantage vs ToU (%)' = VAR ppo = CALCULATE([Mean Revenue (£)], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR tou = CALCULATE([Mean Revenue (£)], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(tou), DIVIDE(ppo - tou, tou))
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 04 Evaluation
+		lineageTag: e6eae05e-ad70-4255-be79-0a1d3763e7ff
+
+	/// PPO score minus Flat score (R4), guarded.
+	measure 'PPO Advantage vs Flat' = VAR ppo = CALCULATE([Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR flat = CALCULATE([Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "Flat") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(flat), ppo - flat)
+		formatString: +#,0.0;-#,0.0;0.0
+		displayFolder: 04 Evaluation
+		lineageTag: 63aabc91-ef9a-47ed-8078-97d3680b2870
+
+	/// PPO score advantage as % of the Flat score (R4).
+	measure 'PPO Advantage vs Flat (%)' = VAR flat = CALCULATE([Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "Flat") RETURN DIVIDE([PPO Advantage vs Flat], flat)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 04 Evaluation
+		lineageTag: 1cf615fc-ff92-4f45-a994-2dd6d49a0c43
+
+	/// Mean score of the single policy selected in the slicer; blank when no single policy is selected (dynamic advantage card).
+	measure 'Selected Policy Score' = IF(HASONEVALUE(DimPolicy[PolicyKey]), [Mean Score])
+		formatString: #,0.0
+		displayFolder: 04 Evaluation
+		lineageTag: 9dbe1506-c005-488e-a91e-a162f7fc8a1b
+
+	/// Best mean score among the baseline (non-learned) policies present in the eval data.
+	measure 'Best Baseline Score' = CALCULATE(MAXX(VALUES(DimPolicy[PolicyKey]), [Mean Score]), REMOVEFILTERS(DimPolicy), DimPolicy[IsBaseline] = TRUE)
+		formatString: #,0.0
+		displayFolder: 04 Evaluation
+		lineageTag: 26fd9ed7-39f8-41bc-96c1-f92abaf6e046
+
+	/// Mean sweep score across the seeds in context (R6: point value = mean of 5 seeds). λ is per-elasticity by construction — the stored score used the matching λ (R2).
+	measure 'Sweep Mean Score' = AVERAGE(FactSweep[score])
+		formatString: #,0.0
+		displayFolder: 05 Sweep
+		lineageTag: 42c5a0a5-4b86-4c4a-9e8b-a17d1cbf63e0
+
+	/// Seed-to-seed standard deviation of the sweep score (R6/H3). Intended at policy × elasticity context, where the rows in scope are exactly the 5 seeds.
+	measure 'Sweep Score Std (Seeds)' = STDEV.S(FactSweep[score])
+		formatString: #,0.00
+		displayFolder: 05 Sweep
+		lineageTag: a3b01272-5d8b-4817-8150-2c3398801232
+
+	/// Mean + 1 seed std — upper edge of the uncertainty band (H3), guarded.
+	measure 'Sweep Score Band Upper' = VAR m = [Sweep Mean Score] VAR s = [Sweep Score Std (Seeds)] RETURN IF(NOT ISBLANK(m) && NOT ISBLANK(s), m + s)
+		formatString: #,0.0
+		displayFolder: 05 Sweep
+		lineageTag: 6b428575-3a27-4e61-89ff-5069cc3ef975
+
+	/// Mean − 1 seed std — lower edge of the uncertainty band (H3), guarded.
+	measure 'Sweep Score Band Lower' = VAR m = [Sweep Mean Score] VAR s = [Sweep Score Std (Seeds)] RETURN IF(NOT ISBLANK(m) && NOT ISBLANK(s), m - s)
+		formatString: #,0.0
+		displayFolder: 05 Sweep
+		lineageTag: 052bf599-aa13-4389-b319-5c20594d4745
+
+	/// PPO minus ToU 2-band sweep score at the elasticity in context (R2/R4) — scores already carry the per-elasticity λ. Guarded so the degenerate rows (no PPO) return blank, not a phantom margin (R9).
+	measure 'PPO Margin vs ToU 2-band' = VAR ppo = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR tou = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(tou), ppo - tou)
+		formatString: +#,0.0;-#,0.0;0.0
+		displayFolder: 05 Sweep
+		lineageTag: a5b30795-2f3d-408c-a445-ba785d225245
+
+	/// PPO minus ToU 3-band sweep score — carries the ‘state-conditioning, not granularity’ claim. Guarded (R9).
+	measure 'PPO Margin vs ToU 3-band' = VAR ppo = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR tou3 = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU3") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(tou3), ppo - tou3)
+		formatString: +#,0.0;-#,0.0;0.0
+		displayFolder: 05 Sweep
+		lineageTag: 08be6390-1b7b-4732-a413-b443edd0d032
+
+	/// Regime flag for the selected elasticity (R9): ‘Trade-off’ or ‘Degenerate — pricing collapses to maximum tariff’.
+	measure 'Regime Label (Selected)' = IF(HASONEVALUE(DimElasticity[Elasticity]), SELECTEDVALUE(DimElasticity[RegimeLabel]))
+		displayFolder: 05 Sweep
+		lineageTag: 66a66105-94e9-4545-9926-52e1f1ebe061
+
+	/// Learned mean price for the hour in context (mean across evaluation episodes).
+	measure 'PPO Mean Price (£/kWh)' = AVERAGE(FactPriceByHour[ppo_mean_price])
+		formatString: £0.000
+		displayFolder: 06 Behaviour
+		lineageTag: a4c493ab-3372-4d1c-898d-a5c92c265af9
+
+	/// ToU clock reference: £0.45 in 07:00–19:00, £0.15 otherwise (spec §4).
+	measure 'ToU Reference Price (£/kWh)' = AVERAGE(FactPriceByHour[tou_reference_price])
+		formatString: £0.000
+		displayFolder: 06 Behaviour
+		lineageTag: 477ee484-c1ed-4a6d-a43a-c435eb8fbd83
+
+	column Value
+		isHidden
+		isNameInferred
+		sourceColumn: [Value]
+
+	partition #Measures = calculated
+		mode: import
+		source = {BLANK()}
+

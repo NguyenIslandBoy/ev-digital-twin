@@ -1,0 +1,26 @@
+/// Weekday / Weekend slicer dimension. "All" is the cleared-slicer state, not a stored member (spec §4, inference).
+table DimDayType
+	lineageTag: b517d8fd-df0c-482f-accc-d6018272b133
+
+	column DayType
+		dataType: string
+		lineageTag: 891cbbc0-545b-44a0-bad4-46b22a1ed300
+		summarizeBy: none
+		sourceColumn: DayType
+		sortByColumn: SortOrder
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		lineageTag: 52b091c2-58b3-40e1-9a00-f247765cd68c
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	partition DimDayType = m
+		mode: import
+		source =
+				let
+				  Source = #table(type table [DayType = text, SortOrder = Int64.Type], {{"Weekday", 1}, {"Weekend", 2}})
+				in
+				  Source
+

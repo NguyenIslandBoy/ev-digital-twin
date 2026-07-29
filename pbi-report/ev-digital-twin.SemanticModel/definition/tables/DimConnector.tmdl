@@ -1,0 +1,46 @@
+/// Connector dimension; ObservedShare computed from the session export, never typed (H6).
+table DimConnector
+	lineageTag: f42e9384-a63a-4e72-b0df-f6dbb31d1452
+
+	column ConnectorKey
+		dataType: string
+		lineageTag: 4910ea78-9b99-42cf-9f89-361ad9bc499a
+		summarizeBy: none
+		sourceColumn: ConnectorKey
+
+	column ObservedShare
+		dataType: double
+		formatString: 0.0%
+		lineageTag: f7829d25-5720-454f-92b9-83b30db5a462
+		summarizeBy: none
+		sourceColumn: ObservedShare
+
+	column FriendlyLabel
+		dataType: string
+		lineageTag: d9f09101-7041-463c-a18a-33c856858275
+		summarizeBy: none
+		sourceColumn: FriendlyLabel
+		sortByColumn: SortOrder
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		lineageTag: b41fc62e-fb97-4fca-81df-7eca2a2bc00a
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	partition DimConnector = m
+		mode: import
+		source =
+				let
+				  Source = Raw_SessionsClean,
+				  Grouped = Table.Group(Source, {"connector_type"}, {{"SessionCount", each Table.RowCount(_), Int64.Type}}),
+				  Total = List.Sum(Grouped[SessionCount]),
+				  WithShare = Table.AddColumn(Grouped, "ObservedShare", each [SessionCount] / Total, type number),
+				  WithLabel = Table.AddColumn(WithShare, "FriendlyLabel", each if [connector_type] = "IEC_62196_T2_COMBO" then "CCS Combo" else if [connector_type] = "CHADEMO" then "CHAdeMO" else if [connector_type] = "IEC_62196_T2" then "Type 2 AC" else [connector_type], type text),
+				  WithSort = Table.AddColumn(WithLabel, "SortOrder", each if [connector_type] = "IEC_62196_T2_COMBO" then 1 else if [connector_type] = "CHADEMO" then 2 else 3, Int64.Type),
+				  Renamed = Table.RenameColumns(WithSort, {{"connector_type", "ConnectorKey"}}),
+				  Final = Table.RemoveColumns(Renamed, {"SessionCount"})
+				in
+				  Final
+

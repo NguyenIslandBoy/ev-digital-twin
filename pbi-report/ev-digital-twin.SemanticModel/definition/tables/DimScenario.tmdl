@@ -1,0 +1,51 @@
+/// Scenario dimension (spec §4). ScenarioKey matches the raw scenario names in the facts.
+table DimScenario
+	lineageTag: c8c99e0c-75f4-460a-8212-3b57a19d380f
+
+	column ScenarioKey
+		dataType: string
+		isHidden
+		lineageTag: 1364e0a2-a38e-4d65-9034-6f822dc0a798
+		summarizeBy: none
+		sourceColumn: ScenarioKey
+
+	column ShortLabel
+		dataType: string
+		lineageTag: e45cdbcf-cefa-460b-8d09-8ad2653edb17
+		summarizeBy: none
+		sourceColumn: ShortLabel
+		sortByColumn: SortOrder
+
+	column ScenarioType
+		dataType: string
+		lineageTag: 86284ddf-119a-44b7-9b67-bec4e60c4a69
+		summarizeBy: none
+		sourceColumn: ScenarioType
+
+	column AdoptionMultiplier
+		dataType: double
+		lineageTag: 66bdaab9-3215-4b90-9144-51bd6df6ec06
+		summarizeBy: none
+		sourceColumn: AdoptionMultiplier
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		lineageTag: 3b7e6412-43c5-4781-867c-f42f794137e1
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	partition DimScenario = m
+		mode: import
+		source =
+				let
+				  Source = #table(type table [ScenarioKey = text, ShortLabel = text, ScenarioType = text, AdoptionMultiplier = number, SortOrder = Int64.Type], {
+				    {"Baseline", "Baseline", "Baseline", 1.0, 1},
+				    {"EV Adoption Growth (Low)", "Adoption ×1.5", "Adoption growth", 1.5, 2},
+				    {"EV Adoption Growth (High)", "Adoption ×2", "Adoption growth", 2.0, 3},
+				    {"Time-of-Use Pricing", "ToU pricing", "Pricing", 1.0, 4},
+				    {"Carbon-Aware Incentives", "Carbon incentive", "Carbon", 1.0, 5},
+				    {"Combined Policy", "Combined", "Combined", 1.0, 6}})
+				in
+				  Source
+
