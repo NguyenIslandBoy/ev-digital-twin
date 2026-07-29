@@ -68,7 +68,8 @@ ev_digital_twin/
 │   └── 05_sweep_colab.ipynb     #   robustness sweep (Colab GPU)
 ├── models/                      # trained PPO weights (headline + sweep)
 ├── results/                     # generated CSVs and figures
-└── reports/                     # dissertation, poster, reference material
+├── reports/                     # dissertation, poster, reference material
+└── pbi-report/                  # visualise data and findings on Power BI
 ```
 
 ## Data
