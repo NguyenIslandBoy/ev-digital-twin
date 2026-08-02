@@ -7,12 +7,17 @@ venv/
 # ── Secrets — NEVER commit the metering-portal cookie ─────
 .env
 
-# ── Rebuildable database ──────────────────────────────────
-# Regenerated from the committed session CSV via
+# ── Local data — kept off GitHub ──────────────────────────
+# Raw supervisor CSV + meter ids, and the DuckDB built from them via
 #   python -m ingestion.run_scraper --load-sessions
 # then notebook 01 writes simulation_params. The full DB also
 # contains 28.7M scraped metering rows and exceeds GitHub limits.
+data/
 *.duckdb
+
+# ── Reports & reference material — kept off GitHub ────────
+# Dissertation PDFs, ethics form, paper library, status write-ups.
+reports/
 
 # ── Training artifacts (regenerable; results CSVs are kept) ─
 policy/logs/
