@@ -10,7 +10,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["usb_merged_final_data","eval_results","eval_summary","sweep_results","sweep_summary","elasticity_boundary","ppo_price_by_hour"]
+annotation PBI_QueryOrder = ["DimPolicy","DimElasticity","DimScenario","DimHour","DimSeed","DimDistribution","DimConnector","DimCharger","DimDayType","FactSession","FactCalibration","FactScenario","FactScenarioSignificance","FactEvalEpisode","FactEvalSummary","FactSweep","FactPriceByHour","ResultsFolder","Raw_SessionsClean","Raw_SweepWide"]
 
 annotation PBI_ProTooling = ["DevMode","MCP-PBIModeling"]
 

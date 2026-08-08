@@ -54,18 +54,18 @@ class ChargingNetworkModel(Model):
         super().__init__()
         self.rng = np.random.default_rng(seed)
 
-        # Scenario parameters — overridden by scenario engine
+        # Scenario parameters - overridden by scenario engine
         self.is_weekday          = is_weekday
         self.price_per_kwh       = price_per_kwh
         self.carbon_penalty      = carbon_penalty
         self.adoption_multiplier = adoption_multiplier
         self.carbon_intensity_g_per_kwh = carbon_intensity
 
-        # Phase 6 (RL) flags — both default to OFF so Phase 1-5 reproduce exactly
+        # Phase 6 (RL) flags - both default to OFF so Phase 1-5 reproduce exactly
         self.price_elasticity    = price_elasticity   # abandonment strength
         self.hourly_carbon       = hourly_carbon       # hourly CO2 accounting
 
-        # Scheduler — random activation order each step (mesa RandomActivation).
+        # Scheduler - random activation order each step (mesa RandomActivation).
         # Order does not affect calibrated KPIs (runs verified reproducible).
         self.schedule = RandomActivation(self)
 
@@ -93,7 +93,7 @@ class ChargingNetworkModel(Model):
         The allocation is a single multinomial over STEP_ARRIVAL_P, so every
         sampled session lands in exactly one step and the empirical arrival
         profile is reproduced exactly. The adoption multiplier scales the
-        target only — applying it to the per-step shares as well would count
+        target only - applying it to the per-step shares as well would count
         it twice.
         """
         self.daily_session_target: int = int(

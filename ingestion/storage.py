@@ -22,7 +22,7 @@ def init_db() -> None:
             )
         """)
 
-        # Checkpoint table — tracks which (meter_id, date) pairs are done
+        # Checkpoint table - tracks which (meter_id, date) pairs are done
         con.execute("""
             CREATE TABLE IF NOT EXISTS scrape_checkpoint (
                 meter_id  VARCHAR,
@@ -32,7 +32,7 @@ def init_db() -> None:
             )
         """)
 
-        # Charging sessions from supervisor CSV — loaded once
+        # Charging sessions from supervisor CSV - loaded once
         con.execute("""
             CREATE TABLE IF NOT EXISTS charging_sessions (
                 id                          VARCHAR PRIMARY KEY,

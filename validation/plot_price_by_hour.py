@@ -32,7 +32,7 @@ ax.plot(h, p, color=AMBER, lw=3.4, marker="o", ms=6,
         markerfacecolor="white", markeredgewidth=2.2,
         label="PPO learned policy", zorder=4)
 
-ax.annotate("flat £0.30 overnight in every\nepisode — no congestion to price",
+ax.annotate("flat £0.30 overnight in every\nepisode - no congestion to price",
             xy=(2.5, 0.30), xytext=(2.2, 0.372), ha="center", fontsize=10.5,
             color="#9A6B10", fontweight="bold",
             arrowprops=dict(arrowstyle="->", color="#9A6B10", lw=1.4))
@@ -66,7 +66,7 @@ for s in ("left", "bottom"):
 ax.legend(loc="upper left", frameon=False, fontsize=11.5)
 ax.text(0.5, -0.2,
         "Mean across 500 episodes. Values strictly between two tariffs are hours where the agent picks "
-        "differently\nacross episodes according to live queue state — something a fixed clock schedule "
+        "differently\nacross episodes according to live queue state - something a fixed clock schedule "
         "cannot produce.",
         transform=ax.transAxes, ha="center", fontsize=10, color="#5A6C78")
 

@@ -2,6 +2,8 @@
 expression ResultsFolder = "C:\Users\nguye\Downloads\DS_projects\ev_digital_twin\results\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
 	lineageTag: c4b4e8b3-ee6d-4818-80f0-a07a01e2a0da
 
+	annotation PBI_ResultType = Text
+
 /// Staging (not loaded): typed session export. Feeds FactSession, DimConnector, DimCharger.
 expression Raw_SessionsClean =
 		let

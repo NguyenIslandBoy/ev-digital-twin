@@ -4,7 +4,7 @@ Robustness sweep: elasticity x seed.
 
 For each price_elasticity:
   1. Derive lambda_wait from the tie-point between const £0.30 and const £0.45
-     (MUST be re-derived per elasticity — the trade-off shifts with it).
+     (MUST be re-derived per elasticity - the trade-off shifts with it).
   2. For each seed: train PPO at that lambda, evaluate vs ToU / flat / heuristic.
   3. Append one row per (elasticity, seed).
 
@@ -49,7 +49,7 @@ def pol_tou(obs, step):
 
 
 def pol_tou3(obs, step):
-    """3-band clock ToU — has the middle gear, still blind to congestion.
+    """3-band clock ToU - has the middle gear, still blind to congestion.
     Tests whether PPO's edge is state-conditioning rather than just £0.30."""
     hour = (step * 30) // 60
     if 11 <= hour <= 16:      # demand peak
@@ -98,7 +98,7 @@ def derive_lambda(elasticity, n_episodes=400, base_seed=500):
     """Tie-point lambda where const £0.30 and const £0.45 score equally.
 
     Returns (lambda, diagnostics). lambda is None when the regime is
-    DEGENERATE — i.e. £0.45 dominates £0.30 on BOTH revenue and wait, so no
+    DEGENERATE - i.e. £0.45 dominates £0.30 on BOTH revenue and wait, so no
     trade-off exists and the optimal policy is trivially the static maximum
     price. This happens when price_elasticity is too low for price to shed
     meaningful demand, and is itself a reportable result (adaptive pricing
@@ -209,13 +209,13 @@ def run_sweep(elasticities, seeds, total_timesteps, eval_episodes=300,
         pending = [s for s in seeds if (round(float(e), 4), int(s)) not in done]
         if not pending:
             if verbose:
-                print(f"\n=== elasticity {e} | all seeds already done — skipped ===")
+                print(f"\n=== elasticity {e} | all seeds already done - skipped ===")
             continue
 
         lam, diag = derive_lambda(e)
         if lam is None:
             if verbose:
-                print(f"[elasticity {e}] NO TRADE-OFF — skipped. {diag.get('reason','')}")
+                print(f"[elasticity {e}] NO TRADE-OFF - skipped. {diag.get('reason','')}")
             continue
         if verbose:
             print(f"\n=== elasticity {e} | derived lambda = {lam:.3f} "

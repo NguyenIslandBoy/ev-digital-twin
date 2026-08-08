@@ -1,14 +1,14 @@
-# results/ — provenance
+# results/ - provenance
 
 Every artefact in this folder was produced by the **current** simulator. Two
 defects were fixed after the first full run, and everything downstream of them
 was regenerated or retrained:
 
-1. **Arrival allocation** — `_spawn_arrivals` applied the per-step share at twice
+1. **Arrival allocation** - `_spawn_arrivals` applied the per-step share at twice
    its true value and squared the adoption multiplier, compressing the day's
    demand into the morning. At 2x adoption essentially no arrivals occurred
    after 11:30.
-2. **Energy delivery** — the session step count was floored while the charge
+2. **Energy delivery** - the session step count was floored while the charge
    rate was derived from the unfloored duration, so ~14% of each session's
    sampled energy was never delivered. Revenue, CO2 and energy were all low.
 
@@ -34,7 +34,7 @@ Derived from the real session log only, and independent of both defects:
 `figures/charger_utilisation.png`, `figures/energy_duration_distributions.png`.
 
 Runtimes on CPU: calibration + scenarios ~40s, headline training ~3 min,
-evaluation ~15s, full 20-run sweep ~59 min. No GPU is required — the Colab
+evaluation ~15s, full 20-run sweep ~59 min. No GPU is required - the Colab
 notebooks (04, 05) exist because the simulator used to be ~17x slower.
 
 `figures/calibration_arrival.png` is an arrival-timing gate. No such check
@@ -45,7 +45,7 @@ session *counts* cannot see a corrupted arrival *profile*.
 
 `elasticity_boundary.csv` and `sweep_*.csv` both report a tie-point lambda per
 elasticity, and the two disagree (e.g. at elasticity 0.8: 1.702 vs 1.581).
-This is not an error — lambda is `(r30 - r45) / (w30 - w45)`, a ratio whose
+This is not an error - lambda is `(r30 - r45) / (w30 - w45)`, a ratio whose
 denominator is a small difference between two noisy wait means, so it is
 sensitive to the episode count. The boundary scan uses 200 episodes, the sweep
 400. Quote the episode count wherever a lambda is reported.

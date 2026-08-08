@@ -165,7 +165,7 @@ table #Measures
 		lineageTag: c3db4f48-aa80-41af-ae92-cfaffb3b05f9
 
 	/// Three-state Wilcoxon indicator per scenario × KPI (spec §8/H7): significant / not significant / undefined. blank-vs-zero-guard pattern — a null p with a row present is ‘undefined’, not blank.
-	measure 'Significance Indicator' = VAR hasRow = COUNTROWS(FactScenarioSignificance) > 0 VAR p = MAX(FactScenarioSignificance[wilcoxon_p_vs_baseline]) RETURN IF(hasRow, IF(ISBLANK(p), "undefined — all paired differences zero", IF(p < 0.05, "significant", "not significant")))
+	measure 'Significance Indicator' = VAR hasRow = COUNTROWS(FactScenarioSignificance) > 0 VAR p = MAX(FactScenarioSignificance[wilcoxon_p_vs_baseline]) RETURN IF(hasRow, IF(ISBLANK(p), "undefined - all paired differences zero", IF(p < 0.05, "significant", "not significant")))
 		displayFolder: 03 Scenario
 		lineageTag: 712b8580-cc69-42ef-9a9f-864cea97a2a2
 
@@ -300,8 +300,83 @@ table #Measures
 		displayFolder: 06 Behaviour
 		lineageTag: 477ee484-c1ed-4a6d-a43a-c435eb8fbd83
 
+	measure 'Peak Color' =
+			
+			VAR _PeakHours = CALCULATE( COUNTROWS( DimHour ), DimHour[IsToUPeak] = TRUE() )
+			VAR _AllHours  = COUNTROWS( DimHour )
+			RETURN
+			    IF(
+			        NOT ISBLANK( _PeakHours ) && _PeakHours = _AllHours,
+			        "#F2C94C",   // Peak
+			        "#3F506B"    // Off-peak
+			    )
+		lineageTag: 65f96db2-235b-46d4-b130-55eadf6a0aba
+
+	measure 'Revenue Change Color' =
+			
+			VAR _Value = [Revenue Change vs Baseline (%)]
+			VAR _Tolerance = 0.0005   // ±0.05 pp — kills floating-point noise
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK( _Value ),          "#8A94A6",   // no data — grey
+			        _Value >  _Tolerance,       "#2E9E5B",   // green
+			        _Value < -_Tolerance,       "#D64550",   // red
+			                                    "#E8B93B"    // yellow (at baseline)
+			    )
+		lineageTag: 0ad665a7-dd7d-4384-b210-fe8c455b08fb
+
+	measure 'Sessions Change Color' =
+			
+			VAR _Value = [Sessions Change vs Baseline (%)]
+			VAR _Tolerance = 0.0005   // ±0.05 pp — kills floating-point noise
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK( _Value ),          "#8A94A6",   // no data — grey
+			        _Value >  _Tolerance,       "#2E9E5B",   // green
+			        _Value < -_Tolerance,       "#D64550",   // red
+			                                    "#E8B93B"    // yellow (at baseline)
+			    )
+		lineageTag: 5e8806de-403d-4f62-aad2-520c64b619bc
+
+	measure 'Wait Change Color' =
+			
+			VAR _Value = [Wait Change vs Baseline (%)]
+			VAR _Tolerance = 0.0005   // ±0.05 pp — kills floating-point noise
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK( _Value ),          "#8A94A6",   // no data — grey
+			        _Value >  _Tolerance,       "#2E9E5B",   // green
+			        _Value < -_Tolerance,       "#D64550",   // red
+			                                    "#E8B93B"    // yellow (at baseline)
+			    )
+		lineageTag: 700fe398-564e-4852-8515-0745627e4e85
+
+	measure 'Sweep Mean Score (All Elasticity)' =
+			
+			CALCULATE(
+			    AVERAGE( FactSweep[score] ),
+			    REMOVEFILTERS( DimElasticity[Elasticity] )
+			)
+		displayFolder: 05 Sweep
+		lineageTag: 19640728-f432-4d3a-a72d-3caff2ee109e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Overnight = "£0.30 - 0.31"
+		lineageTag: 45586ea4-51e1-47be-b3a6-f16f70d0980d
+
+	measure 'Peak ramp' = "£0.435"
+		lineageTag: bd478296-1848-4434-93e4-2f997faf331b
+
+	measure 'Afternoon release' = "£0.150"
+		lineageTag: 2beb6593-b5fb-44b1-a751-9650c5aadfed
+
 	column Value
 		isHidden
+		lineageTag: 4501e03d-0647-4e1f-909d-49860b319ff2
 		isNameInferred
 		sourceColumn: [Value]
 

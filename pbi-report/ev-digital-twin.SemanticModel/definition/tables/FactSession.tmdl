@@ -21,11 +21,15 @@ table FactSession
 		summarizeBy: none
 		sourceColumn: energy_kwh
 
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"FactSession","TableItemName":"energy_kwh (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
 	column duration_hrs
 		dataType: double
 		lineageTag: 40435cd0-300d-4007-a066-6afc6914b085
 		summarizeBy: none
 		sourceColumn: duration_hrs
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"FactSession","TableItemName":"duration_hrs (bins)","ObjectType":4},"LinkType":"UsedInGroup"}]
 
 	column connector_type
 		dataType: string
@@ -60,6 +64,90 @@ table FactSession
 		lineageTag: e8d55b2e-3415-4788-a500-72b502aba1b4
 		summarizeBy: none
 		sourceColumn: day_type
+
+	column 'energy_kwh (bins)' =
+			IF(
+				ISBLANK('FactSession'[energy_kwh]),
+				BLANK(),
+				IF(
+					'FactSession'[energy_kwh] >= 0,
+					ROUNDDOWN('FactSession'[energy_kwh] / 2, 0) * 2,
+					ROUNDUP('FactSession'[energy_kwh] / 2, 0) * 2
+				)
+			)
+		lineageTag: 59f07813-c5b7-4025-8c56-daa6d925ad69
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "FactSession"
+				          }
+				        },
+				        "Property": "energy_kwh"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 2.0,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"f","Entity":"FactSession"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"f"}},"Property":"energy_kwh"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"f"}},"Property":"energy_kwh"}},"Size":2.0}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'duration_hrs (bins)' =
+			IF(
+				ISBLANK('FactSession'[duration_hrs]),
+				BLANK(),
+				IF(
+					'FactSession'[duration_hrs] >= 0,
+					ROUNDDOWN('FactSession'[duration_hrs] / 0.1, 0) * 0.1,
+					ROUNDUP('FactSession'[duration_hrs] / 0.1, 0) * 0.1
+				)
+			)
+		lineageTag: 81389c9f-aafd-4839-9d58-eb4c99f16ff6
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "FactSession"
+				          }
+				        },
+				        "Property": "duration_hrs"
+				      }
+				    }
+				  ],
+				  "binningMetadata": {
+				    "binSize": {
+				      "value": 0.1,
+				      "unit": 0
+				    }
+				  }
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"f","Entity":"FactSession"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"f"}},"Property":"duration_hrs"}}],"BinItem":{"Expression":{"Floor":{"Expression":{"Column":{"Expression":{"SourceRef":{"Source":"f"}},"Property":"duration_hrs"}},"Size":0.1}}}}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	partition FactSession = m
 		mode: import

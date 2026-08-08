@@ -3,7 +3,7 @@
 Regenerate every results/ artefact that does NOT require a trained PPO agent.
 
 Covers the calibration report, the Phase 5 scenario evaluation and the
-elasticity boundary scan — i.e. everything notebooks 02 and 03 produce, plus
+elasticity boundary scan - i.e. everything notebooks 02 and 03 produce, plus
 the arrival-timing gate. The PPO artefacts (eval_*, ppo_*, sweep_*) require
 retraining and are listed as stale at the end rather than touched.
 

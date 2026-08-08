@@ -35,14 +35,14 @@ def parse_args():
 def main():
     args = parse_args()
 
-    # Step 1 — always initialise DB first
+    # Step 1 - always initialise DB first
     init_db()
 
-    # Step 2 — optionally load charging sessions
+    # Step 2 - optionally load charging sessions
     if args.load_sessions:
         load_charging_sessions(args.sessions_csv)
 
-    # Step 3 — scrape only when asked. The metering scrape is a 28.7M-row job
+    # Step 3 - scrape only when asked. The metering scrape is a 28.7M-row job
     # against a cookie-authenticated portal, and its output was investigated
     # then excluded (see notebooks/00); loading the session CSV must not
     # trigger it as a side effect.

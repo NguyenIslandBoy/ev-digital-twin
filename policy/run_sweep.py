@@ -46,7 +46,7 @@ EVAL_EPISODES   = 300
 
 
 def main():
-    print(f"Sweep at adoption {sw.ADOPTION}x — "
+    print(f"Sweep at adoption {sw.ADOPTION}x - "
           f"{len(ELASTICITIES)} elasticities x {len(SEEDS)} seeds "
           f"= {len(ELASTICITIES) * len(SEEDS)} runs")
 

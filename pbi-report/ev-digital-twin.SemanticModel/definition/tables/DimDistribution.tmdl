@@ -1,4 +1,4 @@
-/// Calibration targets; IsParametricFit flags the parametric fits (NB, lognormal) against the empirical ones — of which energy resampling is tautological but arrival hour is a genuine sim-vs-real test (spec §4).
+/// Calibration targets; IsParametricFit distinguishes genuine fits from the tautological energy resampling (spec §4).
 table DimDistribution
 	lineageTag: cd34f9a2-aad3-4d75-bb4c-d349f4d9c25e
 
@@ -29,8 +29,7 @@ table DimDistribution
 				  Source = #table(type table [DistributionName = text, IsParametricFit = logical, SortOrder = Int64.Type], {
 				    {"Sessions per day", true, 1},
 				    {"Energy per session", false, 2},
-				    {"Session duration", true, 3},
-				    {"Arrival hour", false, 4}})
+				    {"Session duration", true, 3}})
 				in
 				  Source
 

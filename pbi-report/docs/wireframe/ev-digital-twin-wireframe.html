@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"/>
-<title>EV Digital Twin — Dashboard Wireframe</title>
+<title>EV Digital Twin - Dashboard Wireframe</title>
 <style>/* Wireframe house-style design system.
    Extracted from the reference wireframe (Support_Service_Wireframe.html <style> block).
-   Data-free — safe to share. /spec-from-requirements reuses these tokens + component classes.
+   Data-free - safe to share. /spec-from-requirements reuses these tokens + component classes.
 */
   :root {
     --navy: #0B1A2E;
@@ -612,32 +612,32 @@
 <div class="nav-head"><div class="nav-hero">
   <div class="req-id">MSc Dissertation · Newcastle University · Simulated results · Observed data Mar 2021 – Jul 2024</div>
   <h1>An AI-Enabled Digital Twin for EV Charging</h1>
-  <div class="nav-sub">From 29,775 real charging sessions to a calibrated twin, to a learned pricing policy that outperforms the clock — and where it stops working.</div>
+  <div class="nav-sub">From 29,775 real charging sessions to a calibrated twin, to a learned pricing policy that outperforms the clock - and where it stops working.</div>
 </div></div>
 <div class="nav-body">
   <div class="tiles" style="margin-bottom:16px; height: 150px;">
-    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#1B9AAA">Twin is credible</div><div class="td">All three calibration distributions match the real network: worst KS statistic 0.061.</div><div class="tq" style="color:#1B9AAA">KS ≤ 0.061 — calibrated</div></div>
+    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#1B9AAA">Twin is credible</div><div class="td">All three calibration distributions match the real network: worst KS statistic 0.061.</div><div class="tq" style="color:#1B9AAA">KS ≤ 0.061 - calibrated</div></div>
     <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#123B5C">Adoption dominates</div><div class="td">Doubling EV adoption raises mean waiting time by ~6,981%. Pricing levers move revenue only.</div><div class="tq" style="color:#123B5C">+6,981% waiting at 2× adoption</div></div>
-    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#E4A02A">Learned pricing beats the clock</div><div class="td">The PPO policy outperforms the ToU 2-band schedule on the weighted objective — and on revenue by +23.8%.</div><div class="tq" style="color:#E4A02A">+20.2% objective vs ToU</div></div>
+    <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#E4A02A">Learned pricing beats the clock</div><div class="td">The PPO policy outperforms the ToU 2-band schedule on the weighted objective - and on revenue by +23.8%.</div><div class="tq" style="color:#E4A02A">+20.2% objective vs ToU</div></div>
     <div class="tile" style="height:150px; cursor:default;"><div class="tt" style="color:#7B8C99">…within a boundary</div><div class="td">Below price elasticity ≈ 0.65 no revenue-service trade-off exists; pricing collapses to the maximum tariff.</div><div class="tq" style="color:#7B8C99">No trade-off below ≈ 0.65</div></div>
   </div>
   <div class="tiles" style="height:190px;">
-    <div class="tile" data-nav="1" style="height:190px"><div class="tn">1</div><div class="tt">The Real Network</div><div class="td">What 29,775 observed sessions look like — and why the twin is built the way it is.</div><div class="tq">EDA · Observed</div></div>
+    <div class="tile" data-nav="1" style="height:190px"><div class="tn">1</div><div class="tt">The Real Network</div><div class="td">What 29,775 observed sessions look like - and why the twin is built the way it is.</div><div class="tq">EDA · Observed</div></div>
     <div class="tile" data-nav="2" style="height:190px"><div class="tn">2</div><div class="tt">Twin Credibility</div><div class="td">The simulation reproduces the real distributions it was calibrated on.</div><div class="tq">Calibration</div></div>
     <div class="tile" data-nav="3" style="height:190px"><div class="tn">3</div><div class="tt">Which Levers Move It</div><div class="td">Adoption growth moves everything; pricing moves revenue only.</div><div class="tq">Scenarios</div></div>
     <div class="tile" data-nav="4" style="height:190px"><div class="tn">4</div><div class="tt">Beating the Clock</div><div class="td">The learned policy vs handcrafted schedules at the headline configuration.</div><div class="tq">Policy comparison</div></div>
-    <div class="tile" data-nav="5" style="height:190px"><div class="tn">5</div><div class="tt">Robustness &amp; Boundary</div><div class="td">Five seeds, four elasticities, one degenerate regime — not a lucky run.</div><div class="tq">Sweep</div></div>
+    <div class="tile" data-nav="5" style="height:190px"><div class="tn">5</div><div class="tt">Robustness &amp; Boundary</div><div class="td">Five seeds, four elasticities, one degenerate regime - not a lucky run.</div><div class="tq">Sweep</div></div>
     <div class="tile" data-nav="6" style="height:190px"><div class="tn">6</div><div class="tt">How the Policy Prices</div><div class="td">A three-phase daily structure no clock schedule can produce.</div><div class="tq">Behaviour</div></div>
   </div>
   <div class="nav-note"><em>Reading order matters:</em> real data (1) → the twin reproducing it (2) → experiments on the twin (3–6). The learned policy outperforms the tested baselines on the weighted objective; it is <em>not</em> claimed optimal, and its higher waiting time and CO₂ vs ToU are shown on page 4.</div>
 </div>
-<div class="foot"><span>Source: results/ (all figures traceable to pipeline outputs)</span><span class="center">Colour code: teal = observed · amber = learned policy / price · navy = static policies · grey = uncertainty / excluded</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/ (all figures traceable to pipeline outputs)</span><span class="center">Colour code: teal = observed · amber = learned policy / price · navy = static policies · grey = uncertainty / excluded</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div><div class="page" data-page="1">
 <div class="head">
   <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
   <div class="head-main">
     <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 1</div>
-      <h1>The Real Network — Observed</h1><div class="sub">What does the real data look like, and why is the twin built this way?</div></div>
+      <h1>The Real Network - Observed</h1><div class="sub">What does the real data look like, and why is the twin built this way?</div></div>
     <div class="right"><span class="tag">OBSERVED</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
   </div></div>
 <div class="body">
@@ -650,7 +650,7 @@
     <div class="kpi"><div class="name">Median duration</div><div class="value ">0.64 h</div><div class="delta ">mean 0.74 h · capped at 4.0 h</div></div>
   </div>
   <div class="row grow">
-    <div class="col-2"><div class="card" style=""><div class="ct">Observed arrivals by hour — bimodal, and almost entirely inside the ToU window</div><div class="cs">80.3% of sessions arrive 07:00–19:00 → a clock tariff cannot tell a busy hour from a quiet one</div><div class="cbody"><svg viewBox="0 0 900 340"><rect x="286.0" y="10" width="408.5" height="306" fill="#E4A02A" opacity="0.13"/><text class="ax" x="490.3" y="24" text-anchor="middle" fill="#E4A02A" font-weight="700">ToU peak window 07:00–19:00</text>
+    <div class="col-2"><div class="card" style=""><div class="ct">Observed arrivals by hour - bimodal, and almost entirely inside the ToU window</div><div class="cs">80.3% of sessions arrive 07:00–19:00 → a clock tariff cannot tell a busy hour from a quiet one</div><div class="cbody"><svg viewBox="0 0 900 340"><rect x="286.0" y="10" width="408.5" height="306" fill="#E4A02A" opacity="0.13"/><text class="ax" x="490.3" y="24" text-anchor="middle" fill="#E4A02A" font-weight="700">ToU peak window 07:00–19:00</text>
 <rect x="46.0" y="286.2" width="31.3" height="29.8" fill="#1B9AAA"/>
 <rect x="80.3" y="298.0" width="31.3" height="18.0" fill="#1B9AAA"/>
 <rect x="114.6" y="301.4" width="31.3" height="14.6" fill="#1B9AAA"/>
@@ -688,7 +688,7 @@
 <text class="ax" x="747.5" y="332" text-anchor="middle">20</text>
 <text class="ax" x="816.1" y="332" text-anchor="middle">22</text>
 <line x1="46" y1="316" x2="866" y2="316" stroke="#C9D1D9" stroke-width="1"/><text class="ax" x="6" y="26">2,346</text><text class="ax" x="6" y="316">0</text></svg></div></div></div>
-    <div class="col-1"><div class="card" style=""><div class="ct">Observed connector mix — don't pool</div><div class="cs">82 / 14 / 4 split with very different profiles → twin samples per connector</div><div class="cbody"><svg viewBox="0 0 560 200"><text class="vlab-l" x="10" y="48.0">CCS Combo</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Observed connector mix - don't pool</div><div class="cs">82 / 14 / 4 split with very different profiles → twin samples per connector</div><div class="cbody"><svg viewBox="0 0 560 200"><text class="vlab-l" x="10" y="48.0">CCS Combo</text>
 <rect x="120" y="22" width="311.1" height="40" fill="#1B9AAA" rx="2"/>
 <text class="vlab-l" x="439.1" y="48.0" font-weight="700">82.1%</text>
 <text class="vlab-l" x="10" y="104.0">CHAdeMO</text>
@@ -702,7 +702,7 @@
       <tr><td>Type 2 AC</td><td class="num">15.5</td><td class="num">1.83</td></tr></tbody></table></div></div></div>
   </div>
   <div class="row grow">
-    <div class="col-1"><div class="card" style=""><div class="ct">Observed energy — plateau + heavy tail, no parametric fit adequate</div><div class="cs">Flat 5–20 kWh plateau and a long tail → twin resamples empirically instead of fitting a curve</div><div class="cbody"><svg viewBox="0 0 900 340">
+    <div class="col-1"><div class="card" style=""><div class="ct">Observed energy - plateau + heavy tail, no parametric fit adequate</div><div class="cs">Flat 5–20 kWh plateau and a long tail → twin resamples empirically instead of fitting a curve</div><div class="cbody"><svg viewBox="0 0 900 340">
 <rect x="46.0" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
 <rect x="60.9" y="306.0" width="13.9" height="0.0" fill="#1B9AAA"/>
 <rect x="75.9" y="171.6" width="13.9" height="134.4" fill="#1B9AAA"/>
@@ -814,7 +814,7 @@
 <text class="ax" x="844.1" y="322" text-anchor="middle"></text>
 <text class="ax" x="859.0" y="322" text-anchor="middle"></text>
 <line x1="46" y1="306" x2="866" y2="306" stroke="#C9D1D9" stroke-width="1"/><text class="ax" x="6" y="26">1,620</text><text class="ax" x="6" y="306">0</text><text class="ax" x="450" y="334" text-anchor="middle">Energy per session (kWh, 2 kWh bins)</text></svg></div></div></div>
-    <div class="col-1"><div class="card" style=""><div class="ct">Observed duration — clean lognormal shape</div><div class="cs">Well-behaved single mode → parametric lognormal fit, validated on the next page</div><div class="cbody"><svg viewBox="0 0 900 340"><text class="ax" x="858" y="80" text-anchor="end" fill="#7B8C99" font-weight="700">capped at 4.0 h</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Observed duration - clean lognormal shape</div><div class="cs">Well-behaved single mode → parametric lognormal fit, validated on the next page</div><div class="cbody"><svg viewBox="0 0 900 340"><text class="ax" x="858" y="80" text-anchor="end" fill="#7B8C99" font-weight="700">capped at 4.0 h</text>
 <rect x="46.0" y="294.4" width="19.0" height="11.6" fill="#1B9AAA"/>
 <rect x="66.0" y="194.1" width="19.0" height="111.9" fill="#1B9AAA"/>
 <rect x="86.0" y="120.4" width="19.0" height="185.6" fill="#1B9AAA"/>
@@ -900,13 +900,13 @@
 <line x1="46" y1="306" x2="866" y2="306" stroke="#C9D1D9" stroke-width="1"/><text class="ax" x="6" y="26">3,345</text><text class="ax" x="6" y="306">0</text><text class="ax" x="450" y="334" text-anchor="middle">Session duration (hours, 0.1 h bins)</text></svg></div></div></div>
   </div>
 </div>
-<div class="foot"><span>Source: results/sessions_clean.csv (export of ev_twin.duckdb · charging_sessions)</span><span class="center">This page describes the data — validation of the twin is page 2 · Building-meter readings excluded (collection failure)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/sessions_clean.csv (export of ev_twin.duckdb · charging_sessions)</span><span class="center">This page describes the data - validation of the twin is page 2 · Building-meter readings excluded (collection failure)</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div><div class="page" data-page="2">
 <div class="head">
   <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
   <div class="head-main">
     <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 2</div>
-      <h1>Twin Credibility — Calibration</h1><div class="sub">Does the simulation reproduce the distributions the viewer just saw?</div></div>
+      <h1>Twin Credibility - Calibration</h1><div class="sub">Does the simulation reproduce the distributions the viewer just saw?</div></div>
     <div class="right"><span class="tag">SIMULATED vs OBSERVED</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
   </div></div>
 <div class="body">
@@ -914,10 +914,10 @@
     <div class="kpi"><div class="name">Overall status</div><div class="value ">CALIBRATED</div><div class="delta pos">all KS ≤ 0.061</div></div>
     <div class="kpi"><div class="name">Sessions / day</div><div class="value ">KS 0.061</div><div class="delta ">Negative Binomial fit · sim 25.4 vs real 25.1</div></div>
     <div class="kpi"><div class="name">Session duration</div><div class="value ">KS 0.037</div><div class="delta ">Lognormal fit · sim 0.76 h vs real 0.74 h</div></div>
-    <div class="kpi"><div class="name">Energy / session</div><div class="value ">KS 0.009</div><div class="delta warn">Empirical resampling — agreement by construction</div></div>
+    <div class="kpi"><div class="name">Energy / session</div><div class="value ">KS 0.009</div><div class="delta warn">Empirical resampling - agreement by construction</div></div>
   </div>
   <div class="row grow">
-    <div class="col-2"><div class="card" style=""><div class="ct">Calibration quality — KS statistic per distribution (lower is better)</div><div class="cs">Grey = empirical resampling, a tautological check, flagged honestly — the two parametric fits carry the evidence</div><div class="cbody"><svg viewBox="0 0 860 250"><text class="vlab-l" x="10" y="65.0">Sessions / day (Neg. Binomial)</text>
+    <div class="col-2"><div class="card" style=""><div class="ct">Calibration quality - KS statistic per distribution (lower is better)</div><div class="cs">Grey = empirical resampling, a tautological check, flagged honestly - the two parametric fits carry the evidence</div><div class="cbody"><svg viewBox="0 0 860 250"><text class="vlab-l" x="10" y="65.0">Sessions / day (Neg. Binomial)</text>
 <rect x="310" y="36" width="371.7" height="46" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="689.7" y="65.0" font-weight="700">0.061</text>
 <text class="vlab-l" x="10" y="127.0">Session duration (lognormal)</text>
@@ -927,21 +927,21 @@
 <rect x="310" y="160" width="53.4" height="46" fill="#7B8C99" rx="2"/>
 <text class="vlab-l" x="371.4" y="189.0" font-weight="700">0.009*</text>
     <text class="ax" x="10" y="16" font-weight="700">Lower is better · all three ≤ 0.061</text>
-    <text class="ax" x="10" y="240">* empirical resampling — agreement expected by construction, not an independent fit test</text></svg></div></div></div>
+    <text class="ax" x="10" y="240">* empirical resampling - agreement expected by construction, not an independent fit test</text></svg></div></div></div>
     <div class="col-1"><div class="card" style=""><div class="ct">Simulated vs observed means</div><div class="cs">Moment agreement backs the KS statistics</div><div class="cbody"><table class="t"><thead><tr><th>Distribution</th><th class="num">Simulated</th><th class="num">Observed</th><th>Fit</th></tr></thead><tbody>
       <tr><td>Sessions per day</td><td class="num">25.42</td><td class="num">25.11</td><td><span class="pill pos">Parametric</span></td></tr>
       <tr><td>Energy per session (kWh)</td><td class="num">30.43</td><td class="num">30.44</td><td><span class="pill warn">By construction</span></td></tr>
       <tr><td>Session duration (hrs)</td><td class="num">0.763</td><td class="num">0.741</td><td><span class="pill pos">Parametric</span></td></tr></tbody></table>
-      <div class="comment-list" style="margin-top:14px"><div class="footer-note">With ~30,000 observations the KS <b>p-value</b> rejects on negligible deviations, so assessment uses the KS <b>statistic</b> (effect size) with matched means — a low p-value is not calibration failure.</div></div></div></div></div>
+      <div class="comment-list" style="margin-top:14px"><div class="footer-note">With ~30,000 observations the KS <b>p-value</b> rejects on negligible deviations, so assessment uses the KS <b>statistic</b> (effect size) with matched means - a low p-value is not calibration failure.</div></div></div></div></div>
   </div>
 </div>
-<div class="foot"><span>Source: results/calibration_summary.csv (notebook 02 output)</span><span class="center">This page is the bridge: the twin reproducing page 1 → experiments on pages 3–6 are credible</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/calibration_summary.csv (notebook 02 output)</span><span class="center">This page is the bridge: the twin reproducing page 1 → experiments on pages 3–6 are credible</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div><div class="page" data-page="3">
 <div class="head">
   <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
   <div class="head-main">
     <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 3</div>
-      <h1>Which Levers Move the Network — Scenarios</h1><div class="sub">Adoption growth moves everything; pricing moves revenue only</div></div>
+      <h1>Which Levers Move the Network - Scenarios</h1><div class="sub">Adoption growth moves everything; pricing moves revenue only</div></div>
     <div class="right"><span class="tag">SIMULATED</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
   </div></div>
 <div class="body">
@@ -949,10 +949,10 @@
     <div class="kpi"><div class="name">2× adoption → waiting</div><div class="value ">+6,981%</div><div class="delta neg">mean wait 0.005 → 0.354 h · everything moves</div></div>
     <div class="kpi"><div class="name">ToU pricing → revenue</div><div class="value ">+37.9%</div><div class="delta pos">£201.5 → £277.9 · demand unmoved</div></div>
     <div class="kpi"><div class="name">Carbon incentive</div><div class="value ">−0.7%</div><div class="delta ">revenue effect not significant (p = 0.19)</div></div>
-    <div class="kpi"><div class="name">Combined policy</div><div class="value ">+38.0%</div><div class="delta pos">≈ ToU alone — pricing does the work</div></div>
+    <div class="kpi"><div class="name">Combined policy</div><div class="value ">+38.0%</div><div class="delta pos">≈ ToU alone - pricing does the work</div></div>
   </div>
   <div class="row grow">
-    <div class="col-1"><div class="card" style=""><div class="ct">Revenue — pricing levers move it</div><div class="cs">% change vs baseline, 500 episodes per scenario</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Revenue - pricing levers move it</div><div class="cs">% change vs baseline, 500 episodes per scenario</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
 <rect x="138" y="34" width="149.9" height="28" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="295.9" y="54.0" font-weight="700">+47.8%</text>
 <text class="vlab-l" x="8" y="98.0">Adoption ×2</text>
@@ -967,7 +967,7 @@
 <text class="vlab-l" x="8" y="230.0">Combined</text>
 <rect x="138" y="210" width="119.2" height="28" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="265.2" y="230.0" font-weight="700">+38.0%</text></svg></div></div></div>
-    <div class="col-1"><div class="card" style=""><div class="ct">Sessions completed — only adoption moves it</div><div class="cs">% change vs baseline</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Sessions completed - only adoption moves it</div><div class="cs">% change vs baseline</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
 <rect x="138" y="34" width="154.0" height="28" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="300.0" y="54.0" font-weight="700">+49.1%</text>
 <text class="vlab-l" x="8" y="98.0">Adoption ×2</text>
@@ -982,7 +982,7 @@
 <text class="vlab-l" x="8" y="230.0">Combined</text>
 <rect x="138" y="210" width="2.0" height="28" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="148.0" y="230.0" font-weight="700">+0.0%</text></svg></div></div></div>
-    <div class="col-1"><div class="card" style=""><div class="ct">Waiting time — explodes under adoption growth</div><div class="cs">% change vs baseline (note the scale)</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Waiting time - explodes under adoption growth</div><div class="cs">% change vs baseline (note the scale)</div><div class="cbody"><svg viewBox="0 0 560 260"><text class="legend-strong" x="8" y="16"></text><text class="vlab-l" x="8" y="54.0">Adoption ×1.5</text>
 <rect x="138" y="34" width="82.8" height="28" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="228.8" y="54.0" font-weight="700">+1,799%</text>
 <text class="vlab-l" x="8" y="98.0">Adoption ×2</text>
@@ -1001,20 +1001,20 @@
   <div class="row" style="flex: 0 0 200px">
     <div class="col-2"><div class="card" style=""><div class="ct">Statistical significance vs baseline (Wilcoxon signed-rank)</div><div class="cs">The undefined case is shown, not hidden</div><div class="cbody"><table class="t"><thead><tr><th>Scenario</th><th>Revenue</th><th>Sessions</th><th>Waiting</th><th>CO₂</th></tr></thead><tbody>
       <tr><td>Adoption ×1.5 / ×2</td><td><span class="pill pos">significant</span></td><td><span class="pill pos">significant</span></td><td><span class="pill pos">significant</span></td><td><span class="pill pos">significant</span></td></tr>
-      <tr><td>ToU pricing</td><td><span class="pill pos">significant</span></td><td><span class="pill warn">undefined — all paired diffs zero</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr>
+      <tr><td>ToU pricing</td><td><span class="pill pos">significant</span></td><td><span class="pill warn">undefined - all paired diffs zero</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr>
       <tr><td>Carbon incentive</td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr>
-      <tr><td>Combined</td><td><span class="pill pos">significant</span></td><td><span class="pill warn">undefined — all paired diffs zero</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr></tbody></table></div></div></div>
+      <tr><td>Combined</td><td><span class="pill pos">significant</span></td><td><span class="pill warn">undefined - all paired diffs zero</span></td><td><span class="pill">not significant</span></td><td><span class="pill">not significant</span></td></tr></tbody></table></div></div></div>
     <div class="col-1"><div class="card" style=""><div class="ct">Reading</div><div class="cs"></div><div class="cbody"><div class="comment-list"><div class="ci">Demand is <b>inelastic to the tested price signals</b>: ToU pricing lifts revenue +37.9% while session counts do not move at all (every paired difference is zero → the Wilcoxon test is undefined, shown as such).</div>
-      <div class="ci">Capacity, not price, is the binding constraint — which motivates asking whether a <b>smarter price signal</b> can do better: pages 4–6.</div></div></div></div></div>
+      <div class="ci">Capacity, not price, is the binding constraint - which motivates asking whether a <b>smarter price signal</b> can do better: pages 4–6.</div></div></div></div></div>
   </div>
 </div>
-<div class="foot"><span>Source: results/scenario_summary.csv + results/scenario_significance.csv (notebook 03 output)</span><span class="center">500 episodes per scenario · % change vs baseline scenario (R8)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/scenario_summary.csv + results/scenario_significance.csv (notebook 03 output)</span><span class="center">500 episodes per scenario · % change vs baseline scenario (R8)</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div><div class="page" data-page="4">
 <div class="head">
   <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
   <div class="head-main">
     <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 4</div>
-      <h1>Learned Pricing Beats the Clock</h1><div class="sub">PPO vs handcrafted schedules at the headline configuration — a superior weighted trade-off, not dominance</div></div>
+      <h1>Learned Pricing Beats the Clock</h1><div class="sub">PPO vs handcrafted schedules at the headline configuration - a superior weighted trade-off, not dominance</div></div>
     <div class="right"><span class="tag">SIMULATED · ELASTICITY 0.8</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
   </div></div>
 <div class="body">
@@ -1025,7 +1025,7 @@
     <div class="kpi"><div class="name">The honest cost</div><div class="value ">9.4 min</div><div class="delta warn">mean wait vs ToU's 2.9 min · CO₂ also higher</div></div>
   </div>
   <div class="row grow">
-    <div class="col-1"><div class="card" style=""><div class="ct">Objective score — PPO leads; ToU 2-band trails even Flat</div><div class="cs">revenue − λ·waiting (R1) · 500 episodes · sorted</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">PPO (learned)</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Objective score - PPO leads; ToU 2-band trails even Flat</div><div class="cs">revenue − λ·waiting (R1) · 500 episodes · sorted</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">PPO (learned)</text>
 <rect x="160" y="26" width="485.2" height="46" fill="#E4A02A" rx="2"/>
 <text class="vlab-l" x="653.2" y="55.0" font-weight="700">383.1</text>
 <text class="vlab-l" x="10" y="117.0">Flat £0.30</text>
@@ -1043,7 +1043,7 @@
 <text class="vlab-l" x="10" y="179.0">ToU 2-band</text>
 <rect x="160" y="150" width="392.8" height="46" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="560.8" y="179.0" font-weight="700">£323.9</text></svg></div></div></div>
-    <div class="col-1"><div class="card" style=""><div class="ct">Cross-check: all five policies (sweep run)</div><div class="cs">Separate 30-episode sweep at elasticity 0.8 — different run, not 1:1 with headline · PPO also beats the 3-band clock</div><div class="cbody"><svg viewBox="0 0 820 300"><text class="vlab-l" x="10" y="50.0">PPO (learned)</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Cross-check: all five policies (sweep run)</div><div class="cs">Separate 30-episode sweep at elasticity 0.8 - different run, not 1:1 with headline · PPO also beats the 3-band clock</div><div class="cbody"><svg viewBox="0 0 820 300"><text class="vlab-l" x="10" y="50.0">PPO (learned)</text>
 <rect x="180" y="26" width="472.5" height="36" fill="#E4A02A" rx="2"/>
 <text class="vlab-l" x="660.5" y="50.0" font-weight="700">395.2</text>
 <text class="vlab-l" x="10" y="102.0">Congestion (oracle)</text>
@@ -1060,7 +1060,7 @@
 <text class="vlab-l" x="568.3" y="258.0" font-weight="700">318.1</text></svg></div></div></div>
   </div>
   <div class="row grow">
-    <div class="col-1"><div class="card" style=""><div class="ct">Mean waiting time — PPO is not the gentlest</div><div class="cs">minutes (R5) · ToU keeps queues shortest</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">Flat £0.30</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">Mean waiting time - PPO is not the gentlest</div><div class="cs">minutes (R5) · ToU keeps queues shortest</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">Flat £0.30</text>
 <rect x="160" y="26" width="469.9" height="46" fill="#3E6285" rx="2"/>
 <text class="vlab-l" x="637.9" y="55.0" font-weight="700">19.8 min</text>
 <text class="vlab-l" x="10" y="117.0">PPO (learned)</text>
@@ -1069,7 +1069,7 @@
 <text class="vlab-l" x="10" y="179.0">ToU 2-band</text>
 <rect x="160" y="150" width="68.3" height="46" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="236.3" y="179.0" font-weight="700">2.9 min</text></svg></div></div></div>
-    <div class="col-1"><div class="card" style=""><div class="ct">CO₂ per episode — more sessions, more carbon</div><div class="cs">kg CO₂ · follows session volume</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">Flat £0.30</text>
+    <div class="col-1"><div class="card" style=""><div class="ct">CO₂ per episode - more sessions, more carbon</div><div class="cs">kg CO₂ · follows session volume</div><div class="cbody"><svg viewBox="0 0 820 220"><text class="vlab-l" x="10" y="55.0">Flat £0.30</text>
 <rect x="160" y="26" width="490.1" height="46" fill="#3E6285" rx="2"/>
 <text class="vlab-l" x="658.1" y="55.0" font-weight="700">77.4 kg</text>
 <text class="vlab-l" x="10" y="117.0">PPO (learned)</text>
@@ -1079,33 +1079,33 @@
 <rect x="160" y="150" width="341.6" height="46" fill="#123B5C" rx="2"/>
 <text class="vlab-l" x="509.6" y="179.0" font-weight="700">53.9 kg</text></svg></div></div></div>
     <div class="col-1"><div class="card" style=""><div class="ct">How to read this page</div><div class="cs"></div><div class="cbody"><div class="comment-list">
-      <div class="ci"><em>PPO wins the weighted objective</em> — the trade-off the operator actually optimises.</div>
+      <div class="ci"><em>PPO wins the weighted objective</em> - the trade-off the operator actually optimises.</div>
       <div class="ci"><strong>It does not dominate:</strong> ToU has lower waiting (2.9 vs 9.4 min) and lower CO₂ (53.9 vs 64.2 kg).</div>
-      <div class="ci">ToU 2-band scores <b>below Flat</b> (318.8 vs 341.7) — a mis-timed clock is worse than no clock.</div>
-      <div class="ci" style="color:var(--muted)">Headline bars: 500-episode evaluation (PPO, ToU 2-band, Flat). The five-policy cross-check comes from the separate sweep run — ranking holds, values are not comparable across the two charts.</div></div></div></div></div>
+      <div class="ci">ToU 2-band scores <b>below Flat</b> (318.8 vs 341.7) - a mis-timed clock is worse than no clock.</div>
+      <div class="ci" style="color:var(--muted)">Headline bars: 500-episode evaluation (PPO, ToU 2-band, Flat). The five-policy cross-check comes from the separate sweep run - ranking holds, values are not comparable across the two charts.</div></div></div></div></div>
   </div>
 </div>
-<div class="foot"><span>Source: results/eval_summary.csv + results/eval_results.csv</span><span class="center">Score = revenue − λ·wait_steps with λ = 0.934 at elasticity 0.8 (R1–R3) · waiting shown in minutes (R5)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/eval_summary.csv + results/eval_results.csv</span><span class="center">Score = revenue − λ·wait_steps with λ = 0.934 at elasticity 0.8 (R1–R3) · waiting shown in minutes (R5)</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div><div class="page" data-page="5">
 <div class="head">
   <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
   <div class="head-main">
     <div class="left"><div class="req-id">EV Digital Twin · Results Dashboard · Page 5</div>
-      <h1>Robustness and the Boundary</h1><div class="sub">PPO holds its advantage as demand grows more elastic — until the trade-off itself disappears</div></div>
+      <h1>Robustness and the Boundary</h1><div class="sub">PPO holds its advantage as demand grows more elastic - until the trade-off itself disappears</div></div>
     <div class="right"><span class="tag">SIMULATED · 5 SEEDS × 4 ELASTICITIES</span><br/>Headline config: elasticity 0.8 · λ = 0.934</div>
   </div></div>
 <div class="body">
   <div class="row">
     <div class="slicers" style="flex:1.2"><div class="slicer"><div class="lbl">Elasticity</div><div class="val"><span class="lbl-inner">0.8 (headline)</span><span class="chev">▾</span></div></div></div>
     <div class="kpi"><div class="name">Regime at selection</div><div class="value ">Trade-off</div><div class="delta pos">λ = 0.934 · trained agent exists</div></div>
-    <div class="kpi"><div class="name">Seed spread (PPO, 0.8)</div><div class="value ">± 2.6</div><div class="delta ">std across 5 seeds — not a lucky run</div></div>
+    <div class="kpi"><div class="name">Seed spread (PPO, 0.8)</div><div class="value ">± 2.6</div><div class="delta ">std across 5 seeds - not a lucky run</div></div>
     <div class="kpi"><div class="name">Margin vs ToU 2-band</div><div class="value ">+77.1</div><div class="delta pos">score points at 0.8 · positive at every elasticity</div></div>
     <div class="kpi"><div class="name">Margin vs ToU 3-band</div><div class="value ">+53.6</div><div class="delta pos">finer clock ≠ closing the gap → state-conditioning wins</div></div>
   </div>
   <div class="row grow">
-    <div class="col-2"><div class="card" style=""><div class="ct">PPO holds its advantage across the trained range — and the regime boundary is shown, not hidden</div><div class="cs">Mean score across 5 seeds, amber band = ±1 std (R6) · grey zone: no trade-off exists, no agent was trained (R9)</div><div class="cbody"><svg viewBox="0 0 940 400">
+    <div class="col-2"><div class="card" style=""><div class="ct">PPO holds its advantage across the trained range - and the regime boundary is shown, not hidden</div><div class="cs">Mean score across 5 seeds, amber band = ±1 std (R6) · grey zone: no trade-off exists, no agent was trained (R9)</div><div class="cbody"><svg viewBox="0 0 940 400">
 <rect x="70" y="20" width="239.3" height="330" fill="#7B8C99" opacity="0.15"/>
-<text class="ax" x="189.6" y="50" text-anchor="middle" fill="#7B8C99" font-weight="700">Degenerate —</text>
+<text class="ax" x="189.6" y="50" text-anchor="middle" fill="#7B8C99" font-weight="700">Degenerate -</text>
 <text class="ax" x="189.6" y="66" text-anchor="middle" fill="#7B8C99" font-weight="700">pricing collapses</text>
 <text class="ax" x="189.6" y="82" text-anchor="middle" fill="#7B8C99" font-weight="700">to max tariff</text>
 <polygon points="379.6,44.2 520.4,106.1 661.1,152.3 801.9,172.5 801.9,179.3 661.1,161.4 520.4,114.8 379.6,54.2" fill="#E4A02A" opacity="0.25"/>
@@ -1122,7 +1122,7 @@
 <text class="ax" x="275" y="322" text-anchor="middle">Price elasticity</text></svg></div></div></div>
   </div>
 </div>
-<div class="foot"><span>Source: results/sweep_summary.csv + results/sweep_results.csv + results/elasticity_boundary.csv</span><span class="center">Every point = mean of 5 seeds with std shown (R6/H3) · λ is per-elasticity (R2) · Congestion baseline is an oracle heuristic</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/sweep_summary.csv + results/sweep_results.csv + results/elasticity_boundary.csv</span><span class="center">Every point = mean of 5 seeds with std shown (R6/H3) · λ is per-elasticity (R2) · Congestion baseline is an oracle heuristic</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div><div class="page" data-page="6">
 <div class="head">
   <div class="nav-strip"><div class="ns-item" data-nav="0">0 · Overview</div><div class="ns-item" data-nav="1">1 · Real Network</div><div class="ns-item" data-nav="2">2 · Calibration</div><div class="ns-item" data-nav="3">3 · Scenarios</div><div class="ns-item" data-nav="4">4 · Policy Comparison</div><div class="ns-item" data-nav="5">5 · Robustness</div><div class="ns-item" data-nav="6">6 · Behaviour</div></div>
@@ -1133,19 +1133,19 @@
   </div></div>
 <div class="body">
   <div class="row">
-    <div class="kpi"><div class="name">Overnight</div><div class="value ">£0.30–0.31</div><div class="delta ">moderate hold — 00:00–07:00</div></div>
+    <div class="kpi"><div class="name">Overnight</div><div class="value ">£0.30–0.31</div><div class="delta ">moderate hold - 00:00–07:00</div></div>
     <div class="kpi"><div class="name">Peak ramp</div><div class="value ">→ £0.435</div><div class="delta warn">09:00–13:00, tracks the demand peak</div></div>
-    <div class="kpi"><div class="name">Afternoon release</div><div class="value ">£0.150</div><div class="delta pos">floor from 15:00 — fills the network late</div></div>
+    <div class="kpi"><div class="name">Afternoon release</div><div class="value ">£0.150</div><div class="delta pos">floor from 15:00 - fills the network late</div></div>
     <div class="kpi"><div class="name">The tell</div><div class="value ">£0.353 at 08:00</div><div class="delta ">an intermediate mean only state-dependent switching can produce</div></div>
   </div>
   <div class="row grow">
-    <div class="col-3"><div class="card" style=""><div class="ct">Learned mean price by hour vs the ToU clock — shaded where the clock overcharges</div><div class="cs">PPO undercuts the £0.45 peak rate all day and monetises hours the clock gives away</div><div class="cbody"><svg viewBox="0 0 940 410">
+    <div class="col-3"><div class="card" style=""><div class="ct">Learned mean price by hour vs the ToU clock - shaded where the clock overcharges</div><div class="cs">PPO undercuts the £0.45 peak rate all day and monetises hours the clock gives away</div><div class="cbody"><svg viewBox="0 0 940 410">
 <rect x="297.5" y="63.0" width="32.5" height="77.3" fill="#123B5C" opacity="0.10"/><rect x="330.0" y="63.0" width="32.5" height="64.0" fill="#123B5C" opacity="0.10"/><rect x="362.5" y="63.0" width="32.5" height="29.2" fill="#123B5C" opacity="0.10"/><rect x="395.0" y="63.0" width="32.5" height="15.6" fill="#123B5C" opacity="0.10"/><rect x="427.5" y="63.0" width="32.5" height="19.8" fill="#123B5C" opacity="0.10"/><rect x="460.0" y="63.0" width="32.5" height="15.4" fill="#123B5C" opacity="0.10"/><rect x="492.5" y="63.0" width="32.5" height="9.6" fill="#123B5C" opacity="0.10"/><rect x="525.0" y="63.0" width="32.5" height="95.2" fill="#123B5C" opacity="0.10"/><rect x="557.5" y="63.0" width="32.5" height="190.9" fill="#123B5C" opacity="0.10"/><rect x="590.0" y="63.0" width="32.5" height="195.1" fill="#123B5C" opacity="0.10"/><rect x="622.5" y="63.0" width="32.5" height="197.1" fill="#123B5C" opacity="0.10"/><rect x="655.0" y="63.0" width="32.5" height="197.6" fill="#123B5C" opacity="0.10"/>
 <polyline points="70.0,261.0 102.5,261.0 102.5,261.0 135.0,261.0 135.0,261.0 167.5,261.0 167.5,261.0 200.0,261.0 200.0,261.0 232.5,261.0 232.5,261.0 265.0,261.0 265.0,261.0 297.5,261.0 297.5,63.0 330.0,63.0 330.0,63.0 362.5,63.0 362.5,63.0 395.0,63.0 395.0,63.0 427.5,63.0 427.5,63.0 460.0,63.0 460.0,63.0 492.5,63.0 492.5,63.0 525.0,63.0 525.0,63.0 557.5,63.0 557.5,63.0 590.0,63.0 590.0,63.0 622.5,63.0 622.5,63.0 655.0,63.0 655.0,63.0 687.5,63.0 687.5,261.0 720.0,261.0 720.0,261.0 752.5,261.0 752.5,261.0 785.0,261.0 785.0,261.0 817.5,261.0 817.5,261.0 850.0,261.0" fill="none" stroke="#123B5C" stroke-width="2" stroke-dasharray="7 4"/>
 <polyline points="86.2,160.4 118.8,156.1 151.2,155.6 183.8,156.1 216.2,153.7 248.8,151.2 281.2,140.6 313.8,140.3 346.2,127.0 378.8,92.2 411.2,78.6 443.8,82.8 476.3,78.4 508.8,72.6 541.2,158.2 573.8,253.9 606.2,258.1 638.8,260.1 671.2,260.6 703.8,260.8 736.2,261.0 768.8,261.0 801.2,261.0 833.8,261.0" fill="none" stroke="#E4A02A" stroke-width="3"/>
 <circle cx="86.2" cy="160.4" r="3.5" fill="#E4A02A"/><circle cx="118.8" cy="156.1" r="3.5" fill="#E4A02A"/><circle cx="151.2" cy="155.6" r="3.5" fill="#E4A02A"/><circle cx="183.8" cy="156.1" r="3.5" fill="#E4A02A"/><circle cx="216.2" cy="153.7" r="3.5" fill="#E4A02A"/><circle cx="248.8" cy="151.2" r="3.5" fill="#E4A02A"/><circle cx="281.2" cy="140.6" r="3.5" fill="#E4A02A"/><circle cx="313.8" cy="140.3" r="3.5" fill="#E4A02A"/><circle cx="346.2" cy="127.0" r="3.5" fill="#E4A02A"/><circle cx="378.8" cy="92.2" r="3.5" fill="#E4A02A"/><circle cx="411.2" cy="78.6" r="3.5" fill="#E4A02A"/><circle cx="443.8" cy="82.8" r="3.5" fill="#E4A02A"/><circle cx="476.3" cy="78.4" r="3.5" fill="#E4A02A"/><circle cx="508.8" cy="72.6" r="3.5" fill="#E4A02A"/><circle cx="541.2" cy="158.2" r="3.5" fill="#E4A02A"/><circle cx="573.8" cy="253.9" r="3.5" fill="#E4A02A"/><circle cx="606.2" cy="258.1" r="3.5" fill="#E4A02A"/><circle cx="638.8" cy="260.1" r="3.5" fill="#E4A02A"/><circle cx="671.2" cy="260.6" r="3.5" fill="#E4A02A"/><circle cx="703.8" cy="260.8" r="3.5" fill="#E4A02A"/><circle cx="736.2" cy="261.0" r="3.5" fill="#E4A02A"/><circle cx="768.8" cy="261.0" r="3.5" fill="#E4A02A"/><circle cx="801.2" cy="261.0" r="3.5" fill="#E4A02A"/><circle cx="833.8" cy="261.0" r="3.5" fill="#E4A02A"/>
 <circle cx="346.2" cy="127.0" r="8" fill="none" stroke="#1B9AAA" stroke-width="2"/>
-<text x="334.2" y="113.0" font-size="12" font-weight="700" fill="#1B9AAA" text-anchor="end">0.353 at 08:00 — only possible by state-dependent switching</text>
+<text x="334.2" y="113.0" font-size="12" font-weight="700" fill="#1B9AAA" text-anchor="end">0.353 at 08:00 - only possible by state-dependent switching</text>
 <text x="443.8" y="49.8" font-size="12" font-weight="700" fill="#123B5C">ToU reference (0.45 peak / 0.15 off-peak)</text>
 <text x="703.8" y="234.6" font-size="12" font-weight="700" fill="#E4A02A">PPO learned mean price</text>
 <text class="ax" x="86.2" y="378" text-anchor="middle">00</text><text class="ax" x="151.2" y="378" text-anchor="middle">02</text><text class="ax" x="216.2" y="378" text-anchor="middle">04</text><text class="ax" x="281.2" y="378" text-anchor="middle">06</text><text class="ax" x="346.2" y="378" text-anchor="middle">08</text><text class="ax" x="411.2" y="378" text-anchor="middle">10</text><text class="ax" x="476.3" y="378" text-anchor="middle">12</text><text class="ax" x="541.2" y="378" text-anchor="middle">14</text><text class="ax" x="606.2" y="378" text-anchor="middle">16</text><text class="ax" x="671.2" y="378" text-anchor="middle">18</text><text class="ax" x="736.2" y="378" text-anchor="middle">20</text><text class="ax" x="801.2" y="378" text-anchor="middle">22</text>
@@ -1154,12 +1154,12 @@
 <text class="ax" x="460.0" y="400" text-anchor="middle">Hour of day</text></svg></div></div></div>
     <div class="col-1"><div class="card" style=""><div class="ct">Why this beats a clock</div><div class="cs"></div><div class="cbody"><div class="comment-list">
       <div class="ci">The ToU schedule commits to <b>one price per window</b>, whatever the queue looks like.</div>
-      <div class="ci">PPO's hourly <b>means</b> sit between the tariff levels (e.g. £0.353 at 08:00): on some days it charges high, on others low, <em>conditioned on state</em> — a behaviour no fixed schedule can express.</div>
+      <div class="ci">PPO's hourly <b>means</b> sit between the tariff levels (e.g. £0.353 at 08:00): on some days it charges high, on others low, <em>conditioned on state</em> - a behaviour no fixed schedule can express.</div>
       <div class="ci">Compare the arrivals profile on page 1: the price ramp tracks the observed demand ramp, then releases capacity after the afternoon peak.</div>
       <div class="ci" style="color:var(--muted)">Mean across evaluation episodes; per-episode prices vary around these means.</div></div></div></div></div>
   </div>
 </div>
-<div class="foot"><span>Source: results/ppo_price_by_hour.csv</span><span class="center">ToU reference: £0.45 in 07:00–19:00, £0.15 otherwise · learned policy outperforms tested baselines — not claimed optimal (H5)</span><span>Wireframe — layout proposal, figures from profiled data</span></div>
+<div class="foot"><span>Source: results/ppo_price_by_hour.csv</span><span class="center">ToU reference: £0.45 in 07:00–19:00, £0.15 otherwise · learned policy outperforms tested baselines - not claimed optimal (H5)</span><span>Wireframe - layout proposal, figures from profiled data</span></div>
 </div>
 </div></div>
 <div class="hint"><kbd>←</kbd><kbd>→</kbd> switch page · click the nav strip</div>

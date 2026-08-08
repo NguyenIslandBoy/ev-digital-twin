@@ -34,7 +34,7 @@ ARRIVAL_RATES: dict[int, float] = {
 
 # Share of the day's demand arriving in each 30-min step. Each hour spans two
 # steps, so normalising the per-step rates over all 48 steps gives a proper
-# distribution — the model allocates the daily target across it in one
+# distribution - the model allocates the daily target across it in one
 # multinomial draw, which preserves the empirical arrival profile exactly.
 _step_rates = np.array(
     [ARRIVAL_RATES.get((step * 30) // 60, 0.0) for step in range(STEPS_PER_DAY)]

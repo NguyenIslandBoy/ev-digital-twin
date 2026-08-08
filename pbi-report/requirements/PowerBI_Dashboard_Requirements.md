@@ -1,13 +1,13 @@
-# Power BI Dashboard — Requirements & Business Rules
+# Power BI Dashboard - Requirements & Business Rules
 
-**Project:** An AI-Enabled Digital Twin for EV Charging — Results Dashboard
+**Project:** An AI-Enabled Digital Twin for EV Charging - Results Dashboard
 **Purpose of this document:** the single specification Claude Code follows to model the data and author DAX in Power BI. It defines the data model, metric definitions, calculation rules, page content, visuals, and integrity rules. It does **not** contain DAX; write the DAX from these rules.
 
 ---
 
 ## 1. Purpose and audience
 
-The dashboard makes the dissertation's story legible to viewers who will not read the code or the full document: the supervisor, examiners, and a general technical audience. It is an **explanatory** report — a guided narrative that walks a viewer from the real data through to the findings — not an operational monitoring tool. Density should be low, each page answers one question, and every visual must read in about five seconds.
+The dashboard makes the dissertation's story legible to viewers who will not read the code or the full document: the supervisor, examiners, and a general technical audience. It is an **explanatory** report - a guided narrative that walks a viewer from the real data through to the findings - not an operational monitoring tool. Density should be low, each page answers one question, and every visual must read in about five seconds.
 
 The dashboard tells one arc across six content pages:
 
@@ -37,17 +37,17 @@ project_root/
     └── <files to be created>       # ALL new CSVs are written here too
 ```
 
-**Path rules.** The dashboard reads **finished CSV files from `results/` only**. Do not connect Power BI to live DuckDB for calculation, and do not re-run any computation. The raw `data/` sources (`ev_twin.duckdb`, `data/raw/usb_merged_final_data.csv`) are provenance and the origin of the exports below; they are not read directly by Power BI except as a last-resort fallback (see the EDA source note). **Every file to be created is written to `results/`**, alongside the existing summary outputs — nothing new is placed in `data/`. If a listed file is absent, flag it and state the columns it must contain rather than substituting values.
+**Path rules.** The dashboard reads **finished CSV files from `results/` only**. Do not connect Power BI to live DuckDB for calculation, and do not re-run any computation. The raw `data/` sources (`ev_twin.duckdb`, `data/raw/usb_merged_final_data.csv`) are provenance and the origin of the exports below; they are not read directly by Power BI except as a last-resort fallback (see the EDA source note). **Every file to be created is written to `results/`**, alongside the existing summary outputs - nothing new is placed in `data/`. If a listed file is absent, flag it and state the columns it must contain rather than substituting values.
 
 ### Session-grain source (EDA layer only)
 
 | File (in `results/`) | Grain | Role |
 |---|---|---|
-| `results/sessions_clean.csv` (export from `data/ev_twin.duckdb` table `charging_sessions`; last-resort fallback `data/raw/usb_merged_final_data.csv` with section 5 cleaning applied in Power Query) | one session | Provenance layer — feeds the EDA page only |
+| `results/sessions_clean.csv` (export from `data/ev_twin.duckdb` table `charging_sessions`; last-resort fallback `data/raw/usb_merged_final_data.csv` with section 5 cleaning applied in Power Query) | one session | Provenance layer - feeds the EDA page only |
 
 Required columns (rename in Power Query if the source differs): `session_id`, `session_start` (datetime), `energy_kwh`, `duration_hrs`, `connector_type`, `charger_id`, `carbon_intensity_gco2_kwh` (if present).
 
-### Summary sources (all other pages) — all in `results/`
+### Summary sources (all other pages) - all in `results/`
 
 | File | Grain (one row per...) | Role |
 |---|---|---|
@@ -60,7 +60,7 @@ Required columns (rename in Power Query if the source differs): `session_id`, `s
 | `results/elasticity_boundary.csv` | elasticity | Degenerate-boundary scan |
 | `results/ppo_price_by_hour.csv` | hour | Learned policy behaviour |
 
-Files to be created before build — **all written to `results/`**, with required columns:
+Files to be created before build - **all written to `results/`**, with required columns:
 - `results/sessions_clean.csv`: the session columns above. Source: `data/ev_twin.duckdb` -> `charging_sessions`. A single DuckDB `COPY charging_sessions TO 'results/sessions_clean.csv' (HEADER, DELIMITER ',')`, or a pandas export from notebook 01.
 - `results/scenario_summary.csv`: `scenario, sessions_completed, revenue_gbp, co2_g, avg_wait_hrs, avg_utilisation, wilcoxon_p_vs_baseline`. Source: notebook 03 scenario engine output.
 - `results/calibration_summary.csv`: `distribution, ks_statistic, sim_mean, real_mean`. Source: notebook 02 calibration output.
@@ -86,25 +86,25 @@ Build a star schema. Facts hold numeric outcomes at a defined grain; dimensions 
 
 ### Dimension tables
 
-- **DimPolicy** — `PolicyKey`, `PolicyName` (PPO / Flat / ToU 2-band / ToU 3-band / Congestion), `PolicyType` (Learned / Static schedule / Static flat / Heuristic), `IsLearned`, `IsBaseline`, `SortOrder`. Drives a single consistent policy order and colour across every visual.
-- **DimElasticity** — `Elasticity`, `LambdaWeight` (waiting-time weight derived at that elasticity, R2), `TradeoffExists`, `RegimeLabel` ("Degenerate" / "Trade-off"). Include degenerate values (0.5, 0.6) and the trained range (0.7-1.0).
-- **DimScenario** — `ScenarioName`, `ScenarioType` (Baseline / Adoption growth / Pricing / Carbon / Combined), `AdoptionMultiplier`, `SortOrder`.
-- **DimHour** — 0-23, `HourLabel`, `IsToUPeak` (07:00-19:00). Shared by the EDA arrival fact and the price-by-hour fact.
-- **DimSeed** — the five training seeds.
-- **DimDistribution** — calibration targets (Sessions per day / Energy per session / Session duration), `IsParametricFit` (distinguishes genuine fits from the tautological energy resampling).
-- **DimConnector** — three connector types, friendly label, observed share, `SortOrder`.
-- **DimCharger** — one row per charger id (optional per-charger slicing).
-- **DimDayType** — Weekday / Weekend / All (EDA slicer).
+- **DimPolicy** - `PolicyKey`, `PolicyName` (PPO / Flat / ToU 2-band / ToU 3-band / Congestion), `PolicyType` (Learned / Static schedule / Static flat / Heuristic), `IsLearned`, `IsBaseline`, `SortOrder`. Drives a single consistent policy order and colour across every visual.
+- **DimElasticity** - `Elasticity`, `LambdaWeight` (waiting-time weight derived at that elasticity, R2), `TradeoffExists`, `RegimeLabel` ("Degenerate" / "Trade-off"). Include degenerate values (0.5, 0.6) and the trained range (0.7-1.0).
+- **DimScenario** - `ScenarioName`, `ScenarioType` (Baseline / Adoption growth / Pricing / Carbon / Combined), `AdoptionMultiplier`, `SortOrder`.
+- **DimHour** - 0-23, `HourLabel`, `IsToUPeak` (07:00-19:00). Shared by the EDA arrival fact and the price-by-hour fact.
+- **DimSeed** - the five training seeds.
+- **DimDistribution** - calibration targets (Sessions per day / Energy per session / Session duration), `IsParametricFit` (distinguishes genuine fits from the tautological energy resampling).
+- **DimConnector** - three connector types, friendly label, observed share, `SortOrder`.
+- **DimCharger** - one row per charger id (optional per-charger slicing).
+- **DimDayType** - Weekday / Weekend / All (EDA slicer).
 
 ### Fact tables
 
-- **FactSession** — grain: session (from `sessions_clean.csv`). Base: energy_kwh, duration_hrs, carbon_intensity, derived hour and day_type. Links to DimConnector, DimCharger, DimHour, DimDayType. **No** link to results facts.
-- **FactCalibration** — grain: distribution. Base: ks_statistic, sim_mean, real_mean. Links to DimDistribution.
-- **FactScenario** — grain: scenario. Base: sessions, revenue, co2, avg_wait_hrs, utilisation, wilcoxon_p_vs_baseline. Links to DimScenario.
-- **FactEvalEpisode** — grain: episode x policy. Base: revenue, wait_steps, avg_wait_hrs, sessions, co2, utilisation, score. Links to DimPolicy.
-- **FactEvalSummary** — grain: policy. Aggregated headline comparison. Links to DimPolicy.
-- **FactSweep** — grain: elasticity x seed x policy. Base: revenue, wait_steps, sessions, co2, score. Links to DimPolicy, DimElasticity, DimSeed.
-- **FactPriceByHour** — grain: hour. Base: mean price; add a computed ToU reference price per hour (0.45 if peak else 0.15). Links to DimHour.
+- **FactSession** - grain: session (from `sessions_clean.csv`). Base: energy_kwh, duration_hrs, carbon_intensity, derived hour and day_type. Links to DimConnector, DimCharger, DimHour, DimDayType. **No** link to results facts.
+- **FactCalibration** - grain: distribution. Base: ks_statistic, sim_mean, real_mean. Links to DimDistribution.
+- **FactScenario** - grain: scenario. Base: sessions, revenue, co2, avg_wait_hrs, utilisation, wilcoxon_p_vs_baseline. Links to DimScenario.
+- **FactEvalEpisode** - grain: episode x policy. Base: revenue, wait_steps, avg_wait_hrs, sessions, co2, utilisation, score. Links to DimPolicy.
+- **FactEvalSummary** - grain: policy. Aggregated headline comparison. Links to DimPolicy.
+- **FactSweep** - grain: elasticity x seed x policy. Base: revenue, wait_steps, sessions, co2, score. Links to DimPolicy, DimElasticity, DimSeed.
+- **FactPriceByHour** - grain: hour. Base: mean price; add a computed ToU reference price per hour (0.45 if peak else 0.15). Links to DimHour.
 
 ---
 
@@ -126,10 +126,10 @@ Where a cleaning choice cannot be confirmed against notebook 01, apply the conse
 
 Power BI recomputes distributions live, so it can silently disagree with the fitted figures.
 
-- **C1 — Fixed binning, not automatic.** Do not use auto-binning for the energy and duration histograms. Set explicit bins so shapes match the notebook: energy in 2 kWh bins (0 to ~110); duration in 0.1-hour bins (0 to 4). Auto-bins change the visible shape and contradict the dissertation figure.
-- **C2 — Empirical only on the EDA page.** Do not draw fitted lognormal or Negative Binomial curves in DAX. Parametric fits belong to the calibration page. The EDA page shows what was observed; calibration shows the fit reproducing it. Keep them separate.
-- **C3 — Observed, not simulated.** Every EDA visual is titled "Observed" and uses the observed-data colour (teal `#1B9AAA`), never simulated styling.
-- **C4 — Headline facts are counted, not typed.** Summary numbers (session count, chargers, date range, medians) are measures over FactSession, not hardcoded. The count should equal 29,775; treat a mismatch as a data-load error to investigate, not to hardcode around.
+- **C1 - Fixed binning, not automatic.** Do not use auto-binning for the energy and duration histograms. Set explicit bins so shapes match the notebook: energy in 2 kWh bins (0 to ~110); duration in 0.1-hour bins (0 to 4). Auto-bins change the visible shape and contradict the dissertation figure.
+- **C2 - Empirical only on the EDA page.** Do not draw fitted lognormal or Negative Binomial curves in DAX. Parametric fits belong to the calibration page. The EDA page shows what was observed; calibration shows the fit reproducing it. Keep them separate.
+- **C3 - Observed, not simulated.** Every EDA visual is titled "Observed" and uses the observed-data colour (teal `#1B9AAA`), never simulated styling.
+- **C4 - Headline facts are counted, not typed.** Summary numbers (session count, chargers, date range, medians) are measures over FactSession, not hardcoded. The count should equal 29,775; treat a mismatch as a data-load error to investigate, not to hardcode around.
 
 ---
 
@@ -137,15 +137,15 @@ Power BI recomputes distributions live, so it can silently disagree with the fit
 
 These govern how every measure is calculated. Incorrect handling here produces plausible-looking but wrong numbers.
 
-- **R1 — Objective score.** `revenue - LambdaWeight * wait_steps`. Primary comparison metric. Prefer a pre-computed `score` column where present; where computed, `LambdaWeight` comes from DimElasticity for the elasticity in context, never a constant.
-- **R2 — Lambda is per-elasticity, not global.** The weight differs for every elasticity (~0.23 at 0.7, 0.93 at 0.8, 1.59 at 0.9, 2.27 at 1.0). Any sweep score or margin must use the elasticity-specific weight. Hardcoding one lambda across the sweep is a defect.
-- **R3 — Headline configuration.** The default state of the policy-comparison and behaviour pages is **elasticity 0.8, lambda 0.934**. Slicers may change it; the landing state is 0.8.
-- **R4 — Margin definition.** Learned-policy advantage over a baseline is `PPO score - baseline score` at matched elasticity, reported both as an absolute point difference and as a percentage of the baseline. Headline: +20.2% on objective, +23.8% on revenue vs ToU 2-band.
-- **R5 — Waiting-time display.** Store in hours (`avg_wait_hrs`); **display in minutes** (x60). `wait_steps` is internal to the score only and is never shown.
-- **R6 — Seed uncertainty.** Every elasticity has five seeds. Report the **mean** across seeds as the point value and the **standard deviation** as an uncertainty band. Never show a single seed as the result.
-- **R7 — Calibration on the KS statistic, not the p-value.** Display the KS statistic. If a p-value appears, caveat that with ~30,000 observations the test rejects on negligible deviations, so the statistic and moment agreement are the criteria. Never present a low p-value as calibration failure.
-- **R8 — Percentages.** Utilisation is a 0-1 fraction, displayed as a percentage. Growth figures (e.g. +6,981% waiting time under 2x adoption) are relative to the baseline scenario.
-- **R9 — Degenerate regime.** Below the boundary (~0.65) no trade-off and no trained agent exist. These rows are visually distinguished ("Degenerate — pricing collapses to maximum tariff") and must not be plotted as if PPO scores existed there.
+- **R1 - Objective score.** `revenue - LambdaWeight * wait_steps`. Primary comparison metric. Prefer a pre-computed `score` column where present; where computed, `LambdaWeight` comes from DimElasticity for the elasticity in context, never a constant.
+- **R2 - Lambda is per-elasticity, not global.** The weight differs for every elasticity (~0.23 at 0.7, 0.93 at 0.8, 1.59 at 0.9, 2.27 at 1.0). Any sweep score or margin must use the elasticity-specific weight. Hardcoding one lambda across the sweep is a defect.
+- **R3 - Headline configuration.** The default state of the policy-comparison and behaviour pages is **elasticity 0.8, lambda 0.934**. Slicers may change it; the landing state is 0.8.
+- **R4 - Margin definition.** Learned-policy advantage over a baseline is `PPO score - baseline score` at matched elasticity, reported both as an absolute point difference and as a percentage of the baseline. Headline: +20.2% on objective, +23.8% on revenue vs ToU 2-band.
+- **R5 - Waiting-time display.** Store in hours (`avg_wait_hrs`); **display in minutes** (x60). `wait_steps` is internal to the score only and is never shown.
+- **R6 - Seed uncertainty.** Every elasticity has five seeds. Report the **mean** across seeds as the point value and the **standard deviation** as an uncertainty band. Never show a single seed as the result.
+- **R7 - Calibration on the KS statistic, not the p-value.** Display the KS statistic. If a p-value appears, caveat that with ~30,000 observations the test rejects on negligible deviations, so the statistic and moment agreement are the criteria. Never present a low p-value as calibration failure.
+- **R8 - Percentages.** Utilisation is a 0-1 fraction, displayed as a percentage. Growth figures (e.g. +6,981% waiting time under 2x adoption) are relative to the baseline scenario.
+- **R9 - Degenerate regime.** Below the boundary (~0.65) no trade-off and no trained agent exist. These rows are visually distinguished ("Degenerate - pricing collapses to maximum tariff") and must not be plotted as if PPO scores existed there.
 
 ---
 
@@ -173,7 +173,7 @@ Group in a dedicated measure table. Names indicative; keep them human-readable.
 
 **Scenario**
 - Each KPI by scenario; percent change vs baseline (R8).
-- Significance indicator from the Wilcoxon p-value: significant / not significant / **undefined**. Handle the undefined case (ToU and combined on session counts, where every paired difference is zero) explicitly — not a blank or an error.
+- Significance indicator from the Wilcoxon p-value: significant / not significant / **undefined**. Handle the undefined case (ToU and combined on session counts, where every paired difference is zero) explicitly - not a blank or an error.
 
 **Behaviour / calibration**
 - Mean learned price by hour with the ToU reference overlay.
@@ -185,9 +185,9 @@ Group in a dedicated measure table. Names indicative; keep them human-readable.
 
 One question per page.
 
-**Page 0 — Overview.** Four KPI cards, one per headline finding: calibration quality (max KS, "KS <= 0.061 — validated"); "adoption dominates" (waiting-time rise under 2x adoption); the "+20.2% vs ToU" advantage; the boundary ("no trade-off below elasticity ~0.65"). One sentence each. Stands alone as the elevator pitch.
+**Page 0 - Overview.** Four KPI cards, one per headline finding: calibration quality (max KS, "KS <= 0.061 - validated"); "adoption dominates" (waiting-time rise under 2x adoption); the "+20.2% vs ToU" advantage; the boundary ("no trade-off below elasticity ~0.65"). One sentence each. Stands alone as the elevator pitch.
 
-**Page 1 — The Real Network (EDA).** *What does the real data look like, and why is the twin built this way?* Each visual pairs an observed shape with the modelling decision it drove (state the decision in a subtitle or adjacent text):
+**Page 1 - The Real Network (EDA).** *What does the real data look like, and why is the twin built this way?* Each visual pairs an observed shape with the modelling decision it drove (state the decision in a subtitle or adjacent text):
 
 | Visual | Data | Insight to state |
 |---|---|---|
@@ -197,15 +197,15 @@ One question per page.
 | Connector mix (share) + mean energy/duration per connector | By connector | "82 / 14 / 4 split, very different profiles -> sample per connector, don't pool" |
 | Dataset summary cards | Measures | 29,775 sessions, 6 chargers, date range, median energy, median duration |
 
-**Page 2 — Twin credibility (calibration).** KS statistic by distribution with the parametric-fit flag; simulated-vs-observed means. Note that energy resampling makes its agreement expected by construction (R7). This page shows the twin reproducing the Page 1 distributions.
+**Page 2 - Twin credibility (calibration).** KS statistic by distribution with the parametric-fit flag; simulated-vs-observed means. Note that energy resampling makes its agreement expected by construction (R7). This page shows the twin reproducing the Page 1 distributions.
 
-**Page 3 — Which levers move the network (scenarios).** Scenario KPIs with percent change vs baseline; adoption growth moves everything, pricing moves revenue only. Show the significance indicator including the undefined case.
+**Page 3 - Which levers move the network (scenarios).** Scenario KPIs with percent change vs baseline; adoption growth moves everything, pricing moves revenue only. Show the significance indicator including the undefined case.
 
-**Page 4 — Learned pricing beats the clock (headline).** Policy comparison at headline config: revenue, waiting time (minutes), sessions, CO2, score per policy; a prominent +20.2% / +23.8% advantage. Must surface the honest points (section 11): ToU scores below Flat; PPO has higher wait and CO2 than ToU.
+**Page 4 - Learned pricing beats the clock (headline).** Policy comparison at headline config: revenue, waiting time (minutes), sessions, CO2, score per policy; a prominent +20.2% / +23.8% advantage. Must surface the honest points (section 11): ToU scores below Flat; PPO has higher wait and CO2 than ToU.
 
-**Page 5 — Robustness and boundary.** Score by policy across elasticity with PPO's seed-uncertainty band; PPO-minus-ToU margin by elasticity; degenerate region marked. Carries "not a lucky run" and "state-conditioning not granularity" (PPO also beats ToU 3-band).
+**Page 5 - Robustness and boundary.** Score by policy across elasticity with PPO's seed-uncertainty band; PPO-minus-ToU margin by elasticity; degenerate region marked. Carries "not a lucky run" and "state-conditioning not granularity" (PPO also beats ToU 3-band).
 
-**Page 6 — How the policy prices (behaviour).** Learned mean price by hour against the ToU reference, showing the three-phase structure. Note that intermediate hourly means (e.g. 0.353 at 08:00) can only arise from state-dependent switching, which a clock schedule cannot produce.
+**Page 6 - How the policy prices (behaviour).** Learned mean price by hour against the ToU reference, showing the three-phase structure. Note that intermediate hourly means (e.g. 0.353 at 08:00) can only arise from state-dependent switching, which a clock schedule cannot produce.
 
 ---
 
@@ -227,16 +227,16 @@ One question per page.
 
 This dashboard backs an academic submission; it must not oversell.
 
-- **H1 — Show unfavourable comparisons.** PPO has higher mean waiting time and higher CO2 than ToU. Both visible on Page 4. Framing is a superior weighted trade-off, not dominance.
-- **H2 — Show ToU below Flat.** Present, do not smooth over.
-- **H3 — Represent uncertainty.** Seed std wherever a sweep mean is shown (R6).
-- **H4 — Represent the boundary.** Show and label the degenerate regime (R9); do not truncate the elasticity axis to hide it.
-- **H5 — No implied optimality.** Never describe the learned policy as "optimal"; it outperforms tested baselines, it is not proven optimal.
-- **H6 — No fabricated values.** Every number traces to a source file. Missing values are shown as missing, never interpolated or invented.
-- **H7 — Statistical honesty.** Apply R7; surface the undefined-Wilcoxon case rather than hiding it.
-- **H8 — Label observed vs simulated everywhere.** FactSession charts titled "Observed" (teal); model-comparison charts titled "Simulated" or "Calibrated". Visually distinct (C3).
-- **H9 — The EDA page is not validation.** It describes the data; validation is the calibration page. EDA titles must not claim the model is "accurate" or "validated".
-- **H10 — Excluded metering data stays excluded.** Do not visualise the building-meter readings (r = -0.086, collection failure). If provenance of the exclusion is wanted, a one-line note, not a chart.
+- **H1 - Show unfavourable comparisons.** PPO has higher mean waiting time and higher CO2 than ToU. Both visible on Page 4. Framing is a superior weighted trade-off, not dominance.
+- **H2 - Show ToU below Flat.** Present, do not smooth over.
+- **H3 - Represent uncertainty.** Seed std wherever a sweep mean is shown (R6).
+- **H4 - Represent the boundary.** Show and label the degenerate regime (R9); do not truncate the elasticity axis to hide it.
+- **H5 - No implied optimality.** Never describe the learned policy as "optimal"; it outperforms tested baselines, it is not proven optimal.
+- **H6 - No fabricated values.** Every number traces to a source file. Missing values are shown as missing, never interpolated or invented.
+- **H7 - Statistical honesty.** Apply R7; surface the undefined-Wilcoxon case rather than hiding it.
+- **H8 - Label observed vs simulated everywhere.** FactSession charts titled "Observed" (teal); model-comparison charts titled "Simulated" or "Calibrated". Visually distinct (C3).
+- **H9 - The EDA page is not validation.** It describes the data; validation is the calibration page. EDA titles must not claim the model is "accurate" or "validated".
+- **H10 - Excluded metering data stays excluded.** Do not visualise the building-meter readings (r = -0.086, collection failure). If provenance of the exclusion is wanted, a one-line note, not a chart.
 
 ---
 
@@ -254,7 +254,7 @@ This dashboard backs an academic submission; it must not oversell.
 
 - One source of truth per metric: margins and scores are measures, not stored columns (section 3).
 - All aggregation via measures on facts; no pre-aggregation in Power Query except the wide-to-long reshape (section 3) and the EDA cleaning (section 5).
-- FactSession is isolated — no relationship to results facts (section 4).
+- FactSession is isolated - no relationship to results facts (section 4).
 - Only DimPolicy, DimElasticity, DimScenario, DimConnector and DimDayType are slicer sources; do not slice on fact columns.
 - Name measures for humans ("PPO advantage over ToU (%)"), columns for the model.
 - No calendar/date table is required (the simulation has no calendar); DimHour handles the time axis.
@@ -271,4 +271,4 @@ This dashboard backs an academic submission; it must not oversell.
 - Peak-window (07:00-19:00) session share is high.
 - Arrival-by-hour shape is bimodal (late-morning and mid-afternoon peaks).
 
-If any check fails, fix the source load, the reshape (section 3), or the cleaning (section 5) — never adjust the numbers to match.
+If any check fails, fix the source load, the reshape (section 3), or the cleaning (section 5) - never adjust the numbers to match.
