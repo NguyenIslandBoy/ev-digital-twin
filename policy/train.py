@@ -2,7 +2,7 @@
 """
 Train the headline PPO pricing agent locally.
 
-Same configuration as notebooks/04_train_ppo_colab.ipynb — that notebook exists
+Same configuration as notebooks/04_train_ppo_colab.ipynb - that notebook exists
 because the simulation used to be slow enough to need a Colab session. It no
 longer is (~2,000 env steps/s on CPU, and the MLP policy is tiny), so a full
 500k-timestep run finishes in minutes here.
@@ -57,7 +57,7 @@ ENVKW = dict(adoption_multiplier=ADOPTION,
 
 
 def main():
-    print(f"Training PPO — {ENVKW}, {TOTAL_TIMESTEPS:,} timesteps, {N_ENVS} envs")
+    print(f"Training PPO - {ENVKW}, {TOTAL_TIMESTEPS:,} timesteps, {N_ENVS} envs")
 
     # Observations are already scaled to [0, 1], so normalise the reward only.
     train_env = VecMonitor(make_vec_env(make_env(**ENVKW), n_envs=N_ENVS, seed=SEED))

@@ -91,11 +91,11 @@ def run_scraper(meter_ids: list[str] | None = None, test_mode: bool = False) -> 
     if test_mode:
         all_meter_ids = all_meter_ids[:3]
         dates = dates[:7]
-        print("TEST MODE — 3 meters x 7 days")
+        print("TEST MODE - 3 meters x 7 days")
 
     tasks = build_task_list(all_meter_ids, dates)
     if not tasks:
-        print("Nothing to scrape — all tasks already completed.")
+        print("Nothing to scrape - all tasks already completed.")
         return
 
     total      = len(tasks)

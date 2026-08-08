@@ -1,16 +1,16 @@
-# EV Digital Twin — Dashboard Build Spec
+# EV Digital Twin - Dashboard Build Spec
 
 **Status: Client-validated** (wireframe + metric table approved 2026-07-27 with no change requests). Drives `/bi-accelerator:02_data-transform`, `/bi-accelerator:03_model-build`, `/bi-accelerator:04_dax-write`.
 
 -   Requirements source: [`pbi-report/requirements/PowerBI_Dashboard_Requirements.md`](../requirements/PowerBI_Dashboard_Requirements.md) (quoted as "§n" below)
--   Validated wireframe: [`docs/wireframe/ev-digital-twin-wireframe.html`](wireframe/ev-digital-twin-wireframe.html) — 7 pages, layout and metric set approved as-is
+-   Validated wireframe: [`docs/wireframe/ev-digital-twin-wireframe.html`](wireframe/ev-digital-twin-wireframe.html) - 7 pages, layout and metric set approved as-is
 -   Target `.pbip`: `pbi-report/ev-digital-twin.pbip`
 
 ------------------------------------------------------------------------
 
 ## 1. Purpose (from §1)
 
-Explanatory dissertation dashboard — "a guided narrative that walks a viewer from the real data through to the findings", one question per page, "every visual must read in about five seconds". Arc: **real data → the twin reproducing it → experiments on the twin**. Not an operational monitor.
+Explanatory dissertation dashboard - "a guided narrative that walks a viewer from the real data through to the findings", one question per page, "every visual must read in about five seconds". Arc: **real data → the twin reproducing it → experiments on the twin**. Not an operational monitor.
 
 Audience: supervisor, examiners, general technical viewers. Academic honesty rules (§11) are mandatory.
 
@@ -20,10 +20,10 @@ Power BI reads **finished CSVs from `results/` only** (§2 path rules). Never li
 
 | File | Grain | Status | Verified row count |
 |----|----|----|----|
-| `results/sessions_clean.csv` | session | **created** — export of `ev_twin.duckdb · charging_sessions` (identical to `data/raw/usb_merged_final_data.csv`, client-confirmed) | 29,775 |
-| `results/calibration_summary.csv` | distribution | **created** — extracted from executed notebook 02 outputs | 3 |
-| `results/scenario_summary.csv` | scenario | **created** — from DuckDB `scenario_summary` + Wilcoxon revenue p-value (see §2a) | 6 |
-| `results/scenario_significance.csv` | scenario × KPI | **created (PROPOSED, client-accepted)** — Wilcoxon p per scenario × KPI, verified against notebook 03 printed values to full precision | 30 |
+| `results/sessions_clean.csv` | session | **created** - export of `ev_twin.duckdb · charging_sessions` (identical to `data/raw/usb_merged_final_data.csv`, client-confirmed) | 29,775 |
+| `results/calibration_summary.csv` | distribution | **created** - extracted from executed notebook 02 outputs | 3 |
+| `results/scenario_summary.csv` | scenario | **created** - from DuckDB `scenario_summary` + Wilcoxon revenue p-value (see §2a) | 6 |
+| `results/scenario_significance.csv` | scenario × KPI | **created (PROPOSED, client-accepted)** - Wilcoxon p per scenario × KPI, verified against notebook 03 printed values to full precision | 30 |
 | `results/eval_results.csv` | episode × policy | pre-existing | 1,500 (500 × 3 policies) |
 | `results/eval_summary.csv` | policy (wide) | pre-existing | 3 |
 | `results/sweep_results.csv` | elasticity × seed (wide) | pre-existing | 20 (4 × 5) |
@@ -35,33 +35,33 @@ Power BI reads **finished CSVs from `results/` only** (§2 path rules). Never li
 
 ### 2a. Decisions taken and client-accepted
 
--   `scenario_summary.csv` column `wilcoxon_p_vs_baseline` carries the **revenue** p-value (the headline KPI); the full per-KPI grid lives in `scenario_significance.csv`. *(§2's single-column schema cannot support §8's per-KPI significance indicator — p-values differ per KPI.)* (inferred, validated)
+-   `scenario_summary.csv` column `wilcoxon_p_vs_baseline` carries the **revenue** p-value (the headline KPI); the full per-KPI grid lives in `scenario_significance.csv`. *(§2's single-column schema cannot support §8's per-KPI significance indicator - p-values differ per KPI.)* (inferred, validated)
 -   Undefined Wilcoxon cases confirmed in data exactly where §8 predicts: **ToU pricing / sessions_completed** and **Combined / sessions_completed** (every paired difference is zero). Stored as blank p with `significant = False`; must render as "undefined", never blank/error.
 -   **Encoding:** `eval_results.csv` / `eval_summary.csv` contain policy value `Flat £0.30` in cp1252. Power Query must load these with **encoding 1252** (or normalize the name); `usb_merged_final_data.csv`-derived files are UTF-8.
 
-## 3. Reshaping rules (§3 — "read before modelling")
+## 3. Reshaping rules (§3 - "read before modelling")
 
 `sweep_results.csv` and `eval_summary.csv` are wide (one column block per policy). **Unpivot in Power Query so Policy becomes a dimension**:
 
 -   Sweep fact target grain: **elasticity × seed × policy** (20 rows → 100 rows, 5 policies: PPO, ToU, ToU3, Flat, Congestion).
 -   Eval summary fact target grain: **policy** (3 rows); episode fact already long: **episode × policy**.
--   **Drop pre-computed margin columns** (`margin_vs_ToU`, `margin_vs_ToU3`, `margin_vs_Flat`) — margins are measures only (§3, §13: "one source of truth per metric").
--   `sweep_summary.csv` is *not* a fact — its aggregates are reproduced by measures; use it only for reconciliation of the unpivot.
+-   **Drop pre-computed margin columns** (`margin_vs_ToU`, `margin_vs_ToU3`, `margin_vs_Flat`) - margins are measures only (§3, §13: "one source of truth per metric").
+-   `sweep_summary.csv` is *not* a fact - its aggregates are reproduced by measures; use it only for reconciliation of the unpivot.
 
 ## 4. Star schema (§4)
 
-Facts hold numeric outcomes; dimensions drive slicers. **No fact-to-fact relationships. FactSession is isolated** — no relationship to any results fact (§4, §13).
+Facts hold numeric outcomes; dimensions drive slicers. **No fact-to-fact relationships. FactSession is isolated** - no relationship to any results fact (§4, §13).
 
 ### Dimensions
 
 | Table | Columns | Source / values (verified) |
 |----|----|----|
 | DimPolicy | PolicyKey, PolicyName (PPO / Flat / ToU 2-band / ToU 3-band / Congestion), PolicyType (Learned / Static flat / Static schedule / Heuristic), IsLearned, IsBaseline, SortOrder | authored; maps raw names `PPO`, `ToU`, `ToU3`, `Flat`/`Flat £0.30`, `Congestion`. Drives the fixed colour/order everywhere |
-| DimElasticity | Elasticity, LambdaWeight, TradeoffExists, RegimeLabel | from `elasticity_boundary.csv`: 0.5/0.6 → "Degenerate — pricing collapses to maximum tariff" (λ null); 0.7→0.233018, 0.8→0.933670, 0.9→1.591571, 1.0→2.201813. **λ at 1.0 is 2.202 in data; §7 R2's "\~2.27" is superseded by data** (client-validated) |
+| DimElasticity | Elasticity, LambdaWeight, TradeoffExists, RegimeLabel | from `elasticity_boundary.csv`: 0.5/0.6 → "Degenerate - pricing collapses to maximum tariff" (λ null); 0.7→0.233018, 0.8→0.933670, 0.9→1.591571, 1.0→2.201813. **λ at 1.0 is 2.202 in data; §7 R2's "\~2.27" is superseded by data** (client-validated) |
 | DimScenario | ScenarioName, ScenarioType, AdoptionMultiplier, SortOrder | 6 scenarios: Baseline / Adoption ×1.5 / Adoption ×2 / ToU pricing / Carbon incentive / Combined |
 | DimHour | Hour 0–23, HourLabel, IsToUPeak = hour ∈ [7,18] ("07:00–19:00", §2) | authored; shared by FactSession-derived hour and FactPriceByHour |
 | DimSeed | Seed 0–4 | from sweep |
-| DimDistribution | DistributionName, IsParametricFit | Sessions per day (TRUE) / Energy per session (**FALSE** — "tautological energy resampling", §4) / Session duration (TRUE) |
+| DimDistribution | DistributionName, IsParametricFit | Sessions per day (TRUE) / Energy per session (**FALSE** - "tautological energy resampling", §4) / Session duration (TRUE) |
 | DimConnector | ConnectorKey, FriendlyLabel, ObservedShare, SortOrder | CCS Combo (`IEC_62196_T2_COMBO`, 82.1%) / CHAdeMO (`CHADEMO`, 14.3%) / Type 2 AC (`IEC_62196_T2`, 3.6%) |
 | DimCharger | ChargerId (6 values) | optional slicing |
 | DimDayType | Weekday / Weekend / All | authored |
@@ -84,10 +84,10 @@ Slicer sources: **only** DimPolicy, DimElasticity, DimScenario, DimConnector, Di
 
 **⚠ Never mix FactSweep and FactEvalSummary on one visual**: at elasticity 0.8 the sweep gives PPO score 395.2 (30-episode config) while the headline eval gives 383.1 (500 episodes). Different run configurations by design; headline claims come from FactEvalSummary only.
 
-## 5. EDA cleaning (Power Query, §5 — verified against actual data)
+## 5. EDA cleaning (Power Query, §5 - verified against actual data)
 
--   **Duration cap at 4.0 h** — cap, do not drop. Exactly **33 rows** exceed 4.0 in the source; observed p99.9 = 4.12, spec value 4.0 governs.
--   **Energy floor:** already applied upstream — source minimum is exactly 5.00 kWh, 0 rows below. **No filter step needed** (conservative rule satisfied trivially).
+-   **Duration cap at 4.0 h** - cap, do not drop. Exactly **33 rows** exceed 4.0 in the source; observed p99.9 = 4.12, spec value 4.0 governs.
+-   **Energy floor:** already applied upstream - source minimum is exactly 5.00 kWh, 0 rows below. **No filter step needed** (conservative rule satisfied trivially).
 -   **Nulls:** 0 null `session_start` / `energy_kwh` / `duration_hrs` in the export; keep the removal step as a guard.
 -   Derive `hour` (0–23) and `day_type` (Weekday = Mon–Fri) from `session_start`.
 -   No re-scaling / normalising / resampling (§5); fixed binning is a *visual* setting (§6 C1: energy 2 kWh bins 0–110, duration 0.1 h bins 0–4).
@@ -96,7 +96,7 @@ Slicer sources: **only** DimPolicy, DimElasticity, DimScenario, DimConnector, Di
 
 All feasibility-checked against the actual files; every value below was reproduced during EDA.
 
-### EDA (FactSession — measures, never typed constants; §6 C4)
+### EDA (FactSession - measures, never typed constants; §6 C4)
 
 | Measure | Definition | Verified value |
 |----|----|----|
@@ -120,9 +120,9 @@ All feasibility-checked against the actual files; every value below was reproduc
 | PPO Advantage vs ToU (abs / %) | PPO score − ToU score; ÷ ToU (R4) | **+64.3 / +20.2%** |
 | PPO Revenue Advantage vs ToU (%) | same on revenue | **+23.8%** |
 | Margin vs Flat (abs / %) | PPO − Flat | +41.3 / +12.1% |
-| Selected-policy vs best-baseline score | dynamic advantage card | — |
+| Selected-policy vs best-baseline score | dynamic advantage card | - |
 
-**Scope limitation (client-accepted):** headline eval contains **PPO, ToU 2-band, Flat only**. `INFEASIBLE:` a 5-policy comparison at the headline 500-episode config — the data does not exist. Per client decision (2026-07-27), Page 4 additionally carries a **five-policy cross-check card sourced from FactSweep at elasticity 0.8** (PPO 395.2, Congestion 378.3, ToU3 341.6, Flat 338.3, ToU 318.1) — a *separate visual*, labelled as a different 30-episode run; it must never be merged into the headline bars.
+**Scope limitation (client-accepted):** headline eval contains **PPO, ToU 2-band, Flat only**. `INFEASIBLE:` a 5-policy comparison at the headline 500-episode config - the data does not exist. Per client decision (2026-07-27), Page 4 additionally carries a **five-policy cross-check card sourced from FactSweep at elasticity 0.8** (PPO 395.2, Congestion 378.3, ToU3 341.6, Flat 338.3, ToU 318.1) - a *separate visual*, labelled as a different 30-episode run; it must never be merged into the headline bars.
 
 ### Sweep / robustness (FactSweep; every point = mean of 5 seeds, R6)
 
@@ -140,7 +140,7 @@ All feasibility-checked against the actual files; every value below was reproduc
 |----|----|----|
 | KPI by scenario | base means (500 episodes) | e.g. Baseline £201.5 revenue |
 | \% Change vs Baseline | (scenario − baseline) / baseline (R8) | ToU revenue **+37.9%**; Adoption ×2 wait **+6,981%** |
-| Significance Indicator | p \< 0.05 → significant; p ≥ 0.05 → not significant; p blank → **"undefined — all paired differences zero"** (§8) | undefined: ToU & Combined on sessions |
+| Significance Indicator | p \< 0.05 → significant; p ≥ 0.05 → not significant; p blank → **"undefined - all paired differences zero"** (§8) | undefined: ToU & Combined on sessions |
 
 ### Behaviour / calibration (FactPriceByHour / FactCalibration)
 
@@ -160,9 +160,9 @@ All feasibility-checked against the actual files; every value below was reproduc
 -   **R6** Sweep values = mean of 5 seeds ± std band; never a single seed.
 -   **R7** Calibration judged on KS **statistic** + moment agreement; p-values caveated ("with \~30,000 observations the test rejects on negligible deviations").
 -   **R8** Utilisation 0–1 shown as %; scenario growth is % vs Baseline.
--   **R9** Degenerate rows (elasticity \< \~0.65) labelled "Degenerate — pricing collapses to maximum tariff"; no PPO values plotted there.
+-   **R9** Degenerate rows (elasticity \< \~0.65) labelled "Degenerate - pricing collapses to maximum tariff"; no PPO values plotted there.
 
-## 8. Honesty & consistency rules (§6, §11 — mandatory)
+## 8. Honesty & consistency rules (§6, §11 - mandatory)
 
 C1 fixed bins · C2 no fitted curves on EDA page · C3 observed = teal, titled "Observed" · C4 headline numbers are measures · H1 PPO's higher wait & CO₂ visible on page 4 · H2 ToU-below-Flat shown · H3 seed std everywhere · H4 boundary shown, axis not truncated · H5 never "optimal" · H6 no fabricated/interpolated values · H7 undefined Wilcoxon surfaced · H8 Observed vs Simulated labelled on every chart · H9 EDA page makes no validation claims · H10 building-meter readings (r = −0.086, collection failure) never visualised.
 
@@ -172,16 +172,16 @@ C1 fixed bins · C2 no fitted curves on EDA page · C3 observed = teal, titled "
 
 ## 10. Design & theme (§12)
 
-Palette: navy `#123B5C` structure/static policies · teal `#1B9AAA` observed/demand · amber `#E4A02A` learned policy/price · grey `#7B8C99` uncertainty/excluded. Policy colour driven by DimPolicy. White/light-grey background, no gradients. **Client decision (2026-07-27): keep the report's current theme — §12's "provide a Power BI theme JSON" is waived**; apply the palette per-visual/per-dimension where colour carries meaning.
+Palette: navy `#123B5C` structure/static policies · teal `#1B9AAA` observed/demand · amber `#E4A02A` learned policy/price · grey `#7B8C99` uncertainty/excluded. Policy colour driven by DimPolicy. White/light-grey background, no gradients. **Client decision (2026-07-27): keep the report's current theme - §12's "provide a Power BI theme JSON" is waived**; apply the palette per-visual/per-dimension where colour carries meaning.
 
-## 11. Reconciliation & validation gates (§13 — all passing on current data)
+## 11. Reconciliation & validation gates (§13 - all passing on current data)
 
-**Results:** PPO score 383.1 · revenue £400.9 · +20.2% vs ToU · KS 0.061/0.009/0.037. **EDA:** 29,775 sessions · 6 chargers · 82/14/4 split · medians 0.644 h / 27.4 kWh · peak share 80.3% · bimodal arrivals. **Sweep unpivot:** re-aggregated means/stds must equal `sweep_summary.csv`. "If any check fails, fix the source load, the reshape, or the cleaning — never adjust the numbers to match." (§13)
+**Results:** PPO score 383.1 · revenue £400.9 · +20.2% vs ToU · KS 0.061/0.009/0.037. **EDA:** 29,775 sessions · 6 chargers · 82/14/4 split · medians 0.644 h / 27.4 kWh · peak share 80.3% · bimodal arrivals. **Sweep unpivot:** re-aggregated means/stds must equal `sweep_summary.csv`. "If any check fails, fix the source load, the reshape, or the cleaning - never adjust the numbers to match." (§13)
 
 ## 12. OPEN items
 
-None. Both former items were closed by client decision on 2026-07-27: - Theme JSON waived — current report theme kept (§10 of this spec). - Page 4 sweep-based five-policy cross-check card **added** (§6 evaluation notes; wireframe updated).
+None. Both former items were closed by client decision on 2026-07-27: - Theme JSON waived - current report theme kept (§10 of this spec). - Page 4 sweep-based five-policy cross-check card **added** (§6 evaluation notes; wireframe updated).
 
 ------------------------------------------------------------------------
 
-**Confidence flag: Client-validated** — wireframe and metric set approved without changes; every metric execution-verified against the source files during EDA.
+**Confidence flag: Client-validated** - wireframe and metric set approved without changes; every metric execution-verified against the source files during EDA.

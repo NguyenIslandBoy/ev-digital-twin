@@ -30,7 +30,7 @@ def _sample_energy(connector: str, rng: np.random.Generator) -> float:
 
 # ── HELPER: sample session duration (Lognormal per connector) ─────────────────
 def _sample_duration(connector: str, rng: np.random.Generator) -> float:
-    # Equivalent to scipy's lognorm.rvs(s, loc, scale) — scale = exp(mu) — but
+    # Equivalent to scipy's lognorm.rvs(s, loc, scale) - scale = exp(mu) - but
     # ~30x cheaper, and this runs once per driver.
     p = CONNECTOR_DURATION[connector]
     duration = p["loc"] + rng.lognormal(mean=p["mu"], sigma=p["s"])
@@ -108,7 +108,7 @@ class ChargerAgent(Agent):
             self.total_wait_steps   += 1
 
     def _end_session(self, ev: "EVDriverAgent") -> None:
-        """Session complete — release charger and serve next in queue."""
+        """Session complete - release charger and serve next in queue."""
         self.total_sessions  += 1
         self.is_occupied      = False
         self.current_ev       = None

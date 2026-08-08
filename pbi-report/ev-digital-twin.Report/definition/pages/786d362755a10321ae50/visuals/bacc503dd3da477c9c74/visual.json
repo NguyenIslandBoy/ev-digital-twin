@@ -1,0 +1,211 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "bacc503dd3da477c9c74",
+  "position": {
+    "x": 1292.5,
+    "y": 715,
+    "z": 13000,
+    "height": 322.5,
+    "width": 560,
+    "tabOrder": 12000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "How to read this page",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "16pt",
+                      "color": "#1a2332"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "PPO wins the weighted objective:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontStyle": "italic",
+                      "fontSize": "12pt",
+                      "color": "#2e8b57"
+                    }
+                  },
+                  {
+                    "value": " the trade-off the operator actually optimises.",
+                    "textStyle": {
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#1a2332"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "It does not dominate:",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#c0392b"
+                    }
+                  },
+                  {
+                    "value": " ToU has lower waiting (2.9 vs 9.4 min) and lower CO₂ (53.9 vs 64.2 kg).",
+                    "textStyle": {
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#1a2332"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "ToU 2-band scores ",
+                    "textStyle": {
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#1a2332"
+                    }
+                  },
+                  {
+                    "value": "below Flat",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#1a2332"
+                    }
+                  },
+                  {
+                    "value": " (318.8 vs 341.7): a mis-timed clock is worse than no clock.",
+                    "textStyle": {
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#1a2332"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Headline bars: 500-episode evaluation (PPO, ToU 2-band, Flat). The five-policy cross-check comes from the separate sweep run, ranking holds, values are not comparable across the two charts.",
+                    "textStyle": {
+                      "fontFamily": "Helvetica Neue, Segoe UI, Arial, sans-serif",
+                      "fontSize": "12pt",
+                      "color": "#6b7785"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

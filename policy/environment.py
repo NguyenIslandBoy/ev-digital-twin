@@ -7,7 +7,7 @@ network-wide price level; the model advances 30 minutes; the agent receives an
 incremental revenue-vs-wait reward.
 
 Design decisions (see project plan):
-  - Regime          : high-adoption (2x) — the only regime with a real trade-off
+  - Regime          : high-adoption (2x) - the only regime with a real trade-off
   - Action space    : Discrete(3) -> {£0.15, £0.30, £0.45} network-wide
   - Demand response : price_elasticity>0 enables abandonment (the downside to
                       high prices). Passed straight to the model so an

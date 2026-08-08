@@ -1,6 +1,6 @@
 # policy/evaluate.py
 """
-Step 5 — evaluate the trained PPO pricing agent against the handcrafted ToU
+Step 5 - evaluate the trained PPO pricing agent against the handcrafted ToU
 schedule and a flat-rate baseline, all under the high-adoption (2x) regime.
 
 Reuses the model's own KPI definitions (model.get_kpis) so the numbers are
@@ -157,7 +157,7 @@ def main(model_path="models/best_model.zip"):
     print(w2[["kpi", "PPO_mean", "Flat £0.30_mean", "pct_change", "p_value", "significant"]]
           .round(4).to_string(index=False))
 
-    # price mix per policy — surfaces the ToU-collapse and PPO's real spread
+    # price mix per policy - surfaces the ToU-collapse and PPO's real spread
     print("\n=== Price mix (fraction of steps at each level) ===")
     mix_rows = []
     for name, counts in action_mix.items():

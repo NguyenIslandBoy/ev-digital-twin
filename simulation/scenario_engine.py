@@ -26,7 +26,7 @@ class Scenario:
     tou_pricing:         bool  = False
     description:         str   = ""
 
-    # ToU price schedule — price per kWh by hour (0-23)
+    # ToU price schedule - price per kWh by hour (0-23)
     # Default: flat rate from config
     tou_schedule:        dict  = field(default_factory=dict)
 
@@ -82,7 +82,7 @@ SCENARIOS = {
 
 
 # ── CARBON INTENSITY SCHEDULE ─────────────────────────────────────────────────
-# Hourly carbon intensity (gCO2/kWh) — simplified UK grid profile
+# Hourly carbon intensity (gCO2/kWh) - simplified UK grid profile
 # Higher during morning and evening peak, lower overnight and midday (solar)
 CARBON_SCHEDULE = {
     0: 45,  1: 42,  2: 40,  3: 38,  4: 38,  5: 40,
