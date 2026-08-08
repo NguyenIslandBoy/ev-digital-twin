@@ -8,7 +8,7 @@ from simulation.agents import EVDriverAgent, ChargerAgent
 from simulation.config import (
     CHARGER_IDS,
     N_CHARGERS,
-    ARRIVAL_RATES,
+    STEP_ARRIVAL_P,
     STEPS_PER_DAY,
     RANDOM_SEED,
     WEEKDAY_RATIO,
@@ -82,36 +82,36 @@ class ChargingNetworkModel(Model):
             charger = ChargerAgent(charger_id, self)
             self.charger_agents.append(charger)
             self.schedule.add(charger)
-            
+
+        self._draw_daily_demand()
+
+    # ── ARRIVAL LOGIC ─────────────────────────────────────────────────────────
+    def _draw_daily_demand(self) -> None:
+        """
+        Draw the day's session target and allocate it across the 48 steps.
+
+        The allocation is a single multinomial over STEP_ARRIVAL_P, so every
+        sampled session lands in exactly one step and the empirical arrival
+        profile is reproduced exactly. The adoption multiplier scales the
+        target only — applying it to the per-step shares as well would count
+        it twice.
+        """
         self.daily_session_target: int = int(
             self.rng.negative_binomial(n=NB_R, p=NB_P) * self.adoption_multiplier
         )
-        self._arrivals_remaining: int = self.daily_session_target    
-
-    # ── ARRIVAL LOGIC ─────────────────────────────────────────────────────────
-    def _get_arrival_rate(self) -> float:
-        hour = (self.current_step * 30) // 60
-        base_rate = ARRIVAL_RATES.get(hour, 0.0)
-        return base_rate * self.adoption_multiplier
+        self._step_arrivals = self.rng.multinomial(
+            self.daily_session_target, STEP_ARRIVAL_P
+        )
+        self._arrivals_remaining: int = self.daily_session_target
 
     def _spawn_arrivals(self) -> None:
-        """
-        Distribute daily session target across steps proportionally
-        to the empirical hourly arrival rates.
-        """
-        if self._arrivals_remaining <= 0:
+        """Spawn the arrivals allocated to the current step."""
+        if self.current_step >= STEPS_PER_DAY:
             return
 
-        rate     = self._get_arrival_rate()
-        total    = sum(ARRIVAL_RATES.values())
-        fraction = rate / total if total > 0 else 0.0
-
-        # Expected arrivals this step from daily target
-        expected  = fraction * self.daily_session_target
-        n_arrive  = min(
-            self._arrivals_remaining,
-            int(self.rng.poisson(lam=max(expected, 0)))
-        )
+        n_arrive = int(self._step_arrivals[self.current_step])
+        if n_arrive == 0:
+            return
         self._arrivals_remaining -= n_arrive
 
         for _ in range(n_arrive):
@@ -194,11 +194,9 @@ class ChargingNetworkModel(Model):
         self.completed_sessions = 0
         self.ev_agent_counter   = 0
 
-        self.daily_session_target = int(
-            self.rng.negative_binomial(n=NB_R, p=NB_P) * self.adoption_multiplier
-        )
-        self._arrivals_remaining = self.daily_session_target
-        
+        self._draw_daily_demand()
+
+
         # Clear charger state
         for charger in self.charger_agents:
             charger.is_occupied       = False

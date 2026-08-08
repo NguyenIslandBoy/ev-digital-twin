@@ -4,7 +4,8 @@ import numpy as np
 from mesa import Agent
 
 from simulation.config import (
-    CONNECTOR_SHARES,
+    CONNECTOR_NAMES,
+    CONNECTOR_CDF,
     CONNECTOR_ENERGY,
     CONNECTOR_DURATION,
     MAX_DURATION_HRS,
@@ -17,26 +18,22 @@ from simulation.config import (
 
 # ── HELPER: sample connector type ─────────────────────────────────────────────
 def _sample_connector(rng: np.random.Generator) -> str:
-    connectors = list(CONNECTOR_SHARES.keys())
-    shares     = list(CONNECTOR_SHARES.values())
-    return rng.choice(connectors, p=shares)
+    return CONNECTOR_NAMES[int(np.searchsorted(CONNECTOR_CDF, rng.random()))]
 
 
 # ── HELPER: sample energy demand (empirical) ──────────────────────────────────
 def _sample_energy(connector: str, rng: np.random.Generator) -> float:
     values = CONNECTOR_ENERGY[connector]["values"]
-    energy = rng.choice(values)
+    energy = values[rng.integers(values.size)]
     return max(MIN_ENERGY_KWH, float(energy))
 
 
 # ── HELPER: sample session duration (Lognormal per connector) ─────────────────
 def _sample_duration(connector: str, rng: np.random.Generator) -> float:
-    from scipy.stats import lognorm
+    # Equivalent to scipy's lognorm.rvs(s, loc, scale) — scale = exp(mu) — but
+    # ~30x cheaper, and this runs once per driver.
     p = CONNECTOR_DURATION[connector]
-    duration = lognorm.rvs(
-        s=p["s"], loc=p["loc"], scale=p["scale"],
-        random_state=rng
-    )
+    duration = p["loc"] + rng.lognormal(mean=p["mu"], sigma=p["s"])
     return float(np.clip(duration, 0.1, MAX_DURATION_HRS))
 
 
@@ -155,15 +152,17 @@ class EVDriverAgent(Agent):
         self.energy_remaining_kwh:  float = self.energy_demand_kwh
         self.duration_hrs:          float = _sample_duration(self.connector_type, rng)
 
-        # Charging rate derived from energy and duration
-        # kWh per 30-min step
-        self.charge_rate_kwh_per_step: float = (
-            self.energy_demand_kwh / max(self.duration_hrs * 2, 1)
-        )
-
         # Steps required to complete session
         self.steps_remaining: int = max(
-            1, int(self.duration_hrs * (60 / STEP_MINUTES))
+            1, round(self.duration_hrs * (60 / STEP_MINUTES))
+        )
+
+        # Charging rate derived from the step count, not from the raw duration:
+        # the two must agree or the session is cut off before the sampled energy
+        # is delivered. Flooring them independently under-delivered ~14% of
+        # demanded energy, understating revenue, CO2 and the energy KPI.
+        self.charge_rate_kwh_per_step: float = (
+            self.energy_demand_kwh / self.steps_remaining
         )
 
         # State
