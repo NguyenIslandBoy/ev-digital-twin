@@ -1,4 +1,4 @@
-/// Folder holding the finished results CSVs — the only place the dashboard reads from (spec §2).
+/// Folder holding the finished results CSVs - the only place the dashboard reads from (spec §2).
 expression ResultsFolder = "C:\Users\nguye\Downloads\DS_projects\ev_digital_twin\results\" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
 	lineageTag: c4b4e8b3-ee6d-4818-80f0-a07a01e2a0da
 

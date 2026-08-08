@@ -1,4 +1,4 @@
-/// Measure container — hosts every global measure (house convention; measures have no natural home on a fact).
+/// Measure container - hosts every global measure (house convention; measures have no natural home on a fact).
 table #Measures
 	lineageTag: 929e972d-f495-4351-b4bd-46a3bec10f9f
 
@@ -68,7 +68,7 @@ table #Measures
 		displayFolder: 01 EDA
 		lineageTag: 56361e24-531f-4351-868c-70ddbb3b480a
 
-	/// Fraction of sessions arriving 07:00–19:00 — quantifies why a clock tariff cannot discriminate (expect ~80%).
+	/// Fraction of sessions arriving 07:00–19:00 - quantifies why a clock tariff cannot discriminate (expect ~80%).
 	measure 'Peak-Window Share (%)' = DIVIDE(CALCULATE([Total Sessions], DimHour[IsToUPeak] = TRUE), [Total Sessions])
 		formatString: 0.0%
 		displayFolder: 01 EDA
@@ -164,7 +164,7 @@ table #Measures
 		displayFolder: 03 Scenario
 		lineageTag: c3db4f48-aa80-41af-ae92-cfaffb3b05f9
 
-	/// Three-state Wilcoxon indicator per scenario × KPI (spec §8/H7): significant / not significant / undefined. blank-vs-zero-guard pattern — a null p with a row present is ‘undefined’, not blank.
+	/// Three-state Wilcoxon indicator per scenario × KPI (spec §8/H7): significant / not significant / undefined. blank-vs-zero-guard pattern - a null p with a row present is ‘undefined’, not blank.
 	measure 'Significance Indicator' = VAR hasRow = COUNTROWS(FactScenarioSignificance) > 0 VAR p = MAX(FactScenarioSignificance[wilcoxon_p_vs_baseline]) RETURN IF(hasRow, IF(ISBLANK(p), "undefined - all paired differences zero", IF(p < 0.05, "significant", "not significant")))
 		displayFolder: 03 Scenario
 		lineageTag: 712b8580-cc69-42ef-9a9f-864cea97a2a2
@@ -181,7 +181,7 @@ table #Measures
 		displayFolder: 04 Evaluation
 		lineageTag: 774a59ce-a4e7-4372-b785-86a908623d29
 
-	/// Mean waiting time in minutes (R5 — hours ×60, wait_steps never shown).
+	/// Mean waiting time in minutes (R5 - hours ×60, wait_steps never shown).
 	measure 'Mean Wait (min)' = AVERAGE(FactEvalEpisode[avg_wait_hrs]) * 60
 		formatString: #,0.0
 		displayFolder: 04 Evaluation
@@ -247,7 +247,7 @@ table #Measures
 		displayFolder: 04 Evaluation
 		lineageTag: 26fd9ed7-39f8-41bc-96c1-f92abaf6e046
 
-	/// Mean sweep score across the seeds in context (R6: point value = mean of 5 seeds). λ is per-elasticity by construction — the stored score used the matching λ (R2).
+	/// Mean sweep score across the seeds in context (R6: point value = mean of 5 seeds). λ is per-elasticity by construction - the stored score used the matching λ (R2).
 	measure 'Sweep Mean Score' = AVERAGE(FactSweep[score])
 		formatString: #,0.0
 		displayFolder: 05 Sweep
@@ -259,31 +259,31 @@ table #Measures
 		displayFolder: 05 Sweep
 		lineageTag: a3b01272-5d8b-4817-8150-2c3398801232
 
-	/// Mean + 1 seed std — upper edge of the uncertainty band (H3), guarded.
+	/// Mean + 1 seed std - upper edge of the uncertainty band (H3), guarded.
 	measure 'Sweep Score Band Upper' = VAR m = [Sweep Mean Score] VAR s = [Sweep Score Std (Seeds)] RETURN IF(NOT ISBLANK(m) && NOT ISBLANK(s), m + s)
 		formatString: #,0.0
 		displayFolder: 05 Sweep
 		lineageTag: 6b428575-3a27-4e61-89ff-5069cc3ef975
 
-	/// Mean − 1 seed std — lower edge of the uncertainty band (H3), guarded.
+	/// Mean − 1 seed std - lower edge of the uncertainty band (H3), guarded.
 	measure 'Sweep Score Band Lower' = VAR m = [Sweep Mean Score] VAR s = [Sweep Score Std (Seeds)] RETURN IF(NOT ISBLANK(m) && NOT ISBLANK(s), m - s)
 		formatString: #,0.0
 		displayFolder: 05 Sweep
 		lineageTag: 052bf599-aa13-4389-b319-5c20594d4745
 
-	/// PPO minus ToU 2-band sweep score at the elasticity in context (R2/R4) — scores already carry the per-elasticity λ. Guarded so the degenerate rows (no PPO) return blank, not a phantom margin (R9).
+	/// PPO minus ToU 2-band sweep score at the elasticity in context (R2/R4) - scores already carry the per-elasticity λ. Guarded so the degenerate rows (no PPO) return blank, not a phantom margin (R9).
 	measure 'PPO Margin vs ToU 2-band' = VAR ppo = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR tou = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(tou), ppo - tou)
 		formatString: +#,0.0;-#,0.0;0.0
 		displayFolder: 05 Sweep
 		lineageTag: a5b30795-2f3d-408c-a445-ba785d225245
 
-	/// PPO minus ToU 3-band sweep score — carries the ‘state-conditioning, not granularity’ claim. Guarded (R9).
+	/// PPO minus ToU 3-band sweep score - carries the ‘state-conditioning, not granularity’ claim. Guarded (R9).
 	measure 'PPO Margin vs ToU 3-band' = VAR ppo = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "PPO") VAR tou3 = CALCULATE([Sweep Mean Score], REMOVEFILTERS(DimPolicy), DimPolicy[PolicyKey] = "ToU3") RETURN IF(NOT ISBLANK(ppo) && NOT ISBLANK(tou3), ppo - tou3)
 		formatString: +#,0.0;-#,0.0;0.0
 		displayFolder: 05 Sweep
 		lineageTag: 08be6390-1b7b-4732-a413-b443edd0d032
 
-	/// Regime flag for the selected elasticity (R9): ‘Trade-off’ or ‘Degenerate — pricing collapses to maximum tariff’.
+	/// Regime flag for the selected elasticity (R9): ‘Trade-off’ or ‘Degenerate - pricing collapses to maximum tariff’.
 	measure 'Regime Label (Selected)' = IF(HASONEVALUE(DimElasticity[Elasticity]), SELECTEDVALUE(DimElasticity[RegimeLabel]))
 		displayFolder: 05 Sweep
 		lineageTag: 66a66105-94e9-4545-9926-52e1f1ebe061
@@ -315,11 +315,11 @@ table #Measures
 	measure 'Revenue Change Color' =
 			
 			VAR _Value = [Revenue Change vs Baseline (%)]
-			VAR _Tolerance = 0.0005   // ±0.05 pp — kills floating-point noise
+			VAR _Tolerance = 0.0005   // ±0.05 pp - kills floating-point noise
 			RETURN
 			    SWITCH(
 			        TRUE(),
-			        ISBLANK( _Value ),          "#8A94A6",   // no data — grey
+			        ISBLANK( _Value ),          "#8A94A6",   // no data - grey
 			        _Value >  _Tolerance,       "#2E9E5B",   // green
 			        _Value < -_Tolerance,       "#D64550",   // red
 			                                    "#E8B93B"    // yellow (at baseline)
@@ -329,11 +329,11 @@ table #Measures
 	measure 'Sessions Change Color' =
 			
 			VAR _Value = [Sessions Change vs Baseline (%)]
-			VAR _Tolerance = 0.0005   // ±0.05 pp — kills floating-point noise
+			VAR _Tolerance = 0.0005   // ±0.05 pp - kills floating-point noise
 			RETURN
 			    SWITCH(
 			        TRUE(),
-			        ISBLANK( _Value ),          "#8A94A6",   // no data — grey
+			        ISBLANK( _Value ),          "#8A94A6",   // no data - grey
 			        _Value >  _Tolerance,       "#2E9E5B",   // green
 			        _Value < -_Tolerance,       "#D64550",   // red
 			                                    "#E8B93B"    // yellow (at baseline)
@@ -343,11 +343,11 @@ table #Measures
 	measure 'Wait Change Color' =
 			
 			VAR _Value = [Wait Change vs Baseline (%)]
-			VAR _Tolerance = 0.0005   // ±0.05 pp — kills floating-point noise
+			VAR _Tolerance = 0.0005   // ±0.05 pp - kills floating-point noise
 			RETURN
 			    SWITCH(
 			        TRUE(),
-			        ISBLANK( _Value ),          "#8A94A6",   // no data — grey
+			        ISBLANK( _Value ),          "#8A94A6",   // no data - grey
 			        _Value >  _Tolerance,       "#2E9E5B",   // green
 			        _Value < -_Tolerance,       "#D64550",   // red
 			                                    "#E8B93B"    // yellow (at baseline)

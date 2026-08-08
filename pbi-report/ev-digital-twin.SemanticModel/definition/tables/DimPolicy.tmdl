@@ -1,4 +1,4 @@
-/// Policy dimension — drives the single consistent policy order and colour on every visual (spec §4).
+/// Policy dimension - drives the single consistent policy order and colour on every visual (spec §4).
 table DimPolicy
 	lineageTag: e9839ac3-77d8-4a13-a872-b8fbfeca1110
 

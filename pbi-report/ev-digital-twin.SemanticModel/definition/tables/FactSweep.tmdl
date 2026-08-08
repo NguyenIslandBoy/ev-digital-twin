@@ -1,4 +1,4 @@
-/// Robustness fact, grain: elasticity × seed × policy — unpivoted from the wide sweep per spec §3; margin columns dropped (measures recompute them).
+/// Robustness fact, grain: elasticity × seed × policy - unpivoted from the wide sweep per spec §3; margin columns dropped (measures recompute them).
 table FactSweep
 	lineageTag: 4ca70062-188e-4f53-bc88-d113d40d8afa
 
