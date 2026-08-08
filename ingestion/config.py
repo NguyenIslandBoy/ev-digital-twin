@@ -4,8 +4,14 @@ from datetime import datetime
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+
 # ── PATHS ─────────────────────────────────────────────────────────────────────
 ROOT_DIR      = Path(__file__).resolve().parent.parent
+
+# The metering-portal cookie lives in <repo_root>/.env (gitignored). Load it
+# explicitly so the scraper works from any working directory.
+load_dotenv(ROOT_DIR / ".env")
 DATA_DIR      = ROOT_DIR / "data"
 RAW_DIR       = DATA_DIR / "raw"
 DB_PATH       = DATA_DIR / "ev_twin.duckdb"

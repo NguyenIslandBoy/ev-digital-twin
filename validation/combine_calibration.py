@@ -1,7 +1,7 @@
 from PIL import Image
 from pathlib import Path
 
-FIG = Path("results/figures")
+FIG = Path(__file__).resolve().parent.parent / "results" / "figures"
 names = ["calibration_sessions.png", "calibration_energy.png", "calibration_duration.png"]
 imgs = [Image.open(FIG / n) for n in names]
 

@@ -23,6 +23,14 @@ reports/
 policy/logs/
 models/sweep/
 
+# ── Power BI local artifacts ──────────────────────────────
+# localSettings.json holds a securityBindingsSignature — a DPAPI blob encrypted
+# against the local Windows account, so it is useless on any other machine.
+# cache.abf is a local model cache Power BI Desktop rebuilds on open.
+# editorSettings.json IS a real project setting and stays tracked.
+pbi-report/**/.pbi/localSettings.json
+pbi-report/**/.pbi/cache.abf
+
 # ── Notebook / OS cruft ───────────────────────────────────
 .ipynb_checkpoints/
 .DS_Store

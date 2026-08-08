@@ -1,10 +1,14 @@
 import duckdb, numpy as np
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 NAVY, TEAL, AMBER = "#123B5C", "#1B9AAA", "#E4A02A"
 
-con = duckdb.connect("data/ev_twin.duckdb", read_only=True)
+ROOT = Path(__file__).resolve().parent.parent
+OUT  = ROOT / "results" / "figures" / "arrival_vs_tou_window.png"
+
+con = duckdb.connect(str(ROOT / "data" / "ev_twin.duckdb"), read_only=True)
 df = con.execute("""
     SELECT EXTRACT(hour FROM session_start) AS hour, COUNT(*) AS n
     FROM charging_sessions GROUP BY 1 ORDER BY 1
@@ -37,5 +41,5 @@ ax.set_title("Real arrivals vs the ToU peak window", fontsize=15,
 ax.tick_params(labelsize=12)
 for s in ("top", "right"): ax.spines[s].set_visible(False)
 plt.tight_layout()
-plt.savefig("results/figures/arrival_vs_tou_window.png", dpi=220, bbox_inches="tight")
-print("saved results/figures/arrival_vs_tou_window.png")
+plt.savefig(OUT, dpi=220, bbox_inches="tight")
+print(f"saved {OUT}")
