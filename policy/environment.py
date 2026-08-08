@@ -42,9 +42,9 @@ class ChargingPricingEnv(gym.Env):
 
     def __init__(
         self,
-        adoption_multiplier: float = 2.0,
+        adoption_multiplier: float = 3.0,
         price_elasticity:    float = 0.8,
-        lambda_wait:         float = 0.75,  # ~tie-point between the two price
+        lambda_wait:         float = 1.581,  # ~tie-point between the two price
                                             # constants; recalibrate per regime
                                             # with signal_check.py on real data
         lambda_co2:          float = 0.0,

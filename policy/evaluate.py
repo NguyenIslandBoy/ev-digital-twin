@@ -8,8 +8,8 @@ directly comparable to Phases 4-5, and runs paired Wilcoxon signed-rank tests
 (same as scenario_engine) since every policy is evaluated on identical episode
 seeds.
 
-Run:  python policy/evaluate.py                       # uses policy/logs/best_model.zip
-      python policy/evaluate.py path/to/model.zip
+Run:  python -m policy.evaluate                       # uses models/best_model.zip
+      python -m policy.evaluate path/to/model.zip
 """
 
 from __future__ import annotations
@@ -32,9 +32,9 @@ RESULTS_DIR.mkdir(exist_ok=True)
 # ── evaluation config (must match training regime) ────────────────────────────
 N_EPISODES       = 500
 BASE_SEED        = 20000
-ADOPTION         = 2.0
+ADOPTION         = 3.0
 PRICE_ELASTICITY = 0.8
-LAMBDA_WAIT      = 0.934      # keep in sync with signal_check.py / training
+LAMBDA_WAIT      = 1.581      # keep in sync with signal_check.py / training
 ENVKW = dict(adoption_multiplier=ADOPTION,
              price_elasticity=PRICE_ELASTICITY,
              lambda_wait=LAMBDA_WAIT)
@@ -116,7 +116,7 @@ def paired_wilcoxon(df, policy_a, policy_b, kpi):
             "significant": (p < 0.05) if p == p else False}
 
 
-def main(model_path="policy/logs/best_model.zip"):
+def main(model_path="models/best_model.zip"):
     print(f"Loading PPO model: {model_path}")
     model = PPO.load(model_path)
 
@@ -139,7 +139,7 @@ def main(model_path="policy/logs/best_model.zip"):
 
     summary = summarise(df)
     pd.set_option("display.width", 200, "display.max_columns", 40)
-    print("\n=== KPI summary (high-adoption 2x, means) ===")
+    print(f"\n=== KPI summary (high-adoption {ADOPTION:g}x, means) ===")
     show = ["revenue_gbp_mean", "avg_wait_hrs_mean", "sessions_completed_mean",
             "co2_g_mean", "avg_utilisation_mean", "score_mean"]
     print(summary[show].round(2).to_string())
@@ -182,5 +182,5 @@ def main(model_path="policy/logs/best_model.zip"):
 
 
 if __name__ == "__main__":
-    path = sys.argv[1] if len(sys.argv) > 1 else "policy/logs/best_model.zip"
+    path = sys.argv[1] if len(sys.argv) > 1 else "models/best_model.zip"
     main(path)

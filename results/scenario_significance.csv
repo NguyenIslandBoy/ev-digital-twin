@@ -1,31 +1,31 @@
 scenario,kpi,wilcoxon_p_vs_baseline,significant
-EV Adoption Growth (Low),sessions_completed,1.0424828669291855e-83,True
-EV Adoption Growth (Low),energy_kwh,1.9844130822696795e-83,True
-EV Adoption Growth (Low),revenue_gbp,1.9844041679803907e-83,True
-EV Adoption Growth (Low),co2_g,1.9844130822696795e-83,True
-EV Adoption Growth (Low),avg_wait_hrs,1.983121350496905e-42,True
-EV Adoption Growth (Low),avg_utilisation,2.882862610772851e-83,True
-EV Adoption Growth (High),sessions_completed,1.2024064619091508e-83,True
-EV Adoption Growth (High),energy_kwh,1.264716101234528e-83,True
+EV Adoption Growth (Low),sessions_completed,1.0385671547846384e-83,True
+EV Adoption Growth (High),sessions_completed,1.198450206229435e-83,True
+Time-of-Use Pricing,sessions_completed,0.7448635305319935,False
+Carbon-Aware Incentives,sessions_completed,0.19781879190383722,False
+Combined Policy,sessions_completed,0.4352387327804247,False
+EV Adoption Growth (Low),energy_kwh,1.2800120754180319e-83,True
+EV Adoption Growth (High),energy_kwh,1.2647189486921486e-83,True
+Time-of-Use Pricing,energy_kwh,0.2754728570195183,False
+Carbon-Aware Incentives,energy_kwh,0.37765894936156097,False
+Combined Policy,energy_kwh,0.4242238974245688,False
+EV Adoption Growth (Low),revenue_gbp,1.2800120754180319e-83,True
 EV Adoption Growth (High),revenue_gbp,1.264716101234528e-83,True
+Time-of-Use Pricing,revenue_gbp,1.0496542896475714e-80,True
+Carbon-Aware Incentives,revenue_gbp,0.377320411698717,False
+Combined Policy,revenue_gbp,1.2092440026399576e-79,True
+EV Adoption Growth (Low),co2_g,1.2800120754180319e-83,True
 EV Adoption Growth (High),co2_g,1.2647189486921486e-83,True
-EV Adoption Growth (High),avg_wait_hrs,2.726862846139352e-67,True
-EV Adoption Growth (High),avg_utilisation,1.2610396398290564e-83,True
-Time-of-Use Pricing,sessions_completed,,False
-Time-of-Use Pricing,energy_kwh,0.062367653009339274,False
-Time-of-Use Pricing,revenue_gbp,1.1501916338025923e-81,True
-Time-of-Use Pricing,co2_g,0.062411144084440255,False
-Time-of-Use Pricing,avg_wait_hrs,0.9042230981922335,False
-Time-of-Use Pricing,avg_utilisation,0.16034956649804044,False
-Carbon-Aware Incentives,sessions_completed,0.31731050786291415,False
-Carbon-Aware Incentives,energy_kwh,0.1880220700820432,False
-Carbon-Aware Incentives,revenue_gbp,0.18807604467061512,False
-Carbon-Aware Incentives,co2_g,0.18818406818215505,False
-Carbon-Aware Incentives,avg_wait_hrs,0.7316198859426017,False
-Carbon-Aware Incentives,avg_utilisation,0.6172890525678132,False
-Combined Policy,sessions_completed,,False
-Combined Policy,energy_kwh,0.05071829790407193,False
-Combined Policy,revenue_gbp,9.033630979693296e-83,True
-Combined Policy,co2_g,0.05073660229304506,False
-Combined Policy,avg_wait_hrs,0.7812728648821566,False
-Combined Policy,avg_utilisation,0.9953325650842791,False
+Time-of-Use Pricing,co2_g,0.2753366925233316,False
+Carbon-Aware Incentives,co2_g,0.3774050680403426,False
+Combined Policy,co2_g,0.42404455177620826,False
+EV Adoption Growth (Low),avg_wait_hrs,6.20491298035947e-10,True
+EV Adoption Growth (High),avg_wait_hrs,1.714083722679306e-25,True
+Time-of-Use Pricing,avg_wait_hrs,0.380963076509372,False
+Carbon-Aware Incentives,avg_wait_hrs,0.5299552725420018,False
+Combined Policy,avg_wait_hrs,0.5519439490886677,False
+EV Adoption Growth (Low),avg_utilisation,1.8765885772864265e-83,True
+EV Adoption Growth (High),avg_utilisation,1.2616701124815844e-83,True
+Time-of-Use Pricing,avg_utilisation,0.8788372371918918,False
+Carbon-Aware Incentives,avg_utilisation,0.916916541991104,False
+Combined Policy,avg_utilisation,0.6746036164188461,False

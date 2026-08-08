@@ -16,25 +16,25 @@ The central result: a **PPO agent that conditions on live congestion state** lea
 
 ## Key findings
 
-All figures are for the high-adoption (2×) regime, the setting where pricing has a genuine effect on behaviour. Scores are the objective `revenue − λ·wait`; margins are paired across identical episode seeds.
+All figures are for the high-adoption (3×) regime, the setting where pricing has a genuine effect on behaviour. Scores are the objective `revenue − λ·wait`; margins are paired across identical episode seeds.
 
 | Finding | Evidence |
 |---|---|
-| **PPO beats the handcrafted ToU schedule** | +20% on the objective and +24% on revenue at the headline config (elasticity 0.8, λ 0.934), Wilcoxon *p* < 0.001 over 500 paired episodes |
-| **Robust to the demand assumption and to training seed** | PPO − ToU margin stays **+70 to +91** across elasticity 0.7–1.0; standard deviation across 5 training seeds is only **~2–3 points** |
-| **The advantage is state-conditioning, not price granularity** | PPO also beats **ToU3** — a 3-band clock schedule with the same middle tariff — by **+54 to +73** everywhere. More price levels do not close the gap; conditioning on live queue state does |
-| **A static ToU schedule is worse than doing nothing** | ToU scores **318.8 < 341.7** for flat pricing: indiscriminate peak pricing sheds more revenue than its wait reduction is worth |
+| **PPO beats the handcrafted ToU schedule** | +24% on the objective and +25% on revenue at the headline config (elasticity 0.8, λ 1.581), Wilcoxon *p* < 0.001 over 500 paired episodes |
+| **Robust to the demand assumption and to training seed** | PPO − ToU margin stays **+101 to +181** across elasticity 0.7–1.0; standard deviation across 5 training seeds is only **1.4–5.1 points** |
+| **The advantage is state-conditioning, not price granularity** | PPO also beats **ToU3** — a 3-band clock schedule with the same middle tariff — by **+94 to +140** everywhere. More price levels do not close the gap; conditioning on live queue state does |
+| **A static ToU schedule is worse than doing nothing** | ToU scores **559.5 < 601.9** for flat pricing: indiscriminate peak pricing sheds more revenue than its wait reduction is worth. Holds at elasticity 0.7–0.9; at 1.0 the two are level (480.6 vs 479.5) |
 | **Adaptive pricing has a critical elasticity (≈ 0.65)** | Below it, the high price dominates on *both* revenue and wait, no trade-off exists, and the optimal policy collapses to a static maximum price |
 
-Headline comparison (2× adoption, 500 episodes, elasticity 0.8):
+Headline comparison (3× adoption, 500 episodes, elasticity 0.8, λ 1.581):
 
 | Policy | Revenue (£) | Wait (min) | Sessions | Score |
 |---|---|---|---|---|
-| **PPO** | **400.9** | 9.6 | 41.0 | **383.1** |
-| Flat £0.30 | 386.9 | 19.8 | 49.3 | 341.7 |
-| ToU (2-band) | 323.9 | 2.9 | 34.3 | 318.8 |
+| **PPO** | **700.6** | 1.1 | 62.6 | **695.3** |
+| Flat £0.30 | 664.5 | 10.0 | 72.6 | 601.9 |
+| ToU (2-band) | 562.5 | 0.6 | 48.4 | 559.5 |
 
-> Note: PPO does **not** minimise waiting time — ToU does, by serving ~30% fewer cars. PPO holds a superior revenue–wait *trade-off* at the chosen λ; it accepts modest congestion to serve more sessions at higher revenue. See *Limitations*.
+> Note: PPO does **not** minimise waiting time — ToU does, by serving ~23% fewer cars. PPO holds a superior revenue–wait *trade-off* at the chosen λ; it accepts modest congestion to serve more sessions at higher revenue. Nor does it dominate the hand-designed congestion heuristic by much (+7 to +12 points) — most of the available state-conditioning value is reachable without learning. See *Limitations*.
 
 ## Repository structure
 
@@ -87,7 +87,7 @@ ev_digital_twin/
 reward = Δrevenue − λ_wait · Δwait_steps        (λ_co2 = 0 for the headline agent)
 ```
 
-Training uses PPO (Stable-Baselines3) under the high-adoption (2×) regime with an opt-in **price-abandonment** mechanism — the demand-side downside to high prices that makes pricing a real optimisation problem. `λ_wait` is the tie-point between the two constant-price policies, re-derived per elasticity.
+Training uses PPO (Stable-Baselines3) under the high-adoption (3×) regime with an opt-in **price-abandonment** mechanism — the demand-side downside to high prices that makes pricing a real optimisation problem. `λ_wait` is the tie-point between the two constant-price policies, re-derived per elasticity. 3× is the lowest multiplier at which the network is congested enough for that trade-off to exist on defensible terms: at 2× mean waiting is ~1 minute and λ rises above 15, which is not a preference any operator would hold.
 
 ## Calibration
 
@@ -116,6 +116,8 @@ pip install -r requirements.txt
 python -m ingestion.run_scraper --load-sessions
 ```
 
+The metering scrape is a separate opt-in step (`--scrape`, needs `NCL_METERING_COOKIE` in `.env`). Its output was investigated and excluded — see *Data* above — so it is not required to reproduce any result.
+
 **2. EDA → calibration → scenarios** (run in order; notebook 01 writes the `simulation_params` the simulation depends on)
 
 ```
@@ -128,27 +130,43 @@ notebooks/03_scenarios.ipynb
 **3. Phase 6 — validate, then train**
 
 ```bash
-python validation/smoke_test.py       # patches behave; trade-off exists
-python validation/signal_check.py     # derives λ; confirms learnable signal
-python validation/scan_elasticity.py  # shows the degenerate boundary (~0.65)
+python -m validation.smoke_test       # patches behave; trade-off exists
+python -m validation.signal_check     # derives λ; confirms learnable signal
+python -m validation.scan_elasticity  # shows the degenerate boundary (~0.65)
 ```
 
-Train PPO in `notebooks/04_train_ppo_colab.ipynb` (Colab GPU), download `best_model.zip` into `models/`, then evaluate locally:
+Then train and evaluate — **CPU only, no GPU needed**:
 
 ```bash
-python -m policy.evaluate models/best_model.zip
+python -m policy.train               # ~3 min; writes models/best_model.zip
+python -m policy.evaluate            # ~15 s; defaults to models/best_model.zip
+python validation/plot_price_by_hour.py
 ```
 
-**4. Robustness sweep** — `notebooks/05_sweep_colab.ipynb` (Colab; resumable). Writes `results/sweep_results.csv`.
+**4. Robustness sweep** (elasticity × seed, ~59 min, resumable — rerun to continue)
+
+```bash
+python -m policy.run_sweep
+```
+
+**5. Regenerate the non-RL artefacts** (calibration, scenarios, elasticity boundary, ~40 s)
+
+```bash
+python -m validation.regenerate_results
+```
+
+`notebooks/04_train_ppo_colab.ipynb` and `05_sweep_colab.ipynb` are the Colab equivalents of steps 3–4. They exist because the simulator used to be ~17× slower; both stages now run locally in the times above. See `results/README.md` for which command produces which file.
 
 ## Robustness sweep (elasticity × 5 seeds)
 
 | Elasticity | λ | PPO (± sd) | ToU | ToU3 | Flat | Congestion | PPO − ToU |
 |---|---|---|---|---|---|---|---|
-| 0.7 | 0.23 | 432.3 ± 3.1 | 341.7 | 374.2 | 373.4 | 396.2 | +90.6 |
-| 0.8 | 0.93 | 395.2 ± 2.6 | 318.1 | 341.6 | 338.3 | 378.3 | +77.1 |
-| 0.9 | 1.59 | 367.1 ± 2.8 | 296.7 | 311.0 | 305.4 | 362.8 | +70.4 |
-| 1.0 | 2.20 | 355.5 ± 2.0 | 275.7 | 282.6 | 274.8 | 351.1 | +79.8 |
+| 0.7 | 0.271 | 705.0 ± 5.1 | 603.6 | 610.8 | 649.2 | 692.6 | +101.4 |
+| 0.8 | 1.581 | 686.4 ± 2.3 | 560.7 | 576.3 | 590.6 | 677.8 | +125.8 |
+| 0.9 | 2.871 | 671.2 ± 3.8 | 519.7 | 548.1 | 532.9 | 664.5 | +151.5 |
+| 1.0 | 4.065 | 661.7 ± 1.4 | 480.6 | 521.8 | 479.5 | 654.0 | +181.1 |
+
+λ is re-derived per elasticity over 400 episodes. It is a ratio whose denominator is a small difference between two noisy wait means, so it is sensitive to the episode count — `results/elasticity_boundary.csv` uses 200 episodes and reports different values (1.702 at elasticity 0.8). Quote the episode count wherever λ appears.
 
 Elasticities 0.5 and 0.6 are degenerate (no trade-off) and reported as the boundary condition.
 
@@ -158,7 +176,7 @@ Elasticities 0.5 and 0.6 are degenerate (no trade-off) and reported as the bound
 |---|---|---|
 | Storage | DuckDB | ≥ 0.10 |
 | Simulation | Mesa | 2.3.4 (pinned) |
-| RL | Stable-Baselines3 / Gymnasium | 2.9.0 / ≥ 0.29 |
+| RL | Stable-Baselines3 / Gymnasium | 2.9.0 / 1.3.0 (both pinned) |
 | Statistics | scipy, numpy | latest |
 | Data / plotting | pandas, matplotlib, seaborn | latest |
 
@@ -167,4 +185,5 @@ Elasticities 0.5 and 0.6 are degenerate (no trade-off) and reported as the bound
 - **Abandonment is a modelling assumption, not calibrated.** The session data contains only completed sessions, so there is no ground truth for how many drivers leave when prices rise. The elasticity sweep (0.7–1.0) exists precisely to show the result is not an artefact of one assumed value; it should be grounded against a cited price-elasticity-of-demand range.
 - **PPO does not dominate ToU on every KPI.** It trades a little more waiting time for substantially more revenue and throughput; the claim is a better weighted objective at the stated λ, not Pareto dominance.
 - **PPO's CO₂ is higher than ToU's**, because it serves more energy. CO₂ is a monitored KPI, not an optimised one (λ_co2 = 0); the `hourly_carbon` flag is available for a carbon-aware extension.
-- **Results are conditional on the 2× high-adoption regime.** At present (12%) utilisation, pricing produces sub-1% behavioural effects (Phase 5) — adaptive pricing is a lever for a future, more congested network, not today's.
+- **Learning adds less than the state-conditioning itself.** The hand-designed congestion heuristic reaches within 7–12 points of PPO at every elasticity. The large margin is over *clock-based* schedules; against a competent state-aware rule the learned policy wins consistently but narrowly.
+- **Results are conditional on the 3× high-adoption regime.** At present (~14%) utilisation, pricing produces sub-1% behavioural effects (Phase 5), and even at 2× mean waiting is ~1 minute — adaptive pricing is a lever for a future, substantially more congested network, not today's.

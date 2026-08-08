@@ -6,8 +6,9 @@ from pathlib import Path
 
 NAVY, TEAL, AMBER = "#123B5C", "#1B9AAA", "#E4A02A"
 
-CSV = Path("results/ppo_price_by_hour.csv")
-OUT = Path("results/figures/ppo_price_by_hour.png")
+ROOT = Path(__file__).resolve().parent.parent
+CSV = ROOT / "results" / "ppo_price_by_hour.csv"
+OUT = ROOT / "results" / "figures" / "ppo_price_by_hour.png"
 OUT.parent.mkdir(parents=True, exist_ok=True)
 
 df = pd.read_csv(CSV)
@@ -31,13 +32,18 @@ ax.plot(h, p, color=AMBER, lw=3.4, marker="o", ms=6,
         markerfacecolor="white", markeredgewidth=2.2,
         label="PPO learned policy", zorder=4)
 
-ax.annotate("expensive while\nqueues build", xy=(11, 0.427), xytext=(10.6, 0.492),
-            ha="center", fontsize=11, color="#9A6B10", fontweight="bold")
-ax.annotate("cheap once the day's\ndemand is largely spent", xy=(19, 0.151),
-            xytext=(19.4, 0.212), ha="center", fontsize=11,
-            color="#9A6B10", fontweight="bold")
-ax.annotate("ToU still charging peak\nwith no queue to manage", xy=(17.2, 0.30),
-            xytext=(13.0, 0.335), fontsize=10.5, color=NAVY, style="italic",
+ax.annotate("flat £0.30 overnight in every\nepisode — no congestion to price",
+            xy=(2.5, 0.30), xytext=(2.2, 0.372), ha="center", fontsize=10.5,
+            color="#9A6B10", fontweight="bold",
+            arrowprops=dict(arrowstyle="->", color="#9A6B10", lw=1.4))
+ax.annotate("surcharges as queues build,\neases as they clear", xy=(16, 0.367),
+            xytext=(17.6, 0.268), ha="center", fontsize=10.5,
+            color="#9A6B10", fontweight="bold",
+            arrowprops=dict(arrowstyle="->", color="#9A6B10", lw=1.4,
+                            connectionstyle="arc3,rad=0.25"))
+ax.annotate("ToU discounts the quiet hours\nand surcharges the busy ones flat",
+            xy=(6.6, 0.15), xytext=(8.4, 0.185), fontsize=10.5, color=NAVY,
+            style="italic",
             arrowprops=dict(arrowstyle="->", color=NAVY, lw=1.4,
                             connectionstyle="arc3,rad=-0.25"))
 
@@ -59,8 +65,9 @@ for s in ("left", "bottom"):
 
 ax.legend(loc="upper left", frameon=False, fontsize=11.5)
 ax.text(0.5, -0.2,
-        "Mean across 500 episodes. Intermediate values (e.g. 08:00, 14:00) are hours where the agent "
-        "switches tariff\ndepending on live queue state, which a fixed clock schedule cannot produce.",
+        "Mean across 500 episodes. Values strictly between two tariffs are hours where the agent picks "
+        "differently\nacross episodes according to live queue state — something a fixed clock schedule "
+        "cannot produce.",
         transform=ax.transAxes, ha="center", fontsize=10, color="#5A6C78")
 
 plt.tight_layout()
