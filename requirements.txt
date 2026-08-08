@@ -6,6 +6,7 @@ scipy>=1.13
 
 # ── Ingestion (scraper) ───────────────────────────────────
 requests>=2.31
+python-dotenv>=1.0          # loads the metering cookie from .env
 
 # ── Simulation (Mesa agent-based model) ───────────────────
 mesa==2.3.4                 # pinned: 3.x changed the Agent/scheduler API
@@ -17,6 +18,7 @@ stable-baselines3==2.9.0    # installs a compatible torch automatically
 # ── Plotting (all notebooks) ──────────────────────────────
 matplotlib>=3.7
 seaborn>=0.12
+pillow>=10.0                # validation/combine_calibration.py
 
 # ── Notebook runtime (local notebooks 00–03) ──────────────
 jupyter>=1.0
