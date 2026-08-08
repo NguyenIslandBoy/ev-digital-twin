@@ -774,7 +774,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'PPO holds its advantage across the trained range — and the regime boundary is shown, not hidden'"
+                  "Value": "'PPO holds its advantage across the trained range - and the regime boundary is shown, not hidden'"
                 }
               }
             },

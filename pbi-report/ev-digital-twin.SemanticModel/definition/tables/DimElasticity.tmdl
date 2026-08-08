@@ -37,7 +37,7 @@ table DimElasticity
 				  Selected = Table.SelectColumns(Promoted, {"elasticity", "lambda", "status"}),
 				  Typed = Table.TransformColumnTypes(Selected, {{"elasticity", type number}, {"lambda", type number}, {"status", type text}}),
 				  WithTradeoff = Table.AddColumn(Typed, "TradeoffExists", each [status] = "ok", type logical),
-				  WithRegime = Table.AddColumn(WithTradeoff, "RegimeLabel", each if [status] = "ok" then "Trade-off" else "Degenerate — pricing collapses to maximum tariff", type text),
+				  WithRegime = Table.AddColumn(WithTradeoff, "RegimeLabel", each if [status] = "ok" then "Trade-off" else "Degenerate - pricing collapses to maximum tariff", type text),
 				  Renamed = Table.RenameColumns(WithRegime, {{"elasticity", "Elasticity"}, {"lambda", "LambdaWeight"}}),
 				  Final = Table.RemoveColumns(Renamed, {"status"})
 				in

@@ -1,4 +1,4 @@
-/// Session fact (EDA layer, isolated — no relationship to results facts). Cleaning per spec §5: null guard, duration capped at 4.0 h, derived hour and day_type.
+/// Session fact (EDA layer, isolated - no relationship to results facts). Cleaning per spec §5: null guard, duration capped at 4.0 h, derived hour and day_type.
 table FactSession
 	lineageTag: 4ed61f1f-88cc-4cbe-94b4-49d6aadd579f
 
