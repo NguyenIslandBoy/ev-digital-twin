@@ -1,4 +1,5 @@
 distribution,ks_statistic,sim_mean,real_mean
-Sessions per day,0.0606,25.42,25.11
-Energy per session,0.0087,30.43,30.44
-Session duration,0.0374,0.763,0.741
+Sessions per day,0.0586,25.226,25.1054
+Energy per session,0.0087,30.4288,30.4406
+Session duration,0.0374,0.7625,0.7415
+Arrival hour,0.0073,13.0384,13.1186

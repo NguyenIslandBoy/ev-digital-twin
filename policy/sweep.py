@@ -30,7 +30,12 @@ RESULTS_DIR.mkdir(exist_ok=True)
 
 
 IDX_015, IDX_030, IDX_045 = 0, 1, 2
-ADOPTION = 2.0
+
+# High-adoption regime. 3x is the lowest multiplier at which the network is
+# congested enough for a revenue-vs-wait trade-off to exist on defensible
+# terms: at 2x mean waiting is ~1 min and the tie-point lambda rises above 15,
+# which is not a preference any operator would hold.
+ADOPTION = 3.0
 
 
 # ── policies ──────────────────────────────────────────────────────────────────
