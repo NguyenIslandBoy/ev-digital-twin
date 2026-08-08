@@ -2,6 +2,7 @@
 
 import json
 import duckdb
+import numpy as np
 from pathlib import Path
 
 # ── PATHS ─────────────────────────────────────────────────────────────────────
@@ -31,6 +32,15 @@ ARRIVAL_RATES: dict[int, float] = {
     for hour, rate in _arrival_by_hour.items()
 }
 
+# Share of the day's demand arriving in each 30-min step. Each hour spans two
+# steps, so normalising the per-step rates over all 48 steps gives a proper
+# distribution — the model allocates the daily target across it in one
+# multinomial draw, which preserves the empirical arrival profile exactly.
+_step_rates = np.array(
+    [ARRIVAL_RATES.get((step * 30) // 60, 0.0) for step in range(STEPS_PER_DAY)]
+)
+STEP_ARRIVAL_P: np.ndarray = _step_rates / _step_rates.sum()
+
 # ── CHARGER CONFIGURATION ─────────────────────────────────────────────────────
 CHARGER_IDS: list[int]  = _params["charger_ids"]
 N_CHARGERS:  int        = _params["n_chargers"]
@@ -43,20 +53,29 @@ CONNECTOR_SHARES: dict[str, float] = {
     k: v["share"] for k, v in CONNECTOR_PARAMS.items()
 }
 
+# Connector draw as a CDF rather than rng.choice(names, p=shares): every driver
+# samples one, and searchsorted over a precomputed CDF is ~5x cheaper.
+CONNECTOR_NAMES: tuple[str, ...] = tuple(CONNECTOR_SHARES.keys())
+CONNECTOR_CDF: np.ndarray = np.cumsum(list(CONNECTOR_SHARES.values()))
+CONNECTOR_CDF[-1] = 1.0    # guard the last bin against float drift
+
 CONNECTOR_ENERGY: dict[str, dict] = {
     k: {
         "mean":   v["energy_mean"],
         "std":    v["energy_std"],
-        "values": v["energy_values"],   # empirical samples for sampling
+        # ndarray, not list: this is the simulation's hottest lookup, and
+        # rng.choice() re-converts a list to an array on every single call.
+        "values": np.asarray(v["energy_values"], dtype=float),
     }
     for k, v in CONNECTOR_PARAMS.items()
 }
 
 CONNECTOR_DURATION: dict[str, dict] = {
     k: {
-        "s":     v["duration_lognorm"][0],   # shape
+        "s":     v["duration_lognorm"][0],   # shape (= sigma of the log)
         "loc":   v["duration_lognorm"][1],   # location
-        "scale": v["duration_lognorm"][2],   # scale
+        "scale": v["duration_lognorm"][2],   # scale (= exp(mu))
+        "mu":    float(np.log(v["duration_lognorm"][2])),   # for rng.lognormal
     }
     for k, v in CONNECTOR_PARAMS.items()
 }
