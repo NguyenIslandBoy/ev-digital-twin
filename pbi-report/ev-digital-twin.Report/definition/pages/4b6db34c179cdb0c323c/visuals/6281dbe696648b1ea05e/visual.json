@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "d52029e54da3d58a00c9",
+  "name": "6281dbe696648b1ea05e",
   "position": {
-    "x": 1281.6666666666667,
-    "y": 161.66666666666669,
-    "z": 15000,
-    "height": 145,
-    "width": 290,
-    "tabOrder": 15000
+    "x": 1583.1400179345935,
+    "y": 157.4144904196329,
+    "z": 16012,
+    "height": 146.17059824680197,
+    "width": 296.83875336273627,
+    "tabOrder": 16012
   },
   "visual": {
     "visualType": "slicer",
@@ -23,11 +23,11 @@
                       "Entity": "DimDistribution"
                     }
                   },
-                  "Property": "DistributionName"
+                  "Property": "IsParametricFit"
                 }
               },
-              "queryRef": "DimDistribution.DistributionName",
-              "nativeQueryRef": "DistributionName",
+              "queryRef": "DimDistribution.IsParametricFit",
+              "nativeQueryRef": "IsParametricFit",
               "active": true
             }
           ]
@@ -67,7 +67,7 @@
             "textSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
+                  "Value": "14D"
                 }
               }
             }
@@ -81,19 +81,6 @@
               "expr": {
                 "Literal": {
                   "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "selection": [
-        {
-          "properties": {
-            "singleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
                 }
               }
             }
@@ -190,7 +177,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Distribution Name'"
+                  "Value": "'Friendly Label'"
                 }
               }
             },
@@ -249,5 +236,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ba907031114b2ad70486",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimDistribution"
+              }
+            },
+            "Property": "IsParametricFit"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

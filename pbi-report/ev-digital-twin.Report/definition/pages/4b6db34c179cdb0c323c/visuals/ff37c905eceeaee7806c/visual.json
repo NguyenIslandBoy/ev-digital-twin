@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "361fb9e334612d8e4cb2",
+  "name": "ff37c905eceeaee7806c",
   "position": {
-    "x": 351.50981953682327,
+    "x": 969.248949971606,
     "y": 165.27049015570392,
-    "z": 10000,
+    "z": 16010,
     "height": 139.82608695652172,
     "width": 296.3478260869565,
-    "tabOrder": 6000
+    "tabOrder": 16004
   },
   "visual": {
     "visualType": "cardVisual",
@@ -344,7 +344,21 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "d62ab7b14093070d940d",
+        "name": "7511283031b2edc7c1a0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "#Measures"
+              }
+            },
+            "Property": "KS Statistic"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7395a5cf39c6c8bb585d",
         "field": {
           "Column": {
             "Expression": {
@@ -385,7 +399,7 @@
                     [
                       {
                         "Literal": {
-                          "Value": "'Sessions per day'"
+                          "Value": "'Energy per session'"
                         }
                       }
                     ]

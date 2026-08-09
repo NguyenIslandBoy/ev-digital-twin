@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "35b1332b5671eda41536",
+  "name": "bb49c7aa0aae0300947a",
   "position": {
     "x": 660.72262516960086,
     "y": 164.66607480862325,
-    "z": 11000,
-    "height": 139.96616358732976,
+    "z": 16009,
+    "height": 142.02448952243756,
     "width": 296.39893465552188,
-    "tabOrder": 7000
+    "tabOrder": 16003
   },
   "visual": {
     "visualType": "cardVisual",
@@ -342,7 +342,21 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "bf0281b2c690db6eb69c",
+        "name": "ef21be73702198140151",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "#Measures"
+              }
+            },
+            "Property": "KS Statistic"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1bfb041194e10665088b",
         "field": {
           "Column": {
             "Expression": {
