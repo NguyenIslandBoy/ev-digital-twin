@@ -229,5 +229,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "6d2beafc203b04c63656",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimConnector"
+              }
+            },
+            "Property": "FriendlyLabel"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

@@ -26,33 +26,20 @@
               {
                 "textRuns": [
                   {
-                    "value": "With ~30,000 observations the KS ",
+                    "value": "With ~30,000 observations the KS test rejects on deviations too small to matter, so calibration is judged on the KS ",
                     "textStyle": {
                       "fontSize": "20pt"
                     }
                   },
                   {
-                    "value": "p-value",
+                    "value": "statistic ",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontSize": "20pt"
                     }
                   },
                   {
-                    "value": " rejects on negligible deviations, so assessment uses the KS ",
-                    "textStyle": {
-                      "fontSize": "20pt"
-                    }
-                  },
-                  {
-                    "value": "statistic",
-                    "textStyle": {
-                      "fontWeight": "bold",
-                      "fontSize": "20pt"
-                    }
-                  },
-                  {
-                    "value": " (effect size) with matched means: a low p-value is not calibration failure.",
+                    "value": "(an effect size) together with agreement of means. A low p-value here is not a calibration failure.",
                     "textStyle": {
                       "fontSize": "20pt"
                     }
@@ -97,14 +84,7 @@
               {
                 "textRuns": [
                   {
-                    "value": ""
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "<=   Energy per session - empirical resampling: agreement expected by construction, not an independent fit test",
+                    "value": "<= Energy per session is drawn by resampling the observed values, so its agreement is expected by construction: it tests the sampler, not the model.",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontFamily": "Segoe UI",

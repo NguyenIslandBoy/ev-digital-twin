@@ -490,5 +490,79 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e86f8749409d34e4b905",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimDistribution"
+              }
+            },
+            "Property": "DistributionName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9070443addac41879982",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "#Measures"
+              }
+            },
+            "Property": "Simulated Mean"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "45d74b3458ccc5ec9986",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "#Measures"
+              }
+            },
+            "Property": "Observed Mean"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f1464dc0d39d41de1e02",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "#Measures"
+              }
+            },
+            "Property": "Sim vs Obs Difference"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3e829c066c57c5ee9b60",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimDistribution"
+              }
+            },
+            "Property": "IsParametricFit"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

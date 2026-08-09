@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "6f65f6bf4ad53492c4c7",
+  "name": "c681acdc0553eeb84006",
   "position": {
-    "x": 969.248949971606,
+    "x": 1278.1185151889974,
     "y": 165.27049015570392,
-    "z": 12000,
+    "z": 16011,
     "height": 139.82608695652172,
     "width": 296.3478260869565,
-    "tabOrder": 8000
+    "tabOrder": 16005
   },
   "visual": {
     "visualType": "cardVisual",
@@ -344,7 +344,21 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "815995c84b7e252b8cc0",
+        "name": "a7c5cce860b10bbcd035",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "#Measures"
+              }
+            },
+            "Property": "KS Statistic"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ffa04a102e472e58b636",
         "field": {
           "Column": {
             "Expression": {
@@ -385,7 +399,7 @@
                     [
                       {
                         "Literal": {
-                          "Value": "'Energy per session'"
+                          "Value": "'Arrival hour'"
                         }
                       }
                     ]
